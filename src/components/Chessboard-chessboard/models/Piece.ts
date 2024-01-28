@@ -1,4 +1,4 @@
-import { TeamType, PieceType } from "../../../Types";
+import { TeamType, PieceType } from "../Types";
 import { Position } from "./Position";
 
 export class Piece {
@@ -8,10 +8,12 @@ export class Piece {
     team: TeamType;
     possibleMoves?: Position[];
     hasMoved: boolean;
+    skin: TeamType;
     constructor(position: Position, type: PieceType,
         team: TeamType, hasMoved: boolean,
-        possibleMoves: Position[] = []) {
-        this.image = `assets/images/${type}_${team}.png`;
+        skin: TeamType, possibleMoves: Position[] = []) {
+        this.skin = skin;
+        this.image = `assets/images/${type}_${skin}.png`;
         this.position = position;
         this.type = type;
         this.team = team;
@@ -53,7 +55,7 @@ export class Piece {
 
     clone(): Piece {
         return new Piece(this.position.clone(),
-             this.type, this.team, this.hasMoved,
-             this.possibleMoves?.map(m => m.clone()));
+             this.type, this.team, this.hasMoved, this.skin,
+             this.possibleMoves?.map(m => m.clone()) );
     }
 }

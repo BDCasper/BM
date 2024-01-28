@@ -1,27 +1,44 @@
-import { useRef, useState } from "react";
-import { initialBoard } from "../Constants";
+import { useEffect, useRef, useState } from "react";
+// import { initialBoard } from "../Constants";
 import { Piece, Position } from "../models";
 import { Board } from "../models/Board";
 import { Pawn } from "../models/Pawn";
 import { bishopMove, getPossibleBishopMoves, getPossibleKingMoves, getPossibleKnightMoves, getPossiblePawnMoves, getPossibleQueenMoves, getPossibleRookMoves, kingMove, knightMove, pawnMove, queenMove, rookMove } from "../referee";
-import { PieceType, TeamType } from "../../../Types";
+import { PieceType, TeamType } from "../Types";
 import Chessboard from "../Chessboard/Chessboard";
+import fenComponents from "../../../App"
 
-export default function Referee() {
+interface RefereeProps {
+    fen: Piece[];
+    fenComponents: fenComponents;
+    setNewPosition: (param: Position) => any;
+    botPosition: Position[];
+  }
+
+const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, botPosition}) => {
+    const initialBoard: Board = new Board(fen, 1);
+    initialBoard.calculateAllMoves();
     const [board, setBoard] = useState<Board>(initialBoard.clone());
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
+    const [playerTurn, setPlayerTurn] = useState<boolean>(true);
+
+    useEffect(() => {
+        setBoard(new Board(fen, 1).clone())
+      }, [fen]);
+
 
     function playMove(playedPiece: Piece, destination: Position): boolean {
         // If the playing piece doesn't have any moves return
         if (playedPiece.possibleMoves === undefined) return false;
-
+        setPlayerTurn(true);
         // Prevent the inactive team from playing
-        if (playedPiece.team === TeamType.OUR
-            && board.totalTurns % 2 !== 1) return false;
         if (playedPiece.team === TeamType.OPPONENT
-            && board.totalTurns % 2 !== 0) return false;
+            && board.totalTurns  % 2 === 0) {
+                setPlayerTurn(false);
+                return false
+    } 
 
         let playedMoveIsValid = false;
 
@@ -134,7 +151,7 @@ export default function Referee() {
             clonedBoard.pieces = clonedBoard.pieces.reduce((results, piece) => {
                 if (piece.samePiecePosition(promotionPawn)) {
                     results.push(new Piece(piece.position.clone(), pieceType,
-                        piece.team, true));
+                        piece.team, true, piece.skin));
                 } else {
                     results.push(piece);
                 }
@@ -177,7 +194,9 @@ export default function Referee() {
                 </div>
             </div>
             <Chessboard playMove={playMove}
-                pieces={board.pieces} />
+                pieces={board.pieces} fenComponents={fenComponents} setNewPosition={setNewPosition} playerTurn={playerTurn} botPosition={botPosition}/>
         </>
     )
 }
+
+export default Referee;

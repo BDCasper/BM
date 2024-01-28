@@ -7,6 +7,7 @@ export enum PieceType {
     KING = 'king',
 }
 
+
 export enum TeamType {
     OPPONENT = 'b',
     OUR = 'w',

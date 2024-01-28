@@ -1,4 +1,4 @@
-import { TeamType } from "../../../Types";
+import { TeamType } from "../Types";
 import { Piece, Position } from "../models";
 import { tileIsEmptyOrOccupiedByOpponent, tileIsOccupied, tileIsOccupiedByOpponent } from "./GeneralRules";
 

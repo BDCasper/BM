@@ -52,13 +52,31 @@
 
 #symbol {
     position: absolute;
-    margin-top: 37.5px;
-    margin-left: 48px;
+    margin-top: 36px;
+    margin-left: 44px;
     font-weight: 600;
+    color: #ffffff;
 }
 
 #digit {
     position: absolute;
-    margin-top: -2px;
+    margin-top: -1px;
+    margin-left: 2px;
     font-weight: 600;
+}
+
+.black-tile > #digit {
+    color: #ffffff;
+}
+
+.white-tile > #digit {
+    color: #664639;
+}
+
+.black-tile > #symbol {
+    color: #ffffff;
+}
+
+.white-tile > #symbol {
+    color: #664639;
 }

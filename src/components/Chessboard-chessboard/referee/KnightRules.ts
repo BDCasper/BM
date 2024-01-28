@@ -1,5 +1,5 @@
 import { Piece, Position } from "../models";
-import { TeamType } from "../../../Types";
+import { TeamType } from "../Types";
 import { tileIsEmptyOrOccupiedByOpponent } from "./GeneralRules";
 
 export const knightMove = (initialPosition: Position, desiredPosition: Position, team: TeamType, boardState: Piece[]): boolean => {

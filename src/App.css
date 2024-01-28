@@ -1,6 +1,7 @@
-#app {
-    height: 1440px;
-    width: 1487px;
+.app {
+    height: 1487px;
+    width: 1440px;
+    background-color: pink;
 }
 
 

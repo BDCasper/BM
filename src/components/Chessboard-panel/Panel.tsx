@@ -1,9 +1,17 @@
 import react from "react";
 import Referee from "../Chessboard-chessboard/Referee-main/Referee";
 import "./Panel.css"
+import { Piece, Position } from "../Chessboard-chessboard/models";
+import fenComponents from "../../App"
 
-export default function Panel() {
+interface PanelProps {
+  fen: Piece[];
+  fenComponents: fenComponents;
+  setNewPosition: (param: Position) => any;
+  botPosition: Position[];
+}
 
+const Panel: React.FC<PanelProps> = ({ fen, fenComponents, setNewPosition, botPosition}) => {
     return (
       <>
         
@@ -11,7 +19,7 @@ export default function Panel() {
           <p id="task-name">Связка</p>
           <p id="task-description">Найти лучшую связку</p>
           <div id="referee">
-            <Referee/>
+            <Referee fen={fen} fenComponents={fenComponents} setNewPosition={setNewPosition} botPosition={botPosition}/>
           </div>
 
         </div>
@@ -20,3 +28,5 @@ export default function Panel() {
     );
 
 }
+
+export default Panel;

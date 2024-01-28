@@ -1,5 +1,5 @@
 import { getPossibleBishopMoves, getPossibleKingMoves, getPossibleKnightMoves, getPossiblePawnMoves, getPossibleQueenMoves, getPossibleRookMoves, getCastlingMoves } from "../referee";
-import { PieceType, TeamType } from "../../../Types";
+import { PieceType, TeamType } from "../Types";
 import { Pawn } from "./Pawn";
 import { Piece } from "./Piece";
 import { Position } from "./Position";
