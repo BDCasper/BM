@@ -22,7 +22,6 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
-    const [playerTurn, setPlayerTurn] = useState<boolean>(true);
 
     useEffect(() => {
         setBoard(new Board(fen, 1).clone())
@@ -32,20 +31,16 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
     function playMove(playedPiece: Piece, destination: Position): boolean {
         // If the playing piece doesn't have any moves return
         if (playedPiece.possibleMoves === undefined) return false;
-        setPlayerTurn(true);
-        // Prevent the inactive team from playing
-        if (playedPiece.team === TeamType.OPPONENT
-            && board.totalTurns  % 2 === 0) {
-                setPlayerTurn(false);
-                return false
-    } 
+        //Prevent the inactive team from playing
+        // if (playedPiece.team === TeamType.OPPONENT) {
+        //         setPlayerTurn(true);
+        // }
 
         let playedMoveIsValid = false;
 
         const validMove = playedPiece.possibleMoves?.some(m => m.samePosition(destination));
 
         if (!validMove) return false;
-
         const enPassantMove = isEnPassantMove(
             playedPiece.position,
             destination,
@@ -55,14 +50,14 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
 
         // playMove modifies the board thus we
         // need to call setBoard
-        setBoard(() => {
-            const clonedBoard = board.clone();
+        setBoard((previousBoard) => {
+            const clonedBoard = previousBoard.clone();
             clonedBoard.totalTurns += 1;
-            // Playing the move
+            // Playing the move            
             playedMoveIsValid = clonedBoard.playMove(enPassantMove,
                 validMove, playedPiece,
                 destination);
-
+                
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
             }
@@ -81,7 +76,6 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
                 return clonedPlayedPiece;
             });
         }
-
         return playedMoveIsValid;
     }
 
@@ -147,7 +141,7 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
         }
 
         setBoard((previousBoard) => {
-            const clonedBoard = board.clone();
+            const clonedBoard = previousBoard.clone();
             clonedBoard.pieces = clonedBoard.pieces.reduce((results, piece) => {
                 if (piece.samePiecePosition(promotionPawn)) {
                     results.push(new Piece(piece.position.clone(), pieceType,
@@ -194,7 +188,7 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
                 </div>
             </div>
             <Chessboard playMove={playMove}
-                pieces={board.pieces} fenComponents={fenComponents} setNewPosition={setNewPosition} playerTurn={playerTurn} botPosition={botPosition}/>
+                pieces={board.pieces} fenComponents={fenComponents} setNewPosition={setNewPosition} botPosition={botPosition}/>
         </>
     )
 }

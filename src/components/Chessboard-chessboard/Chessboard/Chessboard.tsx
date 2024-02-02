@@ -14,14 +14,22 @@ interface Props {
   pieces: Piece[];
   fenComponents: fenComponents;
   setNewPosition: (param: Position) => any;
-  playerTurn: boolean;
   botPosition: Position[];
 }
 
-export default function Chessboard({playMove, pieces, fenComponents, setNewPosition, playerTurn, botPosition} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setNewPosition, botPosition} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const chessboardRef = useRef<HTMLDivElement>(null);
+
+  const namethisafter = async (pos: Position) => {
+    // await fetch(`${backend}/api/logout/`, {
+    //     method: "POST",
+    //     headers: { 'Content-Type': 'application/json' },
+    //     credentials: 'include'
+    // }).then((res) => blabla)
+    //setUserInfo("none")
+}
 
   // function grabPiece(e: React.MouseEvent) {
   //   const element = e.target as HTMLElement;
@@ -49,58 +57,52 @@ export default function Chessboard({playMove, pieces, fenComponents, setNewPosit
   function clickPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;
-    if (playerTurn === true) {
-      if (activePiece === null || element.classList.contains("chess-piece")) {
-        if (element.classList.contains("chess-piece") && chessboard) {
-    
-          const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-          const grabY = Math.abs(
-            Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - 458.4) / GRID_SIZE)
-          );
-    
-          setGrabPosition(new Position(grabX, grabY));
-    
-          const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
-          const y = e.clientY - GRID_SIZE / 2 + window.scrollY;
-          element.style.position = "static";
-          element.style.left = `${x}px`;
-          element.style.top = `${y}px`;
-    
-          setActivePiece(element);
-        }}
-      else {
-        if (activePiece && chessboard) {
-          activePiece.style.zIndex = "0";
-          const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-          const y = Math.abs(
-            Math.ceil((e.clientY - chessboard.offsetTop - 458.4  + window.scrollY) / GRID_SIZE)
-          );
-          const currentPiece = pieces.find((p) =>
-            p.samePosition(grabPosition)
-          );
-    
-          if (currentPiece) {
-            playMove(currentPiece.clone(), new Position(x, y));
-            setNewPosition(new Position(x,y))
-          }
-          setActivePiece(null);
-        }
+    if (activePiece === null || element.classList.contains("chess-piece")) {
+      if (element.classList.contains("chess-piece") && chessboard) {
+  
+        const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+        const grabY = Math.abs(
+          Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - 458.4) / GRID_SIZE)
+        );
+  
+        setGrabPosition(new Position(grabX, grabY));
+  
+        const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
+        const y = e.clientY - GRID_SIZE / 2 + window.scrollY;
+        element.style.position = "static";
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+  
+        setActivePiece(element);
       }
-    }else{
-      console.log("TUT")
-      setGrabPosition(new Position(6,5));
-      setActivePiece(element);
-      if (activePiece && chessboard)
-      {
-        const currentPiece = pieces.find((p) =>
-            p.samePosition(grabPosition)
+    } else{
+      if (activePiece && chessboard) {
+      activePiece.style.zIndex = "0";
+      const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+      const y = Math.abs(
+        Math.ceil((e.clientY - chessboard.offsetTop - 458.4  + window.scrollY) / GRID_SIZE)
       );
-      if (currentPiece) {
-          playMove(currentPiece.clone(), new Position(6,4));
-      }
+         
+      const currentPiece = pieces.find((p) =>
+        p.samePosition(grabPosition)
+      );
+
+
+        if (currentPiece) {
+          playMove(currentPiece.clone(), new Position(x, y));
+          setNewPosition(new Position(x,y))
+        }
+        setTimeout(() => {
+          namethisafter(new Position(x, y));
+
+          const botMove = pieces.find((p) => p.samePosition(botPosition[0])); console.log(botMove)
+          botMove?.possibleMoves?.push(botPosition[1])
+          if(botMove) playMove(botMove.clone(), botPosition[1]);
+        },500)
       setActivePiece(null);
     }
-    }
+
+  }
   }
 
   // function movePiece(e: React.MouseEvent) {
