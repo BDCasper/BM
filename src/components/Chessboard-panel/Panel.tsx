@@ -1,25 +1,54 @@
-import react from "react";
+import { useEffect, useState } from "react";
 import Referee from "../Chessboard-chessboard/Referee-main/Referee";
 import "./Panel.css"
-import { Piece, Position } from "../Chessboard-chessboard/models";
-import fenComponents from "../../App"
+import { backend } from "../../App";
 
-interface PanelProps {
-  fen: Piece[];
-  fenComponents: fenComponents;
-  setNewPosition: (param: Position) => any;
-  botPosition: Position[];
-}
+export default function Panel() {
 
-const Panel: React.FC<PanelProps> = ({ fen, fenComponents, setNewPosition, botPosition}) => {
+  const [fenCode, setCurrentFen] = useState<string>("");
+  const [solved, setSolved] = useState<number>(0);
+  let arrayOfFens: string[] = [""]
+
+
+  useEffect(() => {
+    (
+      async () => {
+        await fetch(`http://${backend}/api/tema1`, {
+          headers: { 'Content-Type': 'application/json' },
+          // credentials: 'include'
+        }).then((res) => {
+          if (res && res.status === 200) {
+            res.json().then((data) => {
+              const fens: string[] = data.map((fen: any) => fen.FEN)
+              arrayOfFens = fens //TODO
+              setCurrentFen(arrayOfFens[solved])
+              console.log();
+            })
+          } else {
+            console.log("No FEN :(")
+          }
+        })
+      }
+    )();
+  }, []);
+
+  useEffect(() => {
+    (
+      async () => {
+        console.log(solved)
+        setCurrentFen(arrayOfFens[solved])
+        console.log(fenCode)
+      }
+    )();
+  }, [solved]);
+
     return (
       <>
         
         <div id="panel">    
-          <p id="task-name">Связка</p>
-          <p id="task-description">Найти лучшую связку</p>
+
           <div id="referee">
-            <Referee fen={fen} fenComponents={fenComponents} setNewPosition={setNewPosition} botPosition={botPosition}/>
+            <Referee fenCode={fenCode} setSolved={setSolved} solved={solved}/>
           </div>
 
         </div>
@@ -29,4 +58,3 @@ const Panel: React.FC<PanelProps> = ({ fen, fenComponents, setNewPosition, botPo
 
 }
 
-export default Panel;

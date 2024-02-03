@@ -7,19 +7,24 @@ import {
   GRID_SIZE,
 } from "../Constants";
 import { Piece, Position } from "../models";
-import fenComponents from "../../../App"
+import boardCompanents from "../Referee-main/Referee"
+import { TeamType } from "../Types";
+import { backend } from "../../../App";
 
 interface Props {
   playMove: (piece: Piece, position: Position) => boolean;
   pieces: Piece[];
-  fenComponents: fenComponents;
-  setNewPosition: (param: Position) => any;
-  botPosition: Position[];
+  fenComponents: boardCompanents;
+  setSolved: (sol: number) => any;
+  solved: number
 }
 
-export default function Chessboard({playMove, pieces, fenComponents, setNewPosition, botPosition} : Props) {
+let totalTurns = 0;
+
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
+  const [newPosition, setNewPosition] = useState<Position>();
   const chessboardRef = useRef<HTMLDivElement>(null);
 
   const namethisafter = async (pos: Position) => {
@@ -29,7 +34,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setNewPosit
     //     credentials: 'include'
     // }).then((res) => blabla)
     //setUserInfo("none")
-}
+  }
 
   // function grabPiece(e: React.MouseEvent) {
   //   const element = e.target as HTMLElement;
@@ -54,6 +59,46 @@ export default function Chessboard({playMove, pieces, fenComponents, setNewPosit
   //   }
   // }
 
+
+  const playBotMove = async (pos1: Position, pos2: Position, color: TeamType) => {
+    let botPosition: Position[] = [];
+
+    await fetch(`http://${backend}/api/checkmove/`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+            // credentials: 'include',
+            body: JSON.stringify({
+                id: 1,
+                turn: totalTurns,
+                team: color,
+                move: [pos1,pos2]
+            })
+    }).then((response) => {
+      if (response && response.status === 200) {
+        response.json().then((data) => {
+          if (data.correct === "yes") {
+            if (data.botMove === "WIN") {
+              setSolved(1);
+              totalTurns = 0;
+              console.log(solved)
+            } else {
+              botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
+              setTimeout(() => {
+                const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
+                botMove?.possibleMoves?.push(botPosition[1]);
+                if(botMove) playMove(botMove.clone(), botPosition[1]);
+              },300)
+            }
+          } else {
+            alert("ДАЛБАЕБ НАХУЙ НАУЧИСЬ ИГРАТЬ")
+          }
+        })
+      }
+    })
+
+    
+  }
+
   function clickPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;
@@ -77,32 +122,30 @@ export default function Chessboard({playMove, pieces, fenComponents, setNewPosit
       }
     } else{
       if (activePiece && chessboard) {
-      activePiece.style.zIndex = "0";
-      const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-      const y = Math.abs(
-        Math.ceil((e.clientY - chessboard.offsetTop - 458.4  + window.scrollY) / GRID_SIZE)
-      );
-         
-      const currentPiece = pieces.find((p) =>
-        p.samePosition(grabPosition)
-      );
+        activePiece.style.zIndex = "0";
+
+        const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+        const y = Math.abs(
+          Math.ceil((e.clientY - chessboard.offsetTop - 458.4  + window.scrollY) / GRID_SIZE)
+        );
+            
+        const currentPiece = pieces.find((p) =>
+          p.samePosition(grabPosition)
+        );
 
 
         if (currentPiece) {
-          playMove(currentPiece.clone(), new Position(x, y));
-          setNewPosition(new Position(x,y))
+          if(playMove(currentPiece.clone(), new Position(x, y))) {
+            totalTurns++;
+            playBotMove(grabPosition, new Position(x,y), currentPiece.skin);
+          }
         }
-        setTimeout(() => {
-          namethisafter(new Position(x, y));
 
-          const botMove = pieces.find((p) => p.samePosition(botPosition[0])); console.log(botMove)
-          botMove?.possibleMoves?.push(botPosition[1])
-          if(botMove) playMove(botMove.clone(), botPosition[1]);
-        },500)
-      setActivePiece(null);
+
+        setActivePiece(null);
+      }
+
     }
-
-  }
   }
 
   // function movePiece(e: React.MouseEvent) {
