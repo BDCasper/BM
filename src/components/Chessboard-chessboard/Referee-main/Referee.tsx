@@ -1,41 +1,138 @@
 import { useEffect, useRef, useState } from "react";
-// import { initialBoard } from "../Constants";
 import { Piece, Position } from "../models";
 import { Board } from "../models/Board";
 import { Pawn } from "../models/Pawn";
 import { bishopMove, getPossibleBishopMoves, getPossibleKingMoves, getPossibleKnightMoves, getPossiblePawnMoves, getPossibleQueenMoves, getPossibleRookMoves, kingMove, knightMove, pawnMove, queenMove, rookMove } from "../referee";
 import { PieceType, TeamType } from "../Types";
 import Chessboard from "../Chessboard/Chessboard";
-import fenComponents from "../../../App"
+import { TIMEOUT } from "dns";
+
 
 interface RefereeProps {
-    fen: Piece[];
-    fenComponents: fenComponents;
-    setNewPosition: (param: Position) => any;
-    botPosition: Position[];
-  }
+    setSolved: (solved: number) => any;
+    fenCode: string;
+    solved: number;
+}
 
-const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, botPosition}) => {
-    const initialBoard: Board = new Board(fen, 1);
-    initialBoard.calculateAllMoves();
-    const [board, setBoard] = useState<Board>(initialBoard.clone());
+interface fenComponents {
+    squares: Piece[];
+    turn: string;
+    castling: string;
+    enPassantSquare: string | null;
+}
+
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
+
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
+    const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
+    const [fen, setFen] = useState<Piece[]>([]);
+
+
+    const DecodeFen: any = (fen: String)=>{
+        const newboard: fenComponents = {
+          squares: [],
+          turn: '',
+          castling: '',
+          enPassantSquare: null,
+        };
+        
+
+        const parts = fen.split(' ');
+        
+        newboard.turn = parts[1];
+
+        let row = 0;
+        let col = 0;
+        
+        for (let i = 0; i < parts[0].length; i++) {
+            const char = parts[0][i];
+            if (char === '/') {
+              row += 1;
+              col = 0;
+            } else if (isNaN(Number(char))) {
+              const piece: Piece = parts[1] === 'w' ? new Piece(
+                new Position(col, 7-row), 
+                  
+                char.toUpperCase() === 'R' ? PieceType.ROOK : 
+                    (char.toUpperCase() === "N" ? PieceType.KNIGHT : 
+                    (char.toUpperCase() === "B" ? PieceType.BISHOP : 
+                    (char.toUpperCase() === "Q" ? PieceType.QUEEN : 
+                    (char.toUpperCase() === "K" ? PieceType.KING : 
+                    PieceType.PAWN)))),
+    
+                char === char.toUpperCase() ? TeamType.OUR : TeamType.OPPONENT,
+                false,
+                char === char.toUpperCase() ? TeamType.OUR: TeamType.OPPONENT
+              ) : new Piece(
+                new Position(7-col, row), 
+                  
+                char.toUpperCase() === 'R' ? PieceType.ROOK : 
+                    (char.toUpperCase() === "N" ? PieceType.KNIGHT : 
+                    (char.toUpperCase() === "B" ? PieceType.BISHOP : 
+                    (char.toUpperCase() === "Q" ? PieceType.QUEEN : 
+                    (char.toUpperCase() === "K" ? PieceType.KING : 
+                    PieceType.PAWN)))),
+    
+                char === char.toUpperCase() ? TeamType.OPPONENT : TeamType.OUR,
+                false,
+                char === char.toUpperCase() ? TeamType.OUR : TeamType.OPPONENT
+              )
+    
+              newboard.squares.push(piece);
+              col += 1;
+            } else {
+              col += Number(char);
+            }
+        }
+      
+        // Parse additional FEN information
+        newboard.castling = parts[2];
+        newboard.enPassantSquare = parts[3] === '-' ? null : parts[3];
+        
+        return newboard;
+    }
+
+    // useEffect(() => {
+    //     (
+    //         async () => {
+    //             const newboard = DecodeFen(fenCode);
+    //             console.log(fenCode)
+    //             setNewBoard(newboard);
+    //             setFen(newboard.squares);
+    //             console.log(fenCode)
+    //         }
+    //       )();
+    // }, [])
+
+    useEffect(() => {
+        (
+            async () => {
+                console.log(solved,fenCode)
+                const newboard = DecodeFen(fenCode);
+                setNewBoard(newboard);
+                setFen(newboard.squares);
+            }
+          )();
+    }, [fenCode])
+
+    const initialBoard: Board = new Board(fen, 1);
+    initialBoard.calculateAllMoves();
+    const [board, setBoard] = useState<Board>(initialBoard.clone());
 
     useEffect(() => {
         setBoard(new Board(fen, 1).clone())
       }, [fen]);
 
-
     function playMove(playedPiece: Piece, destination: Position): boolean {
+
         // If the playing piece doesn't have any moves return
         if (playedPiece.possibleMoves === undefined) return false;
         //Prevent the inactive team from playing
-        // if (playedPiece.team === TeamType.OPPONENT) {
-        //         setPlayerTurn(true);
-        // }
-
+        //  if (playedPiece.team === TeamType.OPPONENT) {
+        //     return false;
+        //  }
         let playedMoveIsValid = false;
 
         const validMove = playedPiece.possibleMoves?.some(m => m.samePosition(destination));
@@ -46,7 +143,7 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
             destination,
             playedPiece.type,
             playedPiece.team
-        );
+        );  
 
         // playMove modifies the board thus we
         // need to call setBoard
@@ -61,9 +158,9 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
             }
-
             return clonedBoard;
         })
+
 
         // This is for promoting a pawn
         let promotionRow = (playedPiece.team === TeamType.OUR) ? 7 : 0;
@@ -171,6 +268,7 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
 
     return (
         <>
+ 
             <div className="modal hidden" ref={modalRef}>
                 <div className="modal-body">
                     <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
@@ -188,9 +286,13 @@ const Referee: React.FC<RefereeProps> = ({ fen, fenComponents, setNewPosition, b
                 </div>
             </div>
             <Chessboard playMove={playMove}
-                pieces={board.pieces} fenComponents={fenComponents} setNewPosition={setNewPosition} botPosition={botPosition}/>
+                pieces={board.pieces} fenComponents={newboard} setSolved={setSolved} solved={solved}/>
         </>
     )
 }
 
 export default Referee;
+export default interface boardCompanents{squares: Piece[];
+    turn: string;
+    castling: string;
+    enPassantSquare: string | null;};
