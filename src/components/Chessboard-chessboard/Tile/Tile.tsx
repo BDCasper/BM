@@ -1,4 +1,3 @@
-import { removeEmitHelper } from "typescript";
 import "./Tile.css";
 
 interface Props1 {

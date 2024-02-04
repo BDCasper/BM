@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import "./App.css" 
 import Panel from './components/Chessboard-panel/Panel';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 
-
 function App() {
+
   return (
     <div className="app">
       <div id="chess-game">
@@ -19,5 +20,5 @@ function App() {
 }
 
 export default App;
-export const backend = "192.168.3.253:8080"
+export const backend = "https://chess-leader-school.onrender.com/api/tema1"
 

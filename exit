@@ -1,0 +1,50 @@
+[33mcommit 3e1ff7acadbaaf8264976b687b1c428ee894d7f2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Sat Feb 3 22:15:14 2024 +0600
+
+    connected to backend
+
+[33mcommit 6576af7bde764dcb6345f369fafb3318df9bd8de[m
+Merge: ef854bd 90333a3
+Author: BDCasper <108467816+BDCasper@users.noreply.github.com>
+Date:   Sat Feb 3 22:11:53 2024 +0600
+
+    Merge pull request #1 from BDCasper/editing
+    
+    connected to the backend
+
+[33mcommit 90333a38dbdc94b95714f401169ab652a29039d8[m[33m ([m[1;31morigin/editing[m[33m, [m[1;32mediting[m[33m)[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Sat Feb 3 21:59:56 2024 +0600
+
+    connected to the backend
+
+[33mcommit ef854bdb3c3f56f8d725bcd258f78ac77eeb7cb1[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Fri Feb 2 19:25:04 2024 +0600
+
+    nemnogo izmenil
+
+[33mcommit b2de31652b78226ae5dcc844cf5956962a338084[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Sun Jan 28 19:40:29 2024 +0600
+
+    vse
+
+[33mcommit acf6e57c707a3bdb7694c34296d629e3503605c8[m[33m ([m[1;31morigin/test[m[33m)[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Wed Jan 24 23:12:31 2024 +0600
+
+    changed color back to black
+
+[33mcommit ee9dab635b041c90b0cf3874947e39f3f9e3e7c6[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Wed Jan 24 23:01:12 2024 +0600
+
+    fixed border color
+
+[33mcommit 68b591efb551a908f808545da3b35d66cc305b66[m
+Author: BDCasper <d.belkairov@gmail.com>
+Date:   Wed Jan 24 22:58:01 2024 +0600
+
+    initial commit

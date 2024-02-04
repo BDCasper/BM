@@ -13,16 +13,19 @@ export default function Panel() {
   useEffect(() => {
     (
       async () => {
-        await fetch(`http://${backend}/api/tema1`, {
+        await fetch(backend, {
+          method: "GET",
           headers: { 'Content-Type': 'application/json' },
           // credentials: 'include'
         }).then((res) => {
           if (res && res.status === 200) {
             res.json().then((data) => {
-              const fens: string[] = data.map((fen: any) => fen.FEN)
+              console.log(data)
+              const fens: string[] = data.map((fen: any) => fen.fen)
               arrayOfFens = fens //TODO
               setCurrentFen(arrayOfFens[solved])
-              console.log();
+              console.log(arrayOfFens[0])
+              console.log(fens);
             })
           } else {
             console.log("No FEN :(")
@@ -57,4 +60,3 @@ export default function Panel() {
     );
 
 }
-

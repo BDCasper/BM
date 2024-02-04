@@ -63,7 +63,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const playBotMove = async (pos1: Position, pos2: Position, color: TeamType) => {
     let botPosition: Position[] = [];
 
-    await fetch(`http://${backend}/api/checkmove/`, {
+    await fetch(backend, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
             // credentials: 'include',
@@ -137,6 +137,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         if (currentPiece) {
           if(playMove(currentPiece.clone(), new Position(x, y))) {
             totalTurns++;
+            console.log(currentPiece)
             playBotMove(grabPosition, new Position(x,y), currentPiece.skin);
           }
         }
