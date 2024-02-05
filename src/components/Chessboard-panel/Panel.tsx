@@ -22,7 +22,6 @@ export default function Panel() {
               const fens: string[] = data.map((fen: any) => fen.fen)
               arrayOfFens = fens //TODO
               setCurrentFen(arrayOfFens[solved])
-              console.log();
             })
           } else {
             console.log("No FEN :(")
