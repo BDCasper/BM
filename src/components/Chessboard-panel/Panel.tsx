@@ -14,18 +14,14 @@ export default function Panel() {
     (
       async () => {
         await fetch(backend, {
-          method: "GET",
           headers: { 'Content-Type': 'application/json' },
           // credentials: 'include'
         }).then((res) => {
           if (res && res.status === 200) {
             res.json().then((data) => {
-              console.log(data)
               const fens: string[] = data.map((fen: any) => fen.fen)
               arrayOfFens = fens //TODO
               setCurrentFen(arrayOfFens[solved])
-              console.log(arrayOfFens[0])
-              console.log(fens);
             })
           } else {
             console.log("No FEN :(")
