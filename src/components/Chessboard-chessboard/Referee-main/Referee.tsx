@@ -5,7 +5,6 @@ import { Pawn } from "../models/Pawn";
 import { bishopMove, getPossibleBishopMoves, getPossibleKingMoves, getPossibleKnightMoves, getPossiblePawnMoves, getPossibleQueenMoves, getPossibleRookMoves, kingMove, knightMove, pawnMove, queenMove, rookMove } from "../referee";
 import { PieceType, TeamType } from "../Types";
 import Chessboard from "../Chessboard/Chessboard";
-import { TIMEOUT } from "dns";
 
 
 interface RefereeProps {
