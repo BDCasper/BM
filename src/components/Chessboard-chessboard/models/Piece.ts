@@ -13,7 +13,7 @@ export class Piece {
         team: TeamType, hasMoved: boolean,
         skin: TeamType, possibleMoves: Position[] = []) {
         this.skin = skin;
-        this.image = `assets/images/${type}_${skin}.png`;
+        this.image = `../../../assets/images/${type}_${skin}.png`;
         this.position = position;
         this.type = type;
         this.team = team;

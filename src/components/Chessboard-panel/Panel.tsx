@@ -13,13 +13,13 @@ export default function Panel() {
   useEffect(() => {
     (
       async () => {
-        await fetch(`http://${backend}/api/tema1`, {
+        await fetch(backend, {
           headers: { 'Content-Type': 'application/json' },
           // credentials: 'include'
         }).then((res) => {
           if (res && res.status === 200) {
             res.json().then((data) => {
-              const fens: string[] = data.map((fen: any) => fen.FEN)
+              const fens: string[] = data.map((fen: any) => fen.fen)
               arrayOfFens = fens //TODO
               setCurrentFen(arrayOfFens[solved])
               console.log();
