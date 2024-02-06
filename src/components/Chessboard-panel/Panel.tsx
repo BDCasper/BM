@@ -40,7 +40,7 @@ export default function Panel() {
         setCurrentFen(arrayOfFens[solved]);
       }
     )();
-  },[arrayOfFens]);
+  },[arrayOfFens])
 
     return (
       <>

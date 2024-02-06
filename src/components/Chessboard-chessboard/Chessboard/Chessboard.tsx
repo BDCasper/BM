@@ -24,10 +24,9 @@ let totalTurns = 0;
 export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
-  const [newPosition, setNewPosition] = useState<Position>();
   const chessboardRef = useRef<HTMLDivElement>(null);
 
-  const playBotMove = async (pos1: Position, pos2: Position, color: TeamType) => {
+  const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
     let botPosition: Position[] = [];
 
     await fetch( `http://${backend}/api/checkmove` /*backend*/, {
@@ -37,13 +36,15 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             body: JSON.stringify({
                 id: solved+1,
                 turn: totalTurns,
-                team: color,
+                team: currentPiece.skin,
                 move: [pos1,pos2]
             })
     }).then((response) => {
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
+
+            playMove(currentPiece.clone(), pos2)            
             if (data.botMove === "WIN") {
               setSolved(solved+1);
               totalTurns = 0;
@@ -57,12 +58,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             }
           } else {
             alert("ДАЛБАЕБ НАХУЙ НАУЧИСЬ ИГРАТЬ")
+            totalTurns--;
           }
         })
       }
     })
-
-    
   }
 
   function clickPiece(e: React.MouseEvent) {
@@ -99,14 +99,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           p.samePosition(grabPosition)
         );
 
-
         if (currentPiece) {
-          if(playMove(currentPiece.clone(), new Position(x, y))) {
-            totalTurns++;
-            playBotMove(grabPosition, new Position(x,y), currentPiece.skin);
-          }
+          totalTurns++;
+          playMoveFunction(grabPosition, new Position(x,y), currentPiece);
         }
-
 
         setActivePiece(null);
       }
