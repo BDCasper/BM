@@ -7,22 +7,17 @@ export default function Panel() {
 
   const [fenCode, setCurrentFen] = useState<string>("");
   const [solved, setSolved] = useState<number>(0);
-  let arrayOfFens: string[] = [""]
-
+  const [arrayOfFens, setArrayOfFens] = useState<string[]>([""]);
 
   useEffect(() => {
     (
       async () => {
-        await fetch(backend, {
+        await fetch( `http://${backend}/api/tema1` /*backend*/, {
           headers: { 'Content-Type': 'application/json' },
           // credentials: 'include'
         }).then((res) => {
           if (res && res.status === 200) {
-            res.json().then((data) => {
-              const fens: string[] = data.map((fen: any) => fen.fen)
-              arrayOfFens = fens //TODO
-              setCurrentFen(arrayOfFens[solved])
-            })
+          res.json().then((data) => data.map((fen: any) => fen.fen)).then((fens) => setArrayOfFens(fens))
           } else {
             console.log("No FEN :(")
           }
@@ -34,12 +29,18 @@ export default function Panel() {
   useEffect(() => {
     (
       async () => {
-        console.log(solved)
-        setCurrentFen(arrayOfFens[solved])
-        console.log(fenCode)
+        setCurrentFen(arrayOfFens[solved]);
       }
     )();
-  }, [solved]);
+  },[solved]);
+
+  useEffect(() => {
+    (
+      async () => {
+        setCurrentFen(arrayOfFens[solved]);
+      }
+    )();
+  },[arrayOfFens]);
 
     return (
       <>

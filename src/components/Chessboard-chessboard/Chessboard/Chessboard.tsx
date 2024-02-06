@@ -27,48 +27,15 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [newPosition, setNewPosition] = useState<Position>();
   const chessboardRef = useRef<HTMLDivElement>(null);
 
-  const namethisafter = async (pos: Position) => {
-    // await fetch(`${backend}/api/logout/`, {
-    //     method: "POST",
-    //     headers: { 'Content-Type': 'application/json' },
-    //     credentials: 'include'
-    // }).then((res) => blabla)
-    //setUserInfo("none")
-  }
-
-  // function grabPiece(e: React.MouseEvent) {
-  //   const element = e.target as HTMLElement;
-  //   const chessboard = chessboardRef.current;
-  //   if (element.classList.contains("chess-piece") && chessboard) {
-
-  //     const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-  //     const grabY = Math.abs(
-  //       Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - 458.4) / GRID_SIZE)
-  //     );
-
-  //     setGrabPosition(new Position(grabX, grabY));
-  //     console.log(window.scrollY);
-
-  //     const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
-  //     const y = e.clientY - GRID_SIZE / 2 + window.scrollY;
-  //     element.style.position = "absolute";
-  //     element.style.left = `${x}px`;
-  //     element.style.top = `${y}px`;
-
-  //     setActivePiece(element);
-  //   }
-  // }
-
-
   const playBotMove = async (pos1: Position, pos2: Position, color: TeamType) => {
     let botPosition: Position[] = [];
 
-    await fetch(backend, {
+    await fetch( `http://${backend}/api/checkmove` /*backend*/, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
             // credentials: 'include',
             body: JSON.stringify({
-                id: 1,
+                id: solved+1,
                 turn: totalTurns,
                 team: color,
                 move: [pos1,pos2]
@@ -78,9 +45,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         response.json().then((data) => {
           if (data.correct === "yes") {
             if (data.botMove === "WIN") {
-              setSolved(1);
+              setSolved(solved+1);
               totalTurns = 0;
-              console.log(solved)
             } else {
               botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
               setTimeout(() => {
@@ -137,7 +103,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         if (currentPiece) {
           if(playMove(currentPiece.clone(), new Position(x, y))) {
             totalTurns++;
-            console.log(currentPiece)
             playBotMove(grabPosition, new Position(x,y), currentPiece.skin);
           }
         }
@@ -148,73 +113,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
     }
   }
-
-  // function movePiece(e: React.MouseEvent) {
-  //   const chessboard = chessboardRef.current;
-  //   if (activePiece && chessboard) {
-  //     const minX = chessboard.offsetLeft - 15;
-  //     const minY = chessboard.offsetTop - 10;
-  //     const maxX = chessboard.offsetLeft + chessboard.clientWidth - 44;
-  //     const maxY = chessboard.offsetTop + chessboard.clientHeight - 47;
-  //     const x = e.clientX - 30 + window.scrollX;
-  //     const y = e.clientY - 30 + window.scrollY;
-  //     activePiece.style.position = "absolute";
-  //     activePiece.style.zIndex = "1";
-
-  //     //If x is smaller than minimum amount
-  //     if (x < minX) {
-  //       activePiece.style.left = `${minX}px`;
-  //     }
-  //     //If x is bigger than maximum amount
-  //     else if (x > maxX) {
-  //       activePiece.style.left = `${maxX}px`;
-  //     }
-  //     //If x is in the constraints
-  //     else {
-  //       activePiece.style.left = `${x}px`;
-  //     }
-
-  //     //If y is smaller than minimum amount
-  //     if (y < minY) {
-  //       activePiece.style.top = `${minY}px`;
-  //     }
-  //     //If y is bigger than maximum amount
-  //     else if (y > maxY) {
-  //       activePiece.style.top = `${maxY}px`;
-  //     }
-  //     //If y is in the constraints
-  //     else {
-  //       activePiece.style.top = `${y}px`;
-  //     }
-  //   }
-  // }
-
-  // function dropPiece(e: React.MouseEvent) {
-  //   const chessboard = chessboardRef.current;
-  //   if (activePiece && chessboard) {
-  //     activePiece.style.zIndex = "0";
-  //     const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-  //     const y = Math.abs(
-  //       Math.ceil((e.clientY - chessboard.offsetTop - 458.4  + window.scrollY) / GRID_SIZE)
-  //     );
-
-  //     const currentPiece = pieces.find((p) =>
-  //       p.samePosition(grabPosition)
-  //     );
-
-  //     if (currentPiece) {
-  //       var succes = playMove(currentPiece.clone(), new Position(x, y));
-
-  //       if(!succes) {
-  //         //RESETS THE PIECE POSITION
-  //         activePiece.style.position = "relative";
-  //         activePiece.style.removeProperty("top");
-  //         activePiece.style.removeProperty("left");
-  //       }
-  //     }
-  //     setActivePiece(null);
-  //   }
-  // }
 
   let board = [];
 
@@ -237,10 +135,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   return (
     <>
       <div
-        // onMouseMove={(e) => movePiece(e)}
-        // onMouseDown={(e) => grabPiece(e)}
         onClick={(e) => clickPiece(e)}
-        // onMouseUp={(e) => dropPiece(e)}
         id="chessboard"
         ref={chessboardRef}
       >

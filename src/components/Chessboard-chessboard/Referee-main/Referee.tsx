@@ -86,29 +86,15 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
             }
         }
       
-        // Parse additional FEN information
         newboard.castling = parts[2];
         newboard.enPassantSquare = parts[3] === '-' ? null : parts[3];
         
         return newboard;
     }
 
-    // useEffect(() => {
-    //     (
-    //         async () => {
-    //             const newboard = DecodeFen(fenCode);
-    //             console.log(fenCode)
-    //             setNewBoard(newboard);
-    //             setFen(newboard.squares);
-    //             console.log(fenCode)
-    //         }
-    //       )();
-    // }, [])
-
     useEffect(() => {
         (
             async () => {
-                console.log(solved,fenCode)
                 const newboard = DecodeFen(fenCode);
                 setNewBoard(newboard);
                 setFen(newboard.squares);
@@ -121,17 +107,17 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
     const [board, setBoard] = useState<Board>(initialBoard.clone());
 
     useEffect(() => {
-        setBoard(new Board(fen, 1).clone())
+        (
+            async () => {
+                setBoard(new Board(fen, 1).clone())
+            }
+        )();
       }, [fen]);
 
     function playMove(playedPiece: Piece, destination: Position): boolean {
 
-        // If the playing piece doesn't have any moves return
         if (playedPiece.possibleMoves === undefined) return false;
-        //Prevent the inactive team from playing
-        //  if (playedPiece.team === TeamType.OPPONENT) {
-        //     return false;
-        //  }
+
         let playedMoveIsValid = false;
 
         const validMove = playedPiece.possibleMoves?.some(m => m.samePosition(destination));
@@ -144,12 +130,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
             playedPiece.team
         );  
 
-        // playMove modifies the board thus we
-        // need to call setBoard
         setBoard((previousBoard) => {
             const clonedBoard = previousBoard.clone();
             clonedBoard.totalTurns += 1;
-            // Playing the move            
             playedMoveIsValid = clonedBoard.playMove(enPassantMove,
                 validMove, playedPiece,
                 destination);
@@ -161,7 +144,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
         })
 
 
-        // This is for promoting a pawn
         let promotionRow = (playedPiece.team === TeamType.OUR) ? 7 : 0;
 
         if (destination.y === promotionRow && playedPiece.isPawn) {
