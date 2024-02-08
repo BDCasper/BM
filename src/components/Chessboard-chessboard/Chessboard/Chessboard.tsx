@@ -16,54 +16,89 @@ interface Props {
   pieces: Piece[];
   fenComponents: boardCompanents;
   setSolved: (sol: number) => any;
-  solved: number
+  solved: number;
+  lengthOfArray: number;
 }
 
 let totalTurns = 0;
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, lengthOfArray} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
+  const [lives, setLives] = useState<number>(3);
   const chessboardRef = useRef<HTMLDivElement>(null);
 
-  const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
-    let botPosition: Position[] = [];
 
-    await fetch( `http://${backend}/api/checkmove` /*backend*/, {
+  const botMove = async(botPosition:Position[]) => {
+      const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
+      botMove?.possibleMoves?.push(botPosition[1]);
+      if(botMove) playMove(botMove.clone(), botPosition[1]);
+
+    return true;
+  }
+
+
+  const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
+
+    await fetch( `${backend}/api/checkmove` /*backend*/, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
             // credentials: 'include',
             body: JSON.stringify({
-                id: solved+1,
+                id: lengthOfArray - solved + 1,
                 turn: totalTurns,
                 team: currentPiece.skin,
-                move: [pos1,pos2]
+                move: [pos1,pos2],
+                lives: lives
             })
     }).then((response) => {
       if (response && response.status === 200) {
         response.json().then((data) => {
+          console.log(data)
           if (data.correct === "yes") {
-
-            playMove(currentPiece.clone(), pos2)            
+            playMove(currentPiece.clone(), pos2)   
+            setLives(3);
             if (data.botMove === "WIN") {
-              setSolved(solved+1);
-              totalTurns = 0;
+              if (solved - 1 === 0) {
+                  //alert("ЗАДАЧИ ЗАКОНЧИЛИСЬ\nПЕРЕЗАГРУЖАЮ СТРАНИЦУ");
+                  window.location.reload();
+              } else {
+                setSolved(solved - 1);
+                totalTurns = 0;
+              }
             } else {
-              botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
-              setTimeout(() => {
-                const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
-                botMove?.possibleMoves?.push(botPosition[1]);
-                if(botMove) playMove(botMove.clone(), botPosition[1]);
-              },300)
+              const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
+              botMove(botPosition);
             }
           } else {
-            alert("ДАЛБАЕБ НАХУЙ НАУЧИСЬ ИГРАТЬ")
             totalTurns--;
+            setLives(lives - 1)
+            if (data.solution) 
+            {
+              const rightPosition = [new Position(data.solution[0].x, data.solution[0].y), new Position(data.solution[1].x, data.solution[1].y)];
+              botMove(rightPosition);
+              totalTurns++;
+              setLives(3);
+              if (data.botMove === "WIN") {
+                if (solved - 1 === 0) {
+                    //alert("ЗАДАЧИ ЗАКОНЧИЛИСЬ\nПЕРЕЗАГРУЖАЮ СТРАНИЦУ");
+                    window.location.reload();
+                } else {
+                  setSolved(solved - 1);
+                  totalTurns = 0;
+                }
+              } else {
+                const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
+                botMove(botPosition);
+              }
+              
+            }
           }
         })
       }
     })
   }
+
 
   function clickPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
@@ -98,8 +133,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         const currentPiece = pieces.find((p) =>
           p.samePosition(grabPosition)
         );
-
-        if (currentPiece) {
+        if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
           totalTurns++;
           playMoveFunction(grabPosition, new Position(x,y), currentPiece);
         }
@@ -127,7 +161,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       board.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} /> );
     }
   }
-
+  
   return (
     <>
       <div
@@ -136,6 +170,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         ref={chessboardRef}
       >
         {board}
+        <div className="lives">Осталось жизней: {lives}</div>
       </div>
     </>
   );

@@ -11,6 +11,7 @@ interface RefereeProps {
     setSolved: (solved: number) => any;
     fenCode: string;
     solved: number;
+    lengthOfArray: number;
 }
 
 interface fenComponents {
@@ -20,7 +21,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, lengthOfArray}) => {
 
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
@@ -121,6 +122,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
         let playedMoveIsValid = false;
 
         const validMove = playedPiece.possibleMoves?.some(m => m.samePosition(destination));
+        console.log(board.totalTurns)
 
         if (!validMove) return false;
         const enPassantMove = isEnPassantMove(
@@ -267,7 +269,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved}) => {
                 </div>
             </div>
             <Chessboard playMove={playMove}
-                pieces={board.pieces} fenComponents={newboard} setSolved={setSolved} solved={solved}/>
+                pieces={board.pieces} fenComponents={newboard} setSolved={setSolved} solved={solved} lengthOfArray={lengthOfArray}/>
         </>
     )
 }

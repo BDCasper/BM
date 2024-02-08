@@ -1,9 +1,9 @@
 #chessboard {
     display: grid;
-    grid-template-columns: repeat(8, 57.3px);
-    grid-template-rows: repeat(8, 57.3px);
+    grid-template-columns: repeat(8, 57.2px);
+    grid-template-rows: repeat(8, 57.2px);
     width: 458px;
-    height: 459px;
+    height: 458px;
     background-color: rgb(255, 255, 255);
     border: 1px rgb(0, 0, 0) solid;
 }
@@ -63,4 +63,11 @@
 
 .modal > .modal-body > .checkmate-body > button:hover {
     cursor: pointer;
+}
+
+.lives {
+    font-family: 'Open Sans';font-size: 20px;font-weight: normal;color: #282323;
+    margin-left: 201px;
+    margin-top: 80px;
+    width: 200px;
 }

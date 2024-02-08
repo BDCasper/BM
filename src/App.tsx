@@ -11,6 +11,7 @@ function App() {
       <div id="chess-game">
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<h1>Main page</h1>} />
             <Route path="/tema1" element={<Panel />} />
           </Routes>
         </BrowserRouter>
@@ -20,5 +21,7 @@ function App() {
 }
 
 export default App;
-export const backend = "192.168.3.253:10000"
+//export const backend = "http://192.168.246.253:10000"
+ export const backend = "https://chess-leader-school.onrender.com" 
+
 

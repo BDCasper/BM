@@ -12,12 +12,13 @@ export default function Panel() {
   useEffect(() => {
     (
       async () => {
-        await fetch( `http://${backend}/api/tema1` /*backend*/, {
+        await fetch( `${backend}/api/tema1` /*backend*/, {
           headers: { 'Content-Type': 'application/json' },
           // credentials: 'include'
         }).then((res) => {
           if (res && res.status === 200) {
           res.json().then((data) => data.map((fen: any) => fen.fen)).then((fens) => setArrayOfFens(fens))
+
           } else {
             console.log("No FEN :(")
           }
@@ -29,7 +30,7 @@ export default function Panel() {
   useEffect(() => {
     (
       async () => {
-        setCurrentFen(arrayOfFens[solved]);
+        solved > 0 ? setCurrentFen(arrayOfFens[arrayOfFens.length - solved]) : console.log("Жду");
       }
     )();
   },[solved]);
@@ -37,7 +38,8 @@ export default function Panel() {
   useEffect(() => {
     (
       async () => {
-        setCurrentFen(arrayOfFens[solved]);
+        setCurrentFen(arrayOfFens[0]);
+        setSolved(arrayOfFens.length);
       }
     )();
   },[arrayOfFens])
@@ -48,7 +50,7 @@ export default function Panel() {
         <div id="panel">    
 
           <div id="referee">
-            <Referee fenCode={fenCode} setSolved={setSolved} solved={solved}/>
+            <Referee fenCode={fenCode} setSolved={setSolved} solved={solved} lengthOfArray={arrayOfFens.length}/>
           </div>
 
         </div>
