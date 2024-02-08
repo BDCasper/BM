@@ -8,6 +8,11 @@
     border: 1px rgb(0, 0, 0) solid;
 }
 
+.chessboardWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 .modal {
     position: absolute;
     top: 0px;
@@ -65,9 +70,19 @@
     cursor: pointer;
 }
 
-.lives {
+.turn {
     font-family: 'Open Sans';font-size: 20px;font-weight: normal;color: #282323;
-    margin-left: 201px;
-    margin-top: 80px;
+    align-self: center;
+    text-align: center;
+    margin-top: 47px;
+    width: 200px;
+}
+
+.lives {
+
+    font-family: 'Open Sans';font-size: 20px;font-weight: normal;color: #282323;
+    align-self: center;
+    text-align: center;
+    margin-top: 11px;
     width: 200px;
 }

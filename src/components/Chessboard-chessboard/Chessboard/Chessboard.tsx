@@ -163,15 +163,16 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
   
   return (
-    <>
+    <div className="chessboardWrapper">
       <div
         onClick={(e) => clickPiece(e)}
         id="chessboard"
         ref={chessboardRef}
       >
         {board}
-        <div className="lives">Осталось жизней: {lives}</div>
       </div>
-    </>
+      <div className="turn">Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
+      <div className="lives">Осталось жизней: {lives}</div>
+    </div>
   );
 }

@@ -1,5 +1,7 @@
 #panel {
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 840px;
     height: 786px;
     margin-top: 100px;
@@ -11,8 +13,8 @@
 
 #referee {
     height: 58.5%;
-    margin-left: 22.73%;
-    margin-top: 20.8%;
+    /* margin-left: 22.73%; */
+    /* margin-top: 20.8%; */
 }
 
 #task-name {
