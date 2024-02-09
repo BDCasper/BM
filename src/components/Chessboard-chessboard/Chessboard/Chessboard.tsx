@@ -54,7 +54,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }).then((response) => {
       if (response && response.status === 200) {
         response.json().then((data) => {
-          console.log(data)
           if (data.correct === "yes") {
             playMove(currentPiece.clone(), pos2)   
             setLives(3);

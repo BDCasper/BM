@@ -122,7 +122,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, lengthOfAr
         let playedMoveIsValid = false;
 
         const validMove = playedPiece.possibleMoves?.some(m => m.samePosition(destination));
-        console.log(board.totalTurns)
 
         if (!validMove) return false;
         const enPassantMove = isEnPassantMove(
