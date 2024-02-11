@@ -8,8 +8,9 @@ import {
 } from "../Constants";
 import { Piece, Position } from "../models";
 import boardCompanents from "../Referee-main/Referee"
-import { TeamType } from "../Types";
 import { backend } from "../../../App";
+import { useLocation, useNavigate } from "react-router-dom";
+import TaskProps from "../../Chessboard-panel/Panel"
 
 interface Props {
   playMove: (piece: Piece, position: Position) => boolean;
@@ -17,18 +18,23 @@ interface Props {
   fenComponents: boardCompanents;
   setSolved: (sol: number) => any;
   solved: number;
+  activeIndex: number;
+  setActiveIndex: (index:number) => any;
   lengthOfArray: number;
+  arrayOfObjects: TaskProps[];
+  arrayOfSolved: number[][];
 }
 
 let totalTurns = 0;
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, lengthOfArray} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, arrayOfSolved} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
   const chessboardRef = useRef<HTMLDivElement>(null);
-
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   const botMove = async(botPosition:Position[]) => {
       const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
       botMove?.possibleMoves?.push(botPosition[1]);
@@ -37,15 +43,23 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     return true;
   }
 
+  useEffect(() => {  
+    (
+      async () => {
+        totalTurns = 0
+        setLives(3);  
+      }
+    )();
+  }, [activeIndex]);
 
   const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
 
-    await fetch( `${backend}/api/checkmove` /*backend*/, {
+    await fetch( `${backend}/api/checkmove`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
             // credentials: 'include',
             body: JSON.stringify({
-                id: lengthOfArray - solved + 1,
+                id: arrayOfObjects[activeIndex].puzzleid,
                 turn: totalTurns,
                 team: currentPiece.skin,
                 move: [pos1,pos2],
@@ -58,10 +72,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             playMove(currentPiece.clone(), pos2)   
             setLives(3);
             if (data.botMove === "WIN") {
-              if (solved - 1 === 0) {
-                  //alert("ЗАДАЧИ ЗАКОНЧИЛИСЬ\nПЕРЕЗАГРУЖАЮ СТРАНИЦУ");
-                  window.location.reload();
+              arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
+              if (lengthOfArray-1 === activeIndex) {
+                  alert("Молодец")
+                  navigate("/")
               } else {
+                setActiveIndex(activeIndex + 1)
                 setSolved(solved - 1);
                 totalTurns = 0;
               }
@@ -79,10 +95,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               totalTurns++;
               setLives(3);
               if (data.botMove === "WIN") {
+                arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
                 if (solved - 1 === 0) {
-                    //alert("ЗАДАЧИ ЗАКОНЧИЛИСЬ\nПЕРЕЗАГРУЖАЮ СТРАНИЦУ");
-                    window.location.reload();
+                    alert("Молодец")
+                    navigate("/")
                 } else {
+                  setActiveIndex(activeIndex + 1)
                   setSolved(solved - 1);
                   totalTurns = 0;
                 }
@@ -90,7 +108,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
                 botMove(botPosition);
               }
-              
             }
           }
         })
@@ -163,6 +180,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   
   return (
     <div className="chessboardWrapper">
+      <div className="task-name">Связка</div>
+      <div className="task-description">Найти лучшую связку</div>
       <div
         onClick={(e) => clickPiece(e)}
         id="chessboard"
@@ -170,8 +189,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       >
         {board}
       </div>
-      <div className="turn">Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
-      <div className="lives">Осталось жизней: {lives}</div>
+      <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
+      <div className="lives">Осталось жизней: <span>{lives}</span></div>
     </div>
   );
 }

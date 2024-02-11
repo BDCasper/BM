@@ -5,13 +5,17 @@ import { Pawn } from "../models/Pawn";
 import { bishopMove, getPossibleBishopMoves, getPossibleKingMoves, getPossibleKnightMoves, getPossiblePawnMoves, getPossibleQueenMoves, getPossibleRookMoves, kingMove, knightMove, pawnMove, queenMove, rookMove } from "../referee";
 import { PieceType, TeamType } from "../Types";
 import Chessboard from "../Chessboard/Chessboard";
-
+import TaskProps from "../../Chessboard-panel/Panel"
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
     fenCode: string;
     solved: number;
+    activeIndex: number;
+    setActiveIndex: (index: number) => any;
     lengthOfArray: number;
+    arrayOfObjects: TaskProps[];
+    arrayOfSolved: number[][];
 }
 
 interface fenComponents {
@@ -21,7 +25,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, lengthOfArray}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, arrayOfSolved}) => {
 
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
@@ -250,7 +254,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, lengthOfAr
 
     return (
         <>
- 
+            
             <div className="modal hidden" ref={modalRef}>
                 <div className="modal-body">
                     <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
@@ -267,8 +271,17 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, lengthOfAr
                     </div>
                 </div>
             </div>
+            
             <Chessboard playMove={playMove}
-                pieces={board.pieces} fenComponents={newboard} setSolved={setSolved} solved={solved} lengthOfArray={lengthOfArray}/>
+                pieces={board.pieces} 
+                fenComponents={newboard} 
+                setSolved={setSolved} 
+                solved={solved} 
+                activeIndex={activeIndex} 
+                setActiveIndex={setActiveIndex} 
+                lengthOfArray={lengthOfArray} 
+                arrayOfObjects={arrayOfObjects}
+                arrayOfSolved={arrayOfSolved}/>
         </>
     )
 }

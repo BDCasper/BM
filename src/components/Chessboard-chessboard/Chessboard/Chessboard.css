@@ -71,18 +71,44 @@
 }
 
 .turn {
-    font-family: 'Open Sans';font-size: 20px;font-weight: normal;color: #282323;
+    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
-    margin-top: 47px;
+    margin-top: 40px;
     width: 200px;
 }
 
 .lives {
 
-    font-family: 'Open Sans';font-size: 20px;font-weight: normal;color: #282323;
+    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
     margin-top: 11px;
     width: 200px;
+}
+
+.task-name {
+    margin-bottom: 11px;
+    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: bold;color: #AB2A3B;
+    align-self: center;
+    text-align: center;
+}
+
+.task-description {
+    margin-bottom: 47px;
+    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #282323;
+    align-self: center;
+    text-align: center;
+}
+
+.move_symbol {
+    margin-right: 8px;
+    position: relative;
+    top: 5px;
+}
+
+.lives span {
+    font-size: 26px;font-weight: semibold;color: #AB2A3B;
+    position: relative;
+    top:3px
 }
