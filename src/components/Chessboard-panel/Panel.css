@@ -124,3 +124,35 @@
     height: 100%;
     width: 0px;
 }
+
+.arrows {
+    display: flex;
+    margin-left: 435px;
+    margin-top: -20px;
+    width: 170px;
+    height: 52px;
+    border: 1px solid #DD8A8A;
+    border-radius: 60px;
+}
+
+.leftArrowWrap {
+    display: flex;
+    align-items: center;
+    height: 52px;
+    width: 65px;
+    border-right: 1px solid #DD8A8A;
+    margin-left: 20px;
+}
+
+.rightArrowWrap {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-end;
+    height: 52px;
+    width: 65px;
+}
+
+.arrow {
+    height: 24px;
+}

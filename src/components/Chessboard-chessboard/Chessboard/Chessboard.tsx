@@ -11,6 +11,7 @@ import boardCompanents from "../Referee-main/Referee"
 import { backend } from "../../../App";
 import { useLocation, useNavigate } from "react-router-dom";
 import TaskProps from "../../Chessboard-panel/Panel"
+import { arrayOfSolved } from "../../Chessboard-panel/Panel";
 
 interface Props {
   playMove: (piece: Piece, position: Position) => boolean;
@@ -22,12 +23,11 @@ interface Props {
   setActiveIndex: (index:number) => any;
   lengthOfArray: number;
   arrayOfObjects: TaskProps[];
-  arrayOfSolved: number[][];
 }
 
 let totalTurns = 0;
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, arrayOfSolved} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -72,8 +72,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             playMove(currentPiece.clone(), pos2)   
             setLives(3);
             if (data.botMove === "WIN") {
-              arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
-              if (lengthOfArray-1 === activeIndex) {
+              if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzleid))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
+              localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]))
+              if (lengthOfArray - 1 === activeIndex) {
                   alert("Молодец")
                   navigate("/")
               } else {
@@ -95,7 +96,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               totalTurns++;
               setLives(3);
               if (data.botMove === "WIN") {
-                arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
+                if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzleid))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
+                localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]))
                 if (solved - 1 === 0) {
                     alert("Молодец")
                     navigate("/")

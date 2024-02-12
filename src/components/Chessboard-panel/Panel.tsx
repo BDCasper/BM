@@ -12,41 +12,34 @@ interface Props {
   title: string;
 }
 
+export let arrayOfSolved:number[][] = [
+  [],
+  [],
+  [],
+  [],
+  []
+];
+
+
 export default function Panel() {
 
   const [fenCode, setCurrentFen] = useState<string>("");
   const [solved, setSolved] = useState<number>(0);
   const [arrayOfObjects, setArrayOfObjects] = useState<Props[]>([]);
-  const [arrayOfSolved, setArrayOfSolved] = useState<number[][]>(
-    [
-      [],
-      [],
-      [],
-      [],
-      []
-    ]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const location = useLocation();
-
-
-
-  // useEffect(() => {
-  //   localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
-  // }, [arrayOfSolved]); TODO бля((
 
   useEffect(() => {
     (
       async () => {
-        // const value = localStorage.getItem(location.state.id);
-        // console.log(value)
-        // if (typeof value === 'string') {
-        //   const solved = JSON.parse(value)
-        //   if (solved) {
-        //     const temp = arrayOfSolved;
-        //     temp[location.state.id-1].push(solved);
-        //     setArrayOfSolved(temp);
-        //   }
-        // }
+        const value = localStorage.getItem(location.state.id);
+        console.log(value)
+        if (typeof value === 'string') {
+          const solved = JSON.parse(value)
+          if (solved) {
+            arrayOfSolved[location.state.id-1] = solved;
+          }
+        }
 
         await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
           headers: { 'Content-Type': 'apppcation/json' },
@@ -54,7 +47,6 @@ export default function Panel() {
         }).then((res) => {
           if (res && res.status === 200) {
           res.json().then((data) => setArrayOfObjects(data));
-
           } else {
             console.log("No FEN :(")
           }
@@ -67,16 +59,17 @@ export default function Panel() {
     (
       async () => {
         activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log("Жду");
-        console.log(arrayOfSolved)
+        if(activeIndex === 0 && arrayOfObjects[0]) setCurrentFen(arrayOfObjects[activeIndex].fen)
       }
-    )();
-  },[activeIndex]);
-
-  useEffect(() => {
-    (
-      async () => {
-        arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log("жду");
-        setSolved(arrayOfObjects.length);
+      )();
+    },[activeIndex]);
+    
+    useEffect(() => {
+      (
+        async () => {
+          arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log("жду");
+          setSolved(arrayOfObjects.length);
+          console.log(arrayOfObjects)
       }
     )();
   },[arrayOfObjects])
@@ -95,8 +88,7 @@ export default function Panel() {
             activeIndex={activeIndex} 
             setActiveIndex={setActiveIndex} 
             lengthOfArray={arrayOfObjects.length} 
-            arrayOfObjects={arrayOfObjects}
-            arrayOfSolved={arrayOfSolved}/>
+            arrayOfObjects={arrayOfObjects}/>
           </div>
         </div>
         <div className="spisok">
@@ -116,6 +108,13 @@ export default function Panel() {
                 </>
               ))}
             </div>
+        </div>
+        <div className="arrows">
+          <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+          <img className="arrow" src="/assets/images/leftArrow.svg" />
+          </div>
+          <div className="rightArrowWrap" onClick={() => arrayOfObjects[activeIndex + 1] ? setActiveIndex(activeIndex + 1) : null}>
+          <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
         </div>
       </>
     );

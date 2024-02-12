@@ -15,7 +15,6 @@ interface RefereeProps {
     setActiveIndex: (index: number) => any;
     lengthOfArray: number;
     arrayOfObjects: TaskProps[];
-    arrayOfSolved: number[][];
 }
 
 interface fenComponents {
@@ -25,7 +24,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, arrayOfSolved}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects}) => {
 
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
@@ -280,8 +279,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 activeIndex={activeIndex} 
                 setActiveIndex={setActiveIndex} 
                 lengthOfArray={lengthOfArray} 
-                arrayOfObjects={arrayOfObjects}
-                arrayOfSolved={arrayOfSolved}/>
+                arrayOfObjects={arrayOfObjects}/>
         </>
     )
 }
