@@ -73,7 +73,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             setLives(3);
             if (data.botMove === "WIN") {
               if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzleid))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
-              localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]))
+              localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
               if (lengthOfArray - 1 === activeIndex) {
                   alert("Молодец")
                   navigate("/")
