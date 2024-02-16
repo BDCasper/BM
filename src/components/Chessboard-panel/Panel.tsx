@@ -28,7 +28,7 @@ export default function Panel() {
   const [arrayOfObjects, setArrayOfObjects] = useState<Props[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const location = useLocation();
-
+  
   useEffect(() => {
     (
       async () => {
@@ -78,7 +78,7 @@ export default function Panel() {
       <>
         <div className="progressBar">
           <div className="progress-line" style={{width: `${100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length}%`}}></div>
-          <div className="progress-percentage">{Math.ceil(100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length)}% выполнено</div>
+          <div className="progress-percentage">{Math.ceil((100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length) ? 100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length : 0)}% выполнено</div>
         </div>
         <div className="panel">    
           <div className="referee">
