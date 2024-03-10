@@ -29,9 +29,6 @@
     background-color: #ffffff;
 }
 
-.tile img {
-    width: 80px;
-}
 
 .tile-highlight:not(.chess-piece-tile)::before {
     content: " ";
@@ -79,4 +76,32 @@
 
 .white-tile > #symbol {
     color: #664639;
+}
+
+.rightMoveWhite1 {
+    z-index: 0;
+    width: 57.3px;
+    height: 57.3px;
+    background-color: rgba(165, 218, 253, 0.3);
+}
+
+.rightMoveWhite2 {
+    z-index: 0;
+    width: 57.3px;
+    height: 57.3px;
+    background-color: rgba(147, 218, 141, 0.5);
+}
+
+.rightMoveBlack1 {
+    z-index: 0;
+    width: 57.3px;
+    height: 57.3px;
+    background-color: #90a7b8;
+}
+
+.rightMoveBlack2 {
+    z-index: 0;
+    width: 57.3px;
+    height: 57.3px;
+    background-color: #77a31c;
 }

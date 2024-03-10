@@ -9,9 +9,10 @@ import {
 import { Piece, Position } from "../models";
 import boardCompanents from "../Referee-main/Referee"
 import { backend } from "../../../App";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TaskProps from "../../Chessboard-panel/Panel"
 import { arrayOfSolved } from "../../Chessboard-panel/Panel";
+import useSound from 'use-sound';
 
 interface Props {
   playMove: (piece: Piece, position: Position) => boolean;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 let totalTurns = 0;
+const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 
 export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
@@ -34,6 +36,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const chessboardRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [moveSound] = useSound('move-self.mp3');
+  const [wrongSound] = useSound('notify.mp3');
+  const [winSound] = useSound('win.wav');
+
   
   const botMove = async(botPosition:Position[]) => {
       const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
@@ -41,6 +47,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if(botMove) playMove(botMove.clone(), botPosition[1]);
 
     return true;
+  }
+
+  const nullRightMoves = () => {
+    rightMove[0].x = -1;
+    rightMove[0].y = -1;
+    rightMove[1].x = -1;
+    rightMove[1].y = -1;
   }
 
   useEffect(() => {  
@@ -69,47 +82,44 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
-            playMove(currentPiece.clone(), pos2)   
+            nullRightMoves();
+            playMove(currentPiece.clone(), pos2)
+            moveSound();   
             setLives(3);
             if (data.botMove === "WIN") {
               if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzleid))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
               localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
               if (lengthOfArray - 1 === activeIndex) {
-                  alert("Молодец")
-                  navigate("/")
-              } else {
-                setActiveIndex(activeIndex + 1)
-                setSolved(solved - 1);
-                totalTurns = 0;
-              }
-            } else {
-              const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
-              botMove(botPosition);
-            }
-          } else {
-            totalTurns--;
-            setLives(lives - 1)
-            if (data.solution) 
-            {
-              const rightPosition = [new Position(data.solution[0].x, data.solution[0].y), new Position(data.solution[1].x, data.solution[1].y)];
-              botMove(rightPosition);
-              totalTurns++;
-              setLives(3);
-              if (data.botMove === "WIN") {
-                if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzleid))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
-                localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]))
-                if (solved - 1 === 0) {
+                  setTimeout(() => {
+                    winSound();
                     alert("Молодец")
                     navigate("/")
-                } else {
+                  }, 500);
+              } else {
+                setTimeout(() => {
+                  winSound();
                   setActiveIndex(activeIndex + 1)
                   setSolved(solved - 1);
                   totalTurns = 0;
-                }
-              } else {
+              }, 300);
+
+              }
+            } else {
                 const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
                 botMove(botPosition);
-              }
+            }
+          } else {
+            wrongSound();
+            if(rightMove[0].x === -1)setLives(lives - 1)
+            totalTurns--;
+            if (data.solution) 
+            {
+              console.log(data.solution);              
+              const rightPosition = [new Position(data.solution[0].x, data.solution[0].y), new Position(data.solution[1].x, data.solution[1].y)];
+              rightMove[0].x = rightPosition[0].x;
+              rightMove[0].y = rightPosition[0].y;
+              rightMove[1].x = rightPosition[1].x;
+              rightMove[1].y = rightPosition[1].y;
             }
           }
         })
@@ -123,7 +133,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     const chessboard = chessboardRef.current;
     if (activePiece === null || element.classList.contains("chess-piece")) {
       if (element.classList.contains("chess-piece") && chessboard) {
-  
         const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
         const grabY = Math.abs(
           Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - 458.4) / GRID_SIZE)
@@ -141,7 +150,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       }
     } else{
       if (activePiece && chessboard) {
-        activePiece.style.zIndex = "0";
+        activePiece.style.zIndex = "1";
 
         const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
         const y = Math.abs(
@@ -176,7 +185,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       currentPiece.possibleMoves.some(p => p.samePosition(new Position(i, j))) : false;
       let digit = (i === 0) ? VERTICAL_AXIS[fenComponents.turn === 'w' ? j : 7 - j] : '';
       let symbol = (j === 0) ? HORIZONTAL_AXIS[fenComponents.turn === 'w' ? i : 7 - i] : '';
-      board.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} /> );
+      let highlightRightMove1 = ((i === rightMove[0].x && j === rightMove[0].y)) ? true : false;
+      let highlightRightMove2 = ((i === rightMove[1].x && j === rightMove[1].y)) ? true : false;
+      board.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} highlightRightMove1={highlightRightMove1} highlightRightMove2={highlightRightMove2}/> );
     }
   }
   

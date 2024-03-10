@@ -1,28 +1,38 @@
+.chess-page {
+    width: 100vw;   
+    max-width: 100%;
+}
+
+.panel-spisok {
+    margin-top: 75px;
+    display: flex;
+    height: 786px;
+}
+
 .panel {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-left: 100px;
-    margin-top: 75px;
+    min-width: 840px;
     width: 840px;
     height: 786px;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
-    border-radius: 4%;
+    border-radius: 20px;
     float: left;
-
 }
 
-.spisok {
+.spisok {    
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin-top: 59px;
-    margin-left: 985px;
+    left: 100px;
     width: 319px;
-    height: 891px;
+    height: 786px;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
-    border-radius: 4%;
+    border-radius: 20px;
 }
 
 .topic {
@@ -37,7 +47,7 @@
 }
 
 .spisokList {
-    overflow-y: auto; /*TODO*/
+    overflow-y: hidden; /*TODO*/
 }
 
 .spisokList::-webkit-scrollbar {
@@ -53,33 +63,42 @@
 
 .zadachi {
     display: flex;
+    align-items: center;
     width: 100%;
     height: 79px;
     border-bottom: 1px solid #DD8A8A;
 }
 
+.block-spisokImg {
+    width: 40px;
+}
+
 .spisokImg {
-    margin-top: 15px;
-    margin-left: 44px;
+    position: relative;
+    left: 15px;
     width: 29px;
-    height: 47px;
+}
+
+.spisokImg-active {
+    position: relative;
+    left: 10px;
+    width: 35px;
 }
 
 .zadachi-text {
-    height: 79px;
+    height: 70px;
     width: 250px;
     text-align: center;
-    position: relative;
 }
 
 .id {
     font-family: 'Open Sans', sans-serif;font-size: 14px;font-weight: lighter;color: #818181;
-    margin-top: 13px;
+    margin-top: 7px;
 }
 
 .title {
     font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: lighter;color: #282323;
-    margin-top: 7px;
+    margin-top: 5px;
 }
 
 .active {
@@ -90,12 +109,18 @@
     color: white;
 }
 
+.block-checkSign {
+    position: relative;
+    height: 100%;
+    width: 20px;
+    left: 5px;
+    top: 5px;
+}
+
 .solved {
+    position: relative;
     width: 20px;
     height: 20px;
-    margin-left: 5px;
-    margin-top: 5px;
-    position: absolute;
 }
 
 .hidden {
@@ -103,18 +128,19 @@
 }
 
 .progressBar {
-    width: 1204px;
+
+    width: 1250px;
     height: 29px;
     border-radius: 5px;
     margin-left: 100px;
-    margin-top: 126px;
+    margin-top: 39px;
     background-color: #E7E2E2;
     border-radius: 60px;
     text-align: center;
 }
 
 .progress-percentage {
-    margin-top: 23px;
+    margin-top: 20px;
     font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: lighter;color: #AB2A3B;
 }
 
@@ -126,9 +152,11 @@
 }
 
 .arrows {
+    position: relative;
     display: flex;
+    justify-content: center;
     margin-left: 435px;
-    margin-top: -20px;
+    margin-top: 51px;
     width: 170px;
     height: 52px;
     border: 1px solid #DD8A8A;
@@ -138,17 +166,16 @@
 .leftArrowWrap {
     display: flex;
     align-items: center;
+    justify-content: left;
     height: 52px;
     width: 65px;
     border-right: 1px solid #DD8A8A;
-    margin-left: 20px;
 }
 
 .rightArrowWrap {
     display: flex;
-    position: relative;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: right;
     height: 52px;
     width: 65px;
 }
