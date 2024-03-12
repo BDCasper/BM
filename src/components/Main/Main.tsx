@@ -56,7 +56,7 @@ export default function Main() {
             <div className="pro-level">
               {topicList.map((topic) => (
                   <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id}})}>
-                      <img className="themeImg" src="/assets/images/courseImg.svg"/>
+                      <div className="themeImg"><img src="/assets/images/courseImg.svg"/><div className="themeImgPoloska"></div></div>
                       <div className="theme-content">
                           <div className="theme-text">
                               <div className="theme-name">{topic.topic}</div>

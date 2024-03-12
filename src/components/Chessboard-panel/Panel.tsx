@@ -78,41 +78,43 @@ export default function Panel() {
           <div className="progress-line" style={{width: `${100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length}%`}}></div>
           <div className="progress-percentage">{Math.ceil((100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length) ? 100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length : 0)}% выполнено</div>
         </div>
-        <div className="panel-spisok">
-          <div className="panel">    
-            <div className="referee">
-              <Referee fenCode={fenCode} 
-              setSolved={setSolved} 
-              solved={solved} 
-              activeIndex={activeIndex} 
-              setActiveIndex={setActiveIndex} 
-              lengthOfArray={arrayOfObjects.length} 
-              arrayOfObjects={arrayOfObjects}/>
+        <div>
+          <div className="panel-spisok">
+            <div className="panel">    
+              <div className="referee">
+                <Referee fenCode={fenCode} 
+                setSolved={setSolved} 
+                solved={solved} 
+                activeIndex={activeIndex} 
+                setActiveIndex={setActiveIndex} 
+                lengthOfArray={arrayOfObjects.length} 
+                arrayOfObjects={arrayOfObjects}/>
+              </div>
             </div>
-          </div>
-          <div className="spisok">
-            <div className="topic"><p>Связка</p></div>
-            <div className="spisokList">
-              {arrayOfObjects.map((puzzle, index) => (
-                <div className={index === activeIndex ? "zadachi active" :"zadachi"} key={puzzle.puzzleid} onClick={() => {setActiveIndex(index)
-                  setCurrentFen(arrayOfObjects[index].fen)}}>
-                  <div className="block-checkSign"><img className={arrayOfSolved[location.state.id-1].includes(puzzle.puzzleid) ? "solved" : "hidden"} src="/assets/images/solved.svg" /></div>
-                  <div className="block-spisokImg"><img className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"}/></div>
-                  <div className="zadachi-text">
-                    <div className="id">Задание №{index+1}</div>
-                    <div className="title">{puzzle.subtopic}</div>
+            <div className="spisok">
+              <div className="topic"><p>Связка</p></div>
+              <div className="spisokList">
+                {arrayOfObjects.map((puzzle, index) => (
+                  <div className={index === activeIndex ? "zadachi active" :"zadachi"} key={puzzle.puzzleid} onClick={() => {setActiveIndex(index)
+                    setCurrentFen(arrayOfObjects[index].fen)}}>
+                    <div className="block-checkSign"><img className={arrayOfSolved[location.state.id-1].includes(puzzle.puzzleid) ? "solved" : "hidden"} src="/assets/images/solved.svg" /></div>
+                    <div className="block-spisokImg"><img className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"}/></div>
+                    <div className="zadachi-text">
+                      <div className="id">Задание №{index+1}</div>
+                      <div className="title">{puzzle.subtopic}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="arrows">
-          <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
-           <img className="arrow" src="/assets/images/leftArrow.svg" />
+          <div className="arrows">
+            <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+            <img className="arrow" src="/assets/images/leftArrow.svg" />
+            </div>
+            <div className="rightArrowWrap" onClick={() => arrayOfObjects[activeIndex + 1] ? setActiveIndex(activeIndex + 1) : null}>
+              <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
           </div>
-          <div className="rightArrowWrap" onClick={() => arrayOfObjects[activeIndex + 1] ? setActiveIndex(activeIndex + 1) : null}>
-            <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
         </div>
       </div>
     );

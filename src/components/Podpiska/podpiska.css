@@ -1,0 +1,108 @@
+.sub {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 865px;
+    width: 100vw;
+    max-width: 100%;
+}
+
+.sub-ramka {
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 720px;
+    height: 630px;
+    border-radius: 30px;
+    -webkit-box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
+    box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
+    background-color: #FFFFFF;
+}
+
+.sub-upper-text {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    top: 50px;
+    width: 413px;
+    height: fit-content;
+}
+
+.sub-title {
+    font-family: 'Open Sans';font-size: 28px;font-weight: bold;color: #AB2A3B;
+}
+
+.sub-status {
+    position: relative;
+    top: 16px;
+    font-family: 'Open Sans';font-size: 24px;font-weight: 200;color: #B7B7B7;
+}
+
+.sub-descr {
+    position: relative;
+    top: 32px;
+    font-family: 'Open Sans';font-size: 24px;font-weight: 200;color: #000000;
+}
+
+.sub-lenta {
+    position: relative;
+    top: 130px;
+    width: 782px;
+    height: 94px;
+}
+
+.sub-lenta-center {
+    background-color: #AB2A3B;
+    width: 100%;
+    height: 73px;
+    text-align: center;
+}
+
+.sub-lenta-center-text {
+    position: relative;
+    top: 19px;
+    font-family: 'Open Sans';font-size: 24px;font-weight: 600;color: #FFFFFF;
+}
+
+.sub-lenta-sides {
+    display: flex;
+    width: 100%;
+    height: 21px;
+}
+
+.sub-lenta-left {
+    position: relative;
+    width: 30.5px;
+    height: 21px;
+    background-color: #912F3C;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.sub-lenta-right {
+    position: relative;
+    left: 721px;
+    width: 30.5px;
+    height: 21px;
+    background-color: #912F3C;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.sub-numbers {
+    display: inline;
+    position: relative;
+    top: 141px;
+    width: 100%;
+}
+
+.sub-numbers ul {
+    margin-left: 80 px;
+}
+
+.sub-numbers li {
+    float: left;
+    margin-left: 50px;
+    font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #000000;
+}
