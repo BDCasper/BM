@@ -78,7 +78,7 @@ export default function Panel() {
           <div className="progress-line" style={{width: `${100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length}%`}}></div>
           <div className="progress-percentage">{Math.ceil((100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length) ? 100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length : 0)}% выполнено</div>
         </div>
-        <div>
+        <div className="panel-content">
           <div className="panel-spisok">
             <div className="panel">    
               <div className="referee">

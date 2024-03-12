@@ -1,5 +1,6 @@
 .header {
-    display: inline-flex;
+    display: flex;
+    justify-content: center;
     align-items: center;
     width: 100vw;
     max-width: 100%;
@@ -9,7 +10,7 @@
 }
 
 .headerImg {
-    margin-left: 10%;
+    margin-left: 5%;
     width: 56px;
 }
 
