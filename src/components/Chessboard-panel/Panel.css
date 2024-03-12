@@ -11,6 +11,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 1204px;
+    margin-right: 100px;
 }
 
 .panel-spisok {
@@ -139,7 +141,6 @@
     width: 1250px;
     height: 29px;
     border-radius: 5px;
-    margin-left: 90px;
     margin-top: 39px;
     background-color: #E7E2E2;
     border-radius: 60px;
