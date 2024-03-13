@@ -26,6 +26,14 @@ export default function Podpiska() {
                             <li>4000 задач</li>
                         </ul>
                 </div>
+                <div className="sub-lower-text">
+                    <ul>
+                        <li>Для взрослых</li>
+                        <li>Для детей</li>
+                        <li>Для продолжающих</li>
+                    </ul>
+                </div>
+                <button className="sub-button">Оформить подписку</button>
             </div>
 
         </div>

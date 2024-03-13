@@ -157,3 +157,19 @@ input:focus {
 .log-page a {
     color: #AB2A3B;
 }
+
+.log-empty {
+    color: #DD8A8A;
+}
+
+.log-incorrectBar {
+    border-color: #DD8A8A;
+}
+
+.log-email-incorrect {
+    height: 20px;
+    position: relative;
+    top: 60px;
+    text-align: center;
+    font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #DD8A8A;
+}

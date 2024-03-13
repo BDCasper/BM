@@ -92,7 +92,7 @@ export default function Panel() {
               </div>
             </div>
             <div className="spisok">
-              <div className="topic"><p>Связка</p></div>
+              <div className="topic"><p>{location.state.topic ? location.state.topic : "ERROR"}</p></div>
               <div className="spisokList">
                 {arrayOfObjects.map((puzzle, index) => (
                   <div className={index === activeIndex ? "zadachi active" :"zadachi"} key={puzzle.puzzleid} onClick={() => {setActiveIndex(index)

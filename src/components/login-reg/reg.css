@@ -144,3 +144,19 @@ input:focus {
 .reg-page a {
     color: #AB2A3B;
 }
+
+.incorrect {
+    color: #DD8A8A;
+}
+
+.incorrectBar {
+    border-color: #DD8A8A;
+}
+
+.reg-email-incorrect {
+    height: 20px;
+    position: relative;
+    top: 60px;
+    text-align: center;
+    font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #DD8A8A;
+}

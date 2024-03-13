@@ -49,7 +49,7 @@
 
 .sub-lenta {
     position: relative;
-    top: 130px;
+    top: 110px;
     width: 782px;
     height: 94px;
 }
@@ -93,16 +93,50 @@
 .sub-numbers {
     display: inline;
     position: relative;
-    top: 141px;
+    top: 100px;
     width: 100%;
 }
 
 .sub-numbers ul {
-    margin-left: 80 px;
+    margin-left: 75px;
 }
 
 .sub-numbers li {
     float: left;
     margin-left: 50px;
     font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #000000;
+}
+
+.sub-numbers li::marker {
+    color: #AB2A3B;
+    font-size: 18px;
+}
+
+.sub-lower-text {
+    position: relative;
+    top: 120px;
+}
+
+.sub-lower-text ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.sub-lower-text li {
+    font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #000000;
+    background: url('../../../public/assets/images/podpiska-check.svg') no-repeat left;
+    margin-top: 15px;
+    padding-left: 20px;
+}
+
+.sub-button {
+    position: relative;
+    top: 160px;
+    width: 416px;
+    height: 49px;
+    border-radius: 10px;
+    border: none;
+    background-color: #AB2A3B;
+    font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #ffffff;
 }

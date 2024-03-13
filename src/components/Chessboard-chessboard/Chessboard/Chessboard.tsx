@@ -193,8 +193,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   
   return (
     <div className="chessboardWrapper">
-      <div className="task-name">Связка</div>
-      <div className="task-description">Найти лучшую связку</div>
+      <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
+      <div className="task-description">{arrayOfObjects[activeIndex]?.title}</div>
       <div
         onClick={(e) => clickPiece(e)}
         id="chessboard"

@@ -55,7 +55,7 @@ export default function Main() {
             <p className="levelName">Для начинающих</p>
             <div className="pro-level">
               {topicList.map((topic) => (
-                  <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id}})}>
+                  <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id, topic:topic.topic}})}>
                       <div className="themeImg"><img src="/assets/images/courseImg.svg"/><div className="themeImgPoloska"></div></div>
                       <div className="theme-content">
                           <div className="theme-text">
