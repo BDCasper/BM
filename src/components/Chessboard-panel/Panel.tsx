@@ -12,6 +12,11 @@ interface Props {
   title: string;
 }
 
+interface Test {
+  qTitles: string[];
+  qVariants: string[];
+}
+
 export let arrayOfSolved:number[][] = [
   [],
   [],
@@ -27,7 +32,9 @@ export default function Panel() {
   const [solved, setSolved] = useState<number>(0);
   const [arrayOfObjects, setArrayOfObjects] = useState<Props[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isTest, setIsTest] = useState<boolean>(true);
   const location = useLocation();
+  const [test, setTest] = useState<Test>({qTitles: ["How to win", "how to win", "how to win", "how to win", "how to win"], qVariants:["YES", "YES", "YES", "YES", "YES",]});
   
   useEffect(() => {
     (
@@ -88,25 +95,36 @@ export default function Panel() {
                 activeIndex={activeIndex} 
                 setActiveIndex={setActiveIndex} 
                 lengthOfArray={arrayOfObjects.length} 
-                arrayOfObjects={arrayOfObjects}/>
+                arrayOfObjects={arrayOfObjects}
+                isTest={isTest}/>
               </div>
             </div>
-            <div className="spisok">
-              <div className="topic"><p>{location.state.topic ? location.state.topic : "ERROR"}</p></div>
-              <div className="spisokList">
-                {arrayOfObjects.map((puzzle, index) => (
-                  <div className={index === activeIndex ? "zadachi active" :"zadachi"} key={puzzle.puzzleid} onClick={() => {setActiveIndex(index)
-                    setCurrentFen(arrayOfObjects[index].fen)}}>
-                    <div className="block-checkSign"><img className={arrayOfSolved[location.state.id-1].includes(puzzle.puzzleid) ? "solved" : "hidden"} src="/assets/images/solved.svg" /></div>
-                    <div className="block-spisokImg"><img className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"}/></div>
-                    <div className="zadachi-text">
-                      <div className="id">Задание №{index+1}</div>
-                      <div className="title">{puzzle.subtopic}</div>
-                    </div>
-                  </div>
-                ))}
+
+              <div className="spisok">
+                <div className="topic"><p>{location.state.topic ? location.state.topic : "ERROR"}</p></div>
+                <div className="spisokList">
+                  {/* {isTest === true ? 
+                    <div className="test">
+                      <div className="qAmount"></div>
+                    </div> 
+                    : 
+                      <>             */}
+                        {arrayOfObjects.map((puzzle, index) => (
+                          <div className={index === activeIndex ? "zadachi active" :"zadachi"} key={puzzle.puzzleid} onClick={() => {setActiveIndex(index)
+                            setCurrentFen(arrayOfObjects[index].fen)}}>
+                            <div className="block-checkSign"><img className={arrayOfSolved[location.state.id-1].includes(puzzle.puzzleid) ? "solved" : "hidden"} src="/assets/images/solved.svg" /></div>
+                            <div className="block-spisokImg"><img className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"}/></div>
+                            <div className="zadachi-text">
+                              <div className="id">Задание №{index+1}</div>
+                              <div className="title">{puzzle.subtopic}</div>
+                            </div>
+                          </div>
+                        ))}
+                      {/* </>
+                  } */}
+                </div>
               </div>
-            </div>
+
           </div>
           <div className="arrows">
             <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>

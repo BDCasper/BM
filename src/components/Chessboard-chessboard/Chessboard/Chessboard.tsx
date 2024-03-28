@@ -24,12 +24,13 @@ interface Props {
   setActiveIndex: (index:number) => any;
   lengthOfArray: number;
   arrayOfObjects: TaskProps[];
+  isTest: boolean;
 }
 
 let totalTurns = 0;
 const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -39,13 +40,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [moveSound] = useSound('move-self.mp3');
   const [wrongSound] = useSound('notify.mp3');
   const [winSound] = useSound('win.wav');
-
   
   const botMove = async(botPosition:Position[]) => {
       const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
       botMove?.possibleMoves?.push(botPosition[1]);
       if(botMove) playMove(botMove.clone(), botPosition[1]);
-
     return true;
   }
 
@@ -137,7 +136,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         const grabY = Math.abs(
           Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - 458.4) / GRID_SIZE)
         );
-  
         setGrabPosition(new Position(grabX, grabY));
   
         const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
@@ -160,6 +158,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         const currentPiece = pieces.find((p) =>
           p.samePosition(grabPosition)
         );
+         
         if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
           totalTurns++;
           playMoveFunction(grabPosition, new Position(x,y), currentPiece);
@@ -172,7 +171,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   let board = [];
-
   for (let j = 7; j >= 0; j--) {
     for (let i = 0; i < 8; i++) {
       const number = j + i + 2;
@@ -195,13 +193,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     <div className="chessboardWrapper">
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="task-description">{arrayOfObjects[activeIndex]?.title}</div>
-      <div
-        onClick={(e) => clickPiece(e)}
-        id="chessboard"
-        ref={chessboardRef}
-      >
-        {board}
-      </div>
+      {isTest === true ?       
+        <div id="chessboard" ref={chessboardRef}> {board} </div>
+      :
+        <div onClick={(e) => clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
+      }
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
       <div className="lives">Осталось жизней: <span>{lives}</span></div>
     </div>

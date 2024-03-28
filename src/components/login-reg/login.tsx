@@ -1,27 +1,25 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import "./login.css"
 import { useState } from "react";
 import { backend } from "../../App";
 import UserProps from "../../App"
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store";
+import { loginUser } from "../../store/auth/actionCreator";
 
 interface Props {
     user: UserProps;
-}
+    setUserLog:(user:boolean) => any;
+}   
 
-export default function Login({user}:Props) {
+export default function Login({user, setUserLog}:Props) {
+    const dispatch = useAppDispatch();
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [emailFree, setEmailFree] = useState<boolean>(true);
     const [emailEmpty, setEmailEmpty] = useState<boolean>(true);
     const [passwordEmpty, setPasswordEmpty] = useState<boolean>(true);
-
-    useEffect(() => {
-        (
-        async () => {
-            setEmail(user.email);
-        })();
-    }, [user])
+    const navigate = useNavigate();
 
     useEffect(() => {
         (
@@ -31,7 +29,8 @@ export default function Login({user}:Props) {
         })();
     }, [email, password])
 
-    const login = async() => {
+    const login = async(e: FormEvent) => {
+        e.preventDefault();
         setEmailEmpty(true);
         setPasswordEmpty(true);
         if(email.length === 0 || password.length === 0) {
@@ -39,6 +38,7 @@ export default function Login({user}:Props) {
             if(password.length === 0) setPasswordEmpty(false);
             return;
         }
+
 
         await fetch(`${backend}/api/login`, {
             method: "POST",
@@ -52,7 +52,8 @@ export default function Login({user}:Props) {
             if (response && response.status === 200)
             {
                 response.json().then((data) => {
-                    alert("ZAEBIS")
+                    setUserLog(true);
+                    navigate("/");
                 })
             }
             if(response.status === 400)

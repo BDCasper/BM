@@ -13,8 +13,12 @@ export default function Reg({setUser}: Props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState<string>("");
     const [emailFree, setEmailFree] = useState<boolean>(true);
-    const [emailEmpty, setEmailEmpty] = useState<boolean>(true);
-    const [passwordEmpty, setPasswordEmpty] = useState<boolean>(true);
+    const [emailNotEmpty, setEmailNotEmpty] = useState<boolean>(true);
+    const [emailCorrect, setEmailCorrect] = useState<boolean>(true);
+    const [passwordNotEmpty, setPasswordNotEmpty] = useState<boolean>(true);
+    const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
+    const eRegex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    //const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,14 +30,18 @@ export default function Reg({setUser}: Props) {
     }, [email, password])
 
     const register = async() => {
-        if(email.length === 0 || password.length === 0) {
-            setEmailEmpty(true);
-            setPasswordEmpty(true);
-            if(email.length === 0) setEmailEmpty(false);
-            if(password.length === 0) setPasswordEmpty(false);
+        if(email.length === 0 || password.length === 0 || !eRegex.test(email) ) {
+            setEmailNotEmpty(true);
+            setEmailCorrect(true);
+            setPasswordNotEmpty(true);
+            setPasswordCorrect(true);
+            if(email.length === 0) setEmailNotEmpty(false);
+            if(password.length === 0) setPasswordNotEmpty(false);
+            if(!eRegex.test(email)) setEmailCorrect(false);
+            //if(!pRegex.test(password)) setPasswordCorrect(false);
             return;
         }
-
+        
         await fetch(`${backend}/api/register`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -52,9 +60,7 @@ export default function Reg({setUser}: Props) {
             }
             if(response.status === 400)
             {
-                response.json().then((data) => {
-                    setEmailFree(false);
-                })
+                setEmailFree(false);
             }
         })
     }
@@ -66,15 +72,15 @@ export default function Reg({setUser}: Props) {
                 <div className="reg-text">Добро пожаловать в шахматную школу "Будущие миллионеры"</div>
                 <div className="reg-inputs">
                     <div className="email">
-                        <div className={emailEmpty ? "email-text" : "email-text incorrect"}>E-mail</div>
-                        <input type="text" className={emailEmpty ? "emailBar" : "emailBar incorrectBar"} onChange={(e) => setEmail(e.target.value)}/>
+                        <div className={!emailNotEmpty||!emailCorrect||!emailFree ? "email-text incorrect" : "email-text"}>E-mail</div>
+                        <input type="text" className={!emailNotEmpty||!emailCorrect||!emailFree ? "emailBar incorrectBar" : "emailBar"} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="password">
-                        <div className={passwordEmpty ? "password-text" : "password-text incorrect"}>Придумайте пароль</div>
-                        <input type="text" className={passwordEmpty ? "passwordBar" : "passwordBar incorrectBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <div className={!passwordNotEmpty||!passwordCorrect ? "password-text incorrect" : "password-text"}>Придумайте пароль</div>
+                        <input type="text" className={!passwordNotEmpty||!passwordCorrect ? "passwordBar incorrectBar" : "passwordBar"} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <button className="reg-button" onClick={register}>Зарегистрироваться</button>
-                    {!emailFree && <div className="reg-email-incorrect">Данный эл. адресс недействителен</div>}
+                    {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс недействителен</div>}
                     <div className="reg-to-log">Уже есть аккаунт? <a href="/login">Войти</a></div>
                     <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo"/><p>Войти через Google</p></div>
                 </div>

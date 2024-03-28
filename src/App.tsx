@@ -19,15 +19,16 @@ interface User {
 function App() {
 
   const [user, setUser] = useState<User>({id:0,email:"",token:""});
+  const [checkUserLog, setUserLog] = useState<boolean>(false);
 
   return (
     <div className="app">
-        <Header />
+        <Header checkUserLog={checkUserLog}/>
         <BrowserRouter>
           <Routes>
             <Route path="/subscription" element={<Podpiska />}/>
             <Route path="/registration" element={<Reg setUser={setUser}/>}/>
-            <Route path="/login" element={<Login user={user}/>}/>
+            <Route path="/login" element={<Login user={user} setUserLog={setUserLog}/>}/>
             <Route path="/" element={<Main />} />
             <Route path="/topic" element={<Panel />} />
             <Route path="/profile" element={<Profile />} />
@@ -39,7 +40,7 @@ function App() {
 }
 
 export default App; 
-export const backend = "http://192.168.187.253:10000"
+export const backend = "http://192.168.232.253:10000"
 //export const backend = "https://chess-leader-school.onrender.com"
 
 export default interface UserProps {

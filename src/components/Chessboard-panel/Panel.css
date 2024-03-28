@@ -33,6 +33,16 @@
     float: left;
 }
 
+.test {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 99.5%;
+    height: 400px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+}
+
 .spisok {    
     position: relative;
     display: flex;
@@ -61,7 +71,7 @@
 }
 
 .spisokList::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
     background: transparent;
 }
 
@@ -102,7 +112,7 @@
 }
 
 .id {
-    font-family: 'Open Sans', sans-serif;font-size: 14px;font-weight: lighter;color: #818181;
+    font-family: 'Open Sans', sans-serif;font-size: 14px;font-weight: lighter;color: #c7c7c7;
     margin-top: 7px;
 }
 

@@ -15,6 +15,7 @@ interface RefereeProps {
     setActiveIndex: (index: number) => any;
     lengthOfArray: number;
     arrayOfObjects: TaskProps[];
+    isTest: boolean;
 }
 
 interface fenComponents {
@@ -24,14 +25,13 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest}) => {
 
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
     const [fen, setFen] = useState<Piece[]>([]);
-
 
     const DecodeFen: any = (fen: String)=>{
         const newboard: fenComponents = {
@@ -121,9 +121,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     function playMove(playedPiece: Piece, destination: Position): boolean {
 
         if (playedPiece.possibleMoves === undefined) return false;
-
+        
         let playedMoveIsValid = false;
-
+        
         const validMove = playedPiece.possibleMoves?.some(m => m.samePosition(destination));
 
         if (!validMove) return false;
@@ -279,7 +279,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 activeIndex={activeIndex} 
                 setActiveIndex={setActiveIndex} 
                 lengthOfArray={lengthOfArray} 
-                arrayOfObjects={arrayOfObjects}/>
+                arrayOfObjects={arrayOfObjects}
+                isTest={isTest}
+                />
         </>
     )
 }
