@@ -32,7 +32,7 @@ export default function Panel() {
   const [solved, setSolved] = useState<number>(0);
   const [arrayOfObjects, setArrayOfObjects] = useState<Props[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isTest, setIsTest] = useState<boolean>(true);
+  const [isTest, setIsTest] = useState<boolean>(false);
   const location = useLocation();
   const [test, setTest] = useState<Test>({qTitles: ["How to win", "how to win", "how to win", "how to win", "how to win"], qVariants:["YES", "YES", "YES", "YES", "YES",]});
   

@@ -8,13 +8,13 @@ import { useAppDispatch } from "../../store";
 import { loginUser } from "../../store/auth/actionCreator";
 
 interface Props {
-    user: UserProps;
-    setUserLog:(user:boolean) => any;
+    setUser:(user:UserProps) => any;
 }   
 
-export default function Login({user, setUserLog}:Props) {
-    const dispatch = useAppDispatch();
+export default function Login({setUser}:Props) {
 
+    const dispatch = useAppDispatch();
+    
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [emailEmpty, setEmailEmpty] = useState<boolean>(true);
@@ -39,7 +39,6 @@ export default function Login({user, setUserLog}:Props) {
             return;
         }
 
-
         await fetch(`${backend}/api/login`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -52,13 +51,25 @@ export default function Login({user, setUserLog}:Props) {
             if (response && response.status === 200)
             {
                 response.json().then((data) => {
-                    setUserLog(true);
+                    setUser(data);
+                    console.log(data);
                     navigate("/");
                 })
             }
             if(response.status === 400)
             {
                 alert("Ne ZAEBIS")
+            }
+        })
+
+        await fetch( `${backend}/api/refresh`, {
+            headers: { 'Content-Type': 'apppcation/json' },
+            //credentials: 'include'
+        }).then((res) => {
+            if (res && res.status === 200) {
+                alert('darova')
+            } else {
+                alert('ne darova')
             }
         })
     }
@@ -80,7 +91,8 @@ export default function Login({user, setUserLog}:Props) {
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>
-                    <div className="log-to-reg"><span className="log-to-reg-text">Нет аккаунта? <a href="/registration">Зарегистрироваться</a></span></div>
+                    <span className="log-to-reg-text">Нет аккаунта? <a href="/registration">Зарегистрироваться</a></span>
+                    <div className="log-to-reg"></div>
                     <div className="log-google"><img src="/assets/images/google-logo.svg" className="log-google-logo"/><p>Войти через Google</p></div>
                 </div>
             </div>

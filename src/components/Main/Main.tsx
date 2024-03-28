@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 interface Props {
     id: number;
     topic: string;
+    difficulty: string;
     lessons: number;
     puzzles: number;
 }
@@ -14,7 +15,8 @@ export default function Main() {
 
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
-
+    const [filterTopic, setFilter] = useState<string>('');
+    const arrOfDif = ['easy', 'medium', 'hard'];
     useEffect(() => {
         (
           async () => {
@@ -35,39 +37,48 @@ export default function Main() {
     return(
       <div className="main-page">
           <div className="course-list">
-            <div className="all-courses"><p className="vseKursy">Все курсы</p></div>
+            <div className={filterTopic === '' ? "all-courses setOn" : "all-courses"} onClick={() => setFilter('')}>
+                <p className="podpiska-text">Все курсы</p>
+                <img className="podpiskaImg" src={filterTopic === '' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
+              </div>
             <div className="podpiska">
-              <div className="podpiska1" onClick={() => console.log("hui")}>
-              <p className="podpiska-text">Подписка PRO</p>
-              <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+              <div className={filterTopic === 'easy' ? "podpiska1 setOn" : "podpiska1"} onClick={() => setFilter('easy')}>
+              <p className="podpiska-text">Для начаинающих</p>
+              <img className="podpiskaImg" src={filterTopic === 'easy' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
-              <div className="podpiska2">
-              <p className="podpiska-text">Подписка PRO</p>
-              <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+              <div className={filterTopic === 'medium' ? "podpiska2 setOn" : "podpiska2"} onClick={() => setFilter('medium')}>
+              <p className="podpiska-text">Для продолжающих</p>
+              <img className="podpiskaImg" src={filterTopic === 'medium' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
-              <div className="podpiska3">
-              <p className="podpiska-text">Подписка PRO</p>
-              <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+              <div className={filterTopic === 'hard' ? "podpiska3 setOn" : "podpiska3"} onClick={() => setFilter('hard')}>
+              <p className="podpiska-text">Для продвинутых</p>
+              <img className="podpiskaImg" src={filterTopic === 'hard' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
             </div>
           </div>
           <div className="main-panel">
-            <p className="levelName">Для начинающих</p>
-            <div className="pro-level">
-              {topicList.map((topic) => (
-                  <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id, topic:topic.topic}})}>
-                      <div className="themeImg"><img src="/assets/images/courseImg.svg"/><div className="themeImgPoloska"></div></div>
-                      <div className="theme-content">
-                          <div className="theme-text">
-                              <div className="theme-name">{topic.topic}</div>
-                              <ul className="theme-info">
-                                  <li className="theme-lessons"><span>{topic.lessons} уроков</span></li> 
-                                  <li className="theme-puzzles"><span>{topic.puzzles} задачи</span></li>
-                              </ul>
+            <div className="main-panel-content">
+            {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (
+              <>
+                <p className="levelName">{dif === 'easy' ? "Для начинающих" : dif === 'medium' ? "Для продолжающих" : dif === 'hard' ? "Для продвинутых" : ''}</p>
+                <div className="pro-level">
+                  {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic) => (
+                      <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id, topic:topic.topic}})}>
+                          <div className="themeImg"><img src="/assets/images/courseImg.svg"/></div>
+                          <div className="theme-content">
+                              <div className="theme-text">
+                                  <div className="theme-name">{topic.topic}</div>
+                                  <ul className="theme-info">
+                                      <li className="theme-lessons"><span>{topic.lessons} уроков</span></li> 
+                                      <li className="theme-puzzles"><span>{topic.puzzles} задачи</span></li>
+                                  </ul>
+                              </div>
                           </div>
                       </div>
-                  </div>
-              ))}
+                  ))}
+                </div>
+              </>
+            ))}
             </div>
           </div>
       </div>

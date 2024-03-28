@@ -21,6 +21,16 @@ function App() {
   const [user, setUser] = useState<User>({id:0,email:"",token:""});
   const [checkUserLog, setUserLog] = useState<boolean>(false);
 
+  useEffect(() => {
+    (
+    async () => {
+
+      if(user.token !== '') setUserLog(true);
+      else setUserLog(false)
+      
+    })();
+}, [user.token])
+
   return (
     <div className="app">
         <Header checkUserLog={checkUserLog}/>
@@ -28,7 +38,7 @@ function App() {
           <Routes>
             <Route path="/subscription" element={<Podpiska />}/>
             <Route path="/registration" element={<Reg setUser={setUser}/>}/>
-            <Route path="/login" element={<Login user={user} setUserLog={setUserLog}/>}/>
+            <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/" element={<Main />} />
             <Route path="/topic" element={<Panel />} />
             <Route path="/profile" element={<Profile />} />

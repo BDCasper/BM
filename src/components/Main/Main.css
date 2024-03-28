@@ -17,7 +17,7 @@
     display: flex;
     width: 302px;
     height: 67px;
-    background-color: #AB2A3B;
+    background-color: #ffffff;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     align-items: center;
@@ -27,6 +27,7 @@
     position: relative;
     font-family: 'Open Sans';font-size: 18px;font-weight: lighter;color: #FFFFFF;
     margin-left: 30px;
+    width: 100px;
 }
 
 .podpiska {
@@ -62,23 +63,40 @@
     width: 302px;
     height: 67px;
     border-top:1px solid #AB2A3B;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .podpiska-text {
     position: relative;
     font-family: 'Open Sans';font-size: 18px;font-weight: lighter;color: #000000;
     margin-left: 30px;
+    width: 235px;
 }
 
 .podpiskaImg {
-    position: relative;
-    margin-left: 40%;
     width: 15px;
+    margin-left: 5px;
+}
+
+.setOn .podpiskaImg {
+    margin-left: 0;
+    width: 24px;
+    transform: rotate(-90deg);
+}
+
+.setOn {
+    background-color: #AB2A3B;
+}
+
+.setOn .podpiska-text {
+    color: #FFFFFF;
 }
 
 .main-panel {
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin-top: 132px;
     width: 890px; 
     margin-left: 5%;
@@ -90,12 +108,13 @@
     border-radius: 20px;
 }
 
+.main-panel-content {
+    width: 776px;
+    margin-bottom: 20px;
+}
+
 .levelName {
-    position: relative;
-    height: 27px;
-    width: 180px;
-    top: 40px;
-    left: 36.5px;
+    width: 240px;
     font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: 550;color: #AB2A3B;
 }
 
@@ -104,8 +123,6 @@
     position: relative;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-top: 40px;
-    margin-bottom: 30px;
 }
 
 .theme-block {
@@ -115,8 +132,8 @@
     align-items: center;
     width: 250px;
     height: 250px;
-    margin-left: 35px;
-    margin-bottom: 40px;
+    margin-right: 35px;
+    bottom: 20px;
 }
 
 .theme-content {
@@ -134,18 +151,17 @@
 }
 
 .themeImg {
-    display:flex;
     position: relative;
     top: 37px;
-    width: 110px;
+    width: 103px;
     height: 110px;
     border-radius: 50%;
-    align-items: center;
+    overflow: hidden;
 }
 
 .themeImgPoloska {
     position: relative;
-    bottom: 40px;
+    bottom: 47.5px;
     width: 105px;
     height: 26px;
     background-color: #fe1212;

@@ -120,7 +120,7 @@ input:focus {
     top: 90px;
     align-self: center;
     text-align: center;
-    height: 39px;
+    height: 10px;
     width: 320px;
     font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
     border-bottom: 1px solid #AB2A3B;
@@ -128,8 +128,11 @@ input:focus {
 
 .log-to-reg-text {
     position: relative;
-    left: -11px;
-    text-wrap:nowrap;
+    top: 90px;
+    align-self: center;
+    text-align: center;
+    width: 400px;
+    font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
 }
 
 .log-google {
