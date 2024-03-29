@@ -10,49 +10,46 @@
 }
 
 .headerImg {
-    margin-left: 5%;
     width: 56px;
-}
-
-.header-left {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-}
-
-.header-right {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
+    margin-right: 3%;
+    z-index: 0;
+    -webkit-user-drag: none;
 }
 
 .allCourse {
-    margin-left: 100px;
     width: 80px;
     height: 22px;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #000000;
+    margin-right: 3%;
+    -webkit-user-drag: none;
 }
 
 .subscribe {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 40px;
     width: 137px;
     height: 35px;
     background-color: #AB2A3B;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #FFFFFF!important;
     border-radius: 30px;
+    margin-right: 3%;
+    -webkit-user-drag: none;
 }
 
 .search {
     display: inline-flex;
     align-items: center;
-    margin-left: 40px;
     border-radius: 30px;
     width: 293px;
     height: 35px;
     border: 1px solid #AB2A3B;
+    margin-right: 10%;
+    -webkit-user-drag: none;
+}
+
+.sHidden {
+    visibility: hidden;
 }
 
 .loop {
@@ -60,6 +57,7 @@
     left: 15px;
     width: 16px;
     height: 16px;
+    -webkit-user-drag: none;
 }
 
 .searchBar {
@@ -69,6 +67,7 @@
     background-color: transparent;
     border: none;
     font-family: 'Open Sans';font-size: 16px;font-weight: 400;
+    -webkit-user-drag: none;
 }
 
 .searchBar:focus {
@@ -83,32 +82,38 @@
     width: 50px;
     height: 30px;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
+    -webkit-user-drag: none;
 }
 
 .reg {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
-    margin-left: 200px;
+    -webkit-user-drag: none;
 }
 
 .login {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
-    margin-left: 20px;
+    -webkit-user-drag: none;
+    margin-left: 2%;
 }
 
 .header-profile {
     margin-left: 325px;
+    -webkit-user-drag: none;
 }
 
 .lang {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
-    margin-left: 30px;
+    -webkit-user-drag: none;
+    margin-left: 3%;
 }
 
 .header a {
+    -webkit-user-drag: none;
     text-decoration: none;
     color: #AB2A3B;
 }
 
 .subscribe a {
+    -webkit-user-drag: none;
     color: #FFFFFF;
 }

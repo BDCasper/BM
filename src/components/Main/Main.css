@@ -1,6 +1,7 @@
 .main-page {
     display: flex;
     justify-content: center;
+    max-width: 100vw;
 }
 
 .course-list {
@@ -110,7 +111,8 @@
 
 .main-panel-content {
     width: 776px;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 25px;
 }
 
 .levelName {

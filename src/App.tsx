@@ -11,37 +11,54 @@ import Podpiska from "./components/Podpiska/podpiska";
 import Profile from "./components/Profile/profile";
 
 interface User {
-  id: number;
-  email: string;
-  token: string;    
+  user_id?: number;
+  name?: string; 
+  surname?: string;  
+  email?: string; 
+  phone?: string; 
+  birth_date?: string; 
+  location?: string; 
+  subscribed?: string;
+  score?: number;
 }
 
 function App() {
 
-  const [user, setUser] = useState<User>({id:0,email:"",token:""});
+  const [user, setUser] = useState<User>({});
   const [checkUserLog, setUserLog] = useState<boolean>(false);
+  const [inp, setInp] = useState<string>('');
+
+
+  let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
 
   useEffect(() => {
     (
-    async () => {
-
-      if(user.token !== '') setUserLog(true);
-      else setUserLog(false)
-      
-    })();
-}, [user.token])
+      async () => {
+        await fetch(`${backend}/api/profile`, {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            credentials: 'include',
+        }).then((response) => {
+          if (response && response.status === 200) {
+            response.json().then((data) => {
+              setUser(data.user);
+            })
+          }
+        })
+      })();
+  }, [token])
 
   return (
     <div className="app">
-        <Header checkUserLog={checkUserLog}/>
+        <Header checkUserLog={checkUserLog} setInp={setInp}/>
         <BrowserRouter>
           <Routes>
             <Route path="/subscription" element={<Podpiska />}/>
-            <Route path="/registration" element={<Reg setUser={setUser}/>}/>
-            <Route path="/login" element={<Login setUser={setUser}/>}/>
-            <Route path="/" element={<Main />} />
+            <Route path="/registration" element={<Reg/>}/>
+            <Route path="/login" element={<Login />}/>
+            <Route path="/" element={<Main inp={inp}/>} />
             <Route path="/topic" element={<Panel />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user}/>} />
           </Routes>
         </BrowserRouter>
         <Footer />
@@ -53,8 +70,3 @@ export default App;
 export const backend = "http://192.168.232.253:10000"
 //export const backend = "https://chess-leader-school.onrender.com"
 
-export default interface UserProps {
-  id: number;
-  email: string;
-  token: string;    
-}

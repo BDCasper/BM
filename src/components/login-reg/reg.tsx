@@ -3,13 +3,8 @@ import "./reg.css"
 import { backend } from "../../App";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserProps from "../../App"
 
-interface Props {
-    setUser: (user:UserProps) => any;
-}
-
-export default function Reg({setUser}: Props) {
+export default function Reg() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState<string>("");
     const [emailFree, setEmailFree] = useState<boolean>(true);
@@ -54,7 +49,6 @@ export default function Reg({setUser}: Props) {
             if (response && response.status === 201)
             {
                 response.json().then((data) => {
-                    setUser(data);
                     navigate("/login")
                 })
             }

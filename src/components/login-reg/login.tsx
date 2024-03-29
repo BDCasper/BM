@@ -7,11 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store";
 import { loginUser } from "../../store/auth/actionCreator";
 
-interface Props {
-    setUser:(user:UserProps) => any;
-}   
-
-export default function Login({setUser}:Props) {
+export default function Login() {
 
     const dispatch = useAppDispatch();
     
@@ -51,8 +47,7 @@ export default function Login({setUser}:Props) {
             if (response && response.status === 200)
             {
                 response.json().then((data) => {
-                    setUser(data);
-                    console.log(data);
+                    window.sessionStorage.setItem("token", `${data.token}`);
                     navigate("/");
                 })
             }

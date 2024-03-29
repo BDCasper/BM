@@ -11,8 +11,11 @@ interface Props {
     puzzles: number;
 }
 
-export default function Main() {
+interface MainProps {
+  inp: string;
+}
 
+export default function Main({inp}:MainProps) {
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
     const [filterTopic, setFilter] = useState<string>('');
@@ -34,6 +37,7 @@ export default function Main() {
         )();
       }, []);
 
+    console.log(inp)
     return(
       <div className="main-page">
           <div className="course-list">
@@ -62,7 +66,30 @@ export default function Main() {
               <>
                 <p className="levelName">{dif === 'easy' ? "Для начинающих" : dif === 'medium' ? "Для продолжающих" : dif === 'hard' ? "Для продвинутых" : ''}</p>
                 <div className="pro-level">
-                  {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic) => (
+                  {inp !== '' ? 
+                    <>
+                    {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic) => (
+                      <>
+                      {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
+                      <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id, topic:topic.topic}})}>
+                          <div className="themeImg"><img src="/assets/images/courseImg.svg"/></div>
+                          <div className="theme-content">
+                              <div className="theme-text">
+                                  <div className="theme-name">{topic.topic}</div>
+                                  <ul className="theme-info">
+                                      <li className="theme-lessons"><span>{topic.lessons} уроков</span></li> 
+                                      <li className="theme-puzzles"><span>{topic.puzzles} задачи</span></li>
+                                  </ul>
+                              </div>
+                          </div>
+                        </div>
+                      }
+                      </>
+                    ))}
+                    </> 
+                  :
+                    <>
+                    {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic) => (
                       <div key={topic.id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.id, topic:topic.topic}})}>
                           <div className="themeImg"><img src="/assets/images/courseImg.svg"/></div>
                           <div className="theme-content">
@@ -75,7 +102,9 @@ export default function Main() {
                               </div>
                           </div>
                       </div>
-                  ))}
+                    ))}
+                    </>
+                  }
                 </div>
               </>
             ))}
