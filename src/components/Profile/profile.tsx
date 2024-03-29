@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./profile.css"
 import { Calendar } from 'primereact/calendar';
 import { backend } from "../../App";
@@ -14,7 +14,7 @@ interface User {
     location?: string; 
     subscribed?: string;
     score?: number;
-  }
+}
 
 interface Props {
     setUserLog: (use: boolean) => any;
@@ -22,16 +22,27 @@ interface Props {
 }
 
 export default function Profile({setUserLog, user}:Props) {
-    const [name, setName] = useState<string>(user.name ? user.name : '');
-    const [surname, setSurname] = useState<string>(user.surname ? user.surname : '');
-    const [email, setEmail] = useState<string>(user.email ? user.email : '');
-    const [phone, setPhone] = useState<string>(user.phone ? user.phone : '');
-    const [birth, setBirth] = useState<string>(user.birth_date ? user.birth_date : '');
-    const [location, setLocation] = useState<string>(user.location ? user.location : '');
+    const [name, setName] = useState<string>('');   
+    const [surname, setSurname] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
+    const [birth, setBirth] = useState<string>('');
+    const [location, setLocation] = useState<string>('');
     const [avatar, setAvatar] = useState<string>('assets/images/profile-avatar.svg');
     const navigate = useNavigate();
 
-    console.log(user)
+    useEffect(() => {
+        (
+         async() => {
+            setName(user.name ? user.name : name);
+            setSurname(user.surname ? user.surname : surname);
+            setEmail(user.email ? user.email : email);
+            setPhone(user.phone ? user.phone : phone);
+            setBirth(user.birth_date ? user.birth_date : birth);
+            setLocation(user.location ? user.location : location);
+         } 
+        )();
+      }, [user])
 
     const logout = async() => {
 

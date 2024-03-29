@@ -29,7 +29,7 @@ export default function Header({checkUserLog, setInp}:Props) {
                     <button className="poisk" onClick={() => console.log("hello")}>Поиск</button>
                 </div>
             }
-            {!token.includes('.') ? (
+            {!token?.includes('.') ? (
                 <>
                     <div className="reg"><a href="/registration">Регистрация</a></div>
                     <div className="login"><a href="/login">Вход</a></div>
