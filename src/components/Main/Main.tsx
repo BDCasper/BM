@@ -48,7 +48,7 @@ export default function Main({inp}:MainProps) {
               </div>
             <div className="podpiska">
               <div className={filterTopic === 'easy' ? "podpiska1 setOn" : "podpiska1"} onClick={() => setFilter('easy')}>
-              <p className="podpiska-text">Для начаинающих</p>
+              <p className="podpiska-text">Для начинающих</p>
               <img className="podpiskaImg" src={filterTopic === 'easy' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
               <div className={filterTopic === 'medium' ? "podpiska2 setOn" : "podpiska2"} onClick={() => setFilter('medium')}>

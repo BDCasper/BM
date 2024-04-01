@@ -142,12 +142,6 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
               {location.state.topic && <div className="topic"><p>{location.state.topic}</p></div>}
                 <div className="spisokList">
                   {arrayOfObjects.map((puzzle, index) => (
-                    <>
-                      {puzzle.mode === 'test' ?  
-                        <div className="test">
-                          <div className="qAmount"></div>
-                        </div>
-                        :
                         <div className={puzzle.closed === false ? (index === activeIndex ? "zadachi active" :"zadachi") : "zadachi zadachi-closed"} key={puzzle.puzzle_id} onClick={() => {
                           if(puzzle.closed === false)
                           {
@@ -164,8 +158,6 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                             <div className="title" >{puzzle.subtopic}</div>
                           </div>
                         </div>
-                      }
-                    </>
                   ))}
                 </div>
               </div>
