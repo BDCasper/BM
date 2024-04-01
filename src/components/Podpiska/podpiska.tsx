@@ -1,11 +1,17 @@
 import React from "react";
 import "./podpiska.css"
 
-export default function Podpiska() {
+interface Props {
+    setPopOpen: (pop: boolean) => any;
+}
+
+export default function Podpiska({setPopOpen}:Props) {
 
 
     return(
         <div className="sub">
+            <div className="sub-block-close" onClick={() => setPopOpen(false)}></div>
+            <div className="sub-block">
             <div className="sub-ramka">
                 <div className="sub-upper-text">
                     <div className="sub-title">ПОДПИСКА</div>
@@ -35,7 +41,7 @@ export default function Podpiska() {
                 </div>
                 <button className="sub-button">Оформить подписку</button>
             </div>
-
+            </div>
         </div>
     );
 }

@@ -4,12 +4,8 @@ import { useState } from "react";
 import { backend } from "../../App";
 import UserProps from "../../App"
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store";
-import { loginUser } from "../../store/auth/actionCreator";
 
 export default function Login() {
-
-    const dispatch = useAppDispatch();
     
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -49,6 +45,7 @@ export default function Login() {
                 response.json().then((data) => {
                     window.sessionStorage.setItem("token", `${data.token}`);
                     navigate("/");
+                    window.location.reload();
                 })
             }
             if(response.status === 400)

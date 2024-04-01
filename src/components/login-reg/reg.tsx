@@ -13,7 +13,7 @@ export default function Reg() {
     const [passwordNotEmpty, setPasswordNotEmpty] = useState<boolean>(true);
     const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
     const eRegex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    //const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
+    const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,7 +62,7 @@ export default function Reg() {
     return(
         <div className="reg-page">
             <div className="reg-ramka">
-                <img src="/assets/images/logo.svg" className="reg-logo"/>
+                <img src="/assets/images/logo.svg" className="reg-logo" alt=""/>
                 <div className="reg-text">Добро пожаловать в шахматную школу "Будущие миллионеры"</div>
                 <div className="reg-inputs">
                     <div className="email">
@@ -76,7 +76,7 @@ export default function Reg() {
                     <button className="reg-button" onClick={register}>Зарегистрироваться</button>
                     {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс недействителен</div>}
                     <div className="reg-to-log">Уже есть аккаунт? <a href="/login">Войти</a></div>
-                    <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo"/><p>Войти через Google</p></div>
+                    <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo" alt=""/><p>Войти через Google</p></div>
                 </div>
             </div>
         </div>

@@ -16,6 +16,8 @@ interface RefereeProps {
     lengthOfArray: number;
     arrayOfObjects: TaskProps[];
     isTest: boolean;
+    closed: boolean;
+    setPopOpen: (pop: boolean) => any;
 }
 
 interface fenComponents {
@@ -25,7 +27,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen}) => {
 
     const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
@@ -281,6 +283,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 lengthOfArray={lengthOfArray} 
                 arrayOfObjects={arrayOfObjects}
                 isTest={isTest}
+                closed={closed}
+                setPopOpen={setPopOpen}
                 />
         </>
     )

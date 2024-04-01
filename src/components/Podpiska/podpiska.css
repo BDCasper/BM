@@ -1,14 +1,37 @@
 .sub {
+    position: fixed;
+    z-index: 1;
+    width: 100vw;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(
+        0,
+        0,
+        0,
+        0.4
+    );
+}
+
+.sub-block {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 865px;
-    width: 100vw;
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+.sub-block-close {
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 
 .sub-ramka {
-    z-index: 0;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;

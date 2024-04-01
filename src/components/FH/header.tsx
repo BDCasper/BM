@@ -13,7 +13,7 @@ export default function Header({checkUserLog, setInp}:Props) {
 
     return (
         <div className="header">
-            <img src="/assets/images/footer-logo.svg" className="headerImg"/>
+            <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
             <div className="allCourse"><a href="/">Все курсы</a></div>
             <a className="subscribe" href="/subscription"><div >Подписка</div></a>
                 {window.location.pathname === '/' ? 

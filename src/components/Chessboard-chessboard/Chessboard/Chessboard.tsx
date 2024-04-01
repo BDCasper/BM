@@ -25,12 +25,14 @@ interface Props {
   lengthOfArray: number;
   arrayOfObjects: TaskProps[];
   isTest: boolean;
+  closed: boolean;
+  setPopOpen: (pop: boolean) => any;
 }
 
 let totalTurns = 0;
 const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -38,8 +40,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const navigate = useNavigate();
   const location = useLocation();
   const [moveSound] = useSound('move-self.mp3');
-  const [wrongSound] = useSound('notify.mp3');
-  const [winSound] = useSound('win.wav');
+  const [wrongSound] = useSound('wrong.mp3');
+  const [winSound] = useSound('win.wav', { volume: 0.2 });
   
   const botMove = async(botPosition:Position[]) => {
       const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
@@ -71,7 +73,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       headers: { 'Content-Type': 'application/json' },
             // credentials: 'include',
             body: JSON.stringify({
-                id: arrayOfObjects[activeIndex].puzzleid,
+                id: arrayOfObjects[activeIndex].puzzle_id,
                 turn: totalTurns,
                 team: currentPiece.skin,
                 move: [pos1,pos2],
@@ -86,7 +88,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             moveSound();   
             setLives(3);
             if (data.botMove === "WIN") {
-              if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzleid))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzleid)
+              if(!arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzle_id))arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzle_id)
               localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
               if (lengthOfArray - 1 === activeIndex) {
                   setTimeout(() => {
@@ -94,7 +96,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                     alert("Молодец")
                     navigate("/")
                   }, 500);
-              } else {
+              } else if(closed === true)
+              {
+                winSound();
+                setPopOpen(true);
+              }
+              else {
                 setTimeout(() => {
                   winSound();
                   setActiveIndex(activeIndex + 1)
@@ -109,12 +116,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             }
           } else {
             wrongSound();
-            if(rightMove[0].x === -1)setLives(lives - 1)
+            if(rightMove[0].x === -1 && lives !== 0)setLives(lives - 1)
             totalTurns--;
-            if (data.solution) 
+            
+            if (data.solut) 
             {
-              console.log(data.solution);              
-              const rightPosition = [new Position(data.solution[0].x, data.solution[0].y), new Position(data.solution[1].x, data.solution[1].y)];
+              const rightPosition = [new Position(data.solut[0].x, data.solut[0].y), new Position(data.solut[1].x, data.solut[1].y)];
               rightMove[0].x = rightPosition[0].x;
               rightMove[0].y = rightPosition[0].y;
               rightMove[1].x = rightPosition[1].x;
@@ -125,6 +132,14 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       }
     })
   }
+
+  useEffect(() => {
+    (
+      async () => {
+        setActivePiece(null);
+      }
+      )();
+    },[activeIndex]);
 
 
   function clickPiece(e: React.MouseEvent) {

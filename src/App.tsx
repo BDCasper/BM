@@ -27,7 +27,7 @@ function App() {
   const [user, setUser] = useState<User>({});
   const [checkUserLog, setUserLog] = useState<boolean>(false);
   const [inp, setInp] = useState<string>('');
-
+  const [popOpen, setPopOpen] = useState<boolean>(false);
 
   let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
 
@@ -53,11 +53,11 @@ function App() {
         <Header checkUserLog={checkUserLog} setInp={setInp}/>
         <BrowserRouter>
           <Routes>
-            <Route path="/subscription" element={<Podpiska />}/>
+            <Route path="/subscription" element={<Podpiska setPopOpen={setPopOpen}/>}/>
             <Route path="/registration" element={<Reg/>}/>
             <Route path="/login" element={<Login />}/>
-            <Route path="/" element={<Main inp={inp}/>} />
-            <Route path="/topic" element={<Panel />} />
+            <Route path="/" element={<Main inp={inp} />} />
+            <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen}/>} />
             <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user}/>} />
           </Routes>
         </BrowserRouter>
@@ -67,6 +67,6 @@ function App() {
 }
 
 export default App; 
-export const backend = "http://192.168.232.253:10000"
-//export const backend = "https://chess-leader-school.onrender.com"
+//export const backend = "http://192.168.232.253:10000"
+export const backend = "https://chess-leader-school.onrender.com"
 

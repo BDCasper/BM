@@ -95,13 +95,13 @@
 
 .spisokImg {
     position: relative;
-    left: 15px;
+    left: 5px;
     width: 29px;
 }
 
 .spisokImg-active {
     position: relative;
-    left: 10px;
+    left: 3px;
     width: 35px;
 }
 
@@ -145,6 +145,17 @@
 
 .hidden {
     display: none;
+}
+
+.spisok-lock {
+    position: relative;
+    right: 18px;
+    bottom: 20px;
+    width: 0px;
+}
+
+.spisok-lock-img {
+    width: 20px;
 }
 
 .progressBar {
@@ -200,4 +211,12 @@
 
 .arrow {
     height: 24px;
+}
+
+.zadachi-closed {
+    background-color: #B7B7B7;
+}
+
+.sub-show {
+    display: block;
 }

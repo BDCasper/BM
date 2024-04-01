@@ -55,6 +55,7 @@ export default function Profile({setUserLog, user}:Props) {
                 window.sessionStorage.setItem("token", "");
                 setUserLog(false);
                 navigate('/login');
+                window.location.reload();
             }
             if(response.status === 400)
             {
@@ -69,7 +70,7 @@ export default function Profile({setUserLog, user}:Props) {
                 <div className="profile-upper-text">Личный профиль</div>
                 <div className="profile-image-block">                
                     <div className="profile-image" style={{backgroundImage: `url(${avatar})`}}></div>
-                    <img src="assets/images/profile-edit.svg" className="profile-edit"/>
+                    <img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/>
                 </div>
                 <div className="profile-inputs">
                     <div className="profile-inputs-block">
