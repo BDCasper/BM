@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./header.css";
 import Main from "../Main/Main";
 
@@ -10,6 +10,18 @@ interface Props {
 export default function Header({checkUserLog, setInp}:Props) {
 
     let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
+    const [inputText, setInputText] = useState<string>('');
+
+    const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
+        if( e.key === 'Enter' ) setInp(inputText);
+      };
+
+    useEffect(() => {
+        (
+        async() => {
+            if(inputText === '') setInp('')
+        })();
+    },[inputText]);
 
     return (
         <div className="header">
@@ -19,14 +31,14 @@ export default function Header({checkUserLog, setInp}:Props) {
                 {window.location.pathname === '/' ? 
                 <div className="search ">
                     <img src="assets/images/search.svg" className="loop"/>
-                    <input type="text" className="searchBar" onChange={(e) => setInp(e.target.value)}/>
-                    <button className="poisk" onClick={() => console.log()}>Поиск</button>
+                    <input type="text" className="searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
+                    <button className="poisk" onClick={() => setInp(inputText)}>Поиск</button>
                 </div> 
             :
                 <div className="search sHidden">
                     <img src="assets/images/search.svg" className="loop"/>
                     <input type="text" className="searchBar"/>
-                    <button className="poisk" onClick={() => console.log("hello")}>Поиск</button>
+                    <button name="button" className="poisk" onClick={() => console.log("hello")}>Поиск</button>
                 </div>
             }
             {!token?.includes('.') ? (

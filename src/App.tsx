@@ -67,6 +67,6 @@ function App() {
 }
 
 export default App; 
-//export const backend = "http://192.168.232.253:10000"
+//export const backend = "http://192.168.236.253:10000"
 export const backend = "https://chess-leader-school.onrender.com"
 

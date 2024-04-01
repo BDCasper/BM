@@ -24,6 +24,10 @@
     align-items: center;
 }
 
+.all-courses:hover {
+    cursor: pointer;
+}
+
 .vseKursy {
     position: relative;
     font-family: 'Open Sans';font-size: 18px;font-weight: lighter;color: #FFFFFF;
@@ -50,6 +54,19 @@
     border-top:1px solid #AB2A3B;
     border-bottom:1px solid #AB2A3B;
 }
+
+.podpiska1:hover {
+    cursor: pointer;
+}
+
+.podpiska2:hover {
+    cursor: pointer;
+}
+
+.podpiska3:hover {
+    cursor: pointer;
+}
+
 .podpiska2 {
     display: inline-flex;
     align-items: center;
@@ -136,6 +153,10 @@
     height: 250px;
     margin-right: 35px;
     bottom: 20px;
+}
+
+.theme-block:hover{
+    cursor: pointer;
 }
 
 .theme-content {

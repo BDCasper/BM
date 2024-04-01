@@ -84,9 +84,15 @@
 .zadachi {
     display: flex;
     align-items: center;
+    flex-direction: column;
     width: 100%;
-    height: 79px;
+    height: fit-content;
     border-bottom: 1px solid #DD8A8A;
+}
+
+.zadachi-content {
+    display: flex;
+    flex-direction: row;
 }
 
 .block-spisokImg {
@@ -96,11 +102,13 @@
 .spisokImg {
     position: relative;
     left: 5px;
+    top: 10px;
     width: 29px;
 }
 
 .spisokImg-active {
     position: relative;
+    top: 7px;
     left: 3px;
     width: 35px;
 }
@@ -125,7 +133,7 @@
     background-color: #AB2A3B;
 }
 
-.active > .zadachi-text > .title {
+.active > .zadachi-content > .zadachi-text > .title {
     color: white;
 }
 
@@ -149,13 +157,64 @@
 
 .spisok-lock {
     position: relative;
-    right: 18px;
-    bottom: 20px;
+    right: 20px;
+    top: 5px;
     width: 0px;
 }
 
 .spisok-lock-img {
     width: 20px;
+}
+
+.zadachi-test {
+    width: 100%;
+    padding-top: 5px;
+    height: fit-content;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.zadachi-test-q {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.zadachi-test-r {
+    margin-right: 10px;
+}
+
+input[type="radio"] {
+    border: 1px solid black;
+}
+
+.zadachi-test-t {
+    font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: normal;color: #000000;
+}
+
+.zadachi-test-b {
+    margin-top: 10px;
+    align-self: center;
+    width: 200px;
+    height: 40px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #AB2A3B;
+    border: none;
+    font-family: 'Open Sans';font-size: 17px;font-weight: 400;color: #FFFFFF;
+    transition: all 300ms ease;
+}
+
+.zadachi-wrongAnswer {
+    color: #AB2A3B;
+    align-self: center;
+}
+
+.zadachi-test-b:hover {
+    background-color: #FFDF2C;
+    transition: all 300ms ease;
 }
 
 .progressBar {

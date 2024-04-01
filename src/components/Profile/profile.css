@@ -91,10 +91,19 @@
 .profile-button:hover {
     background-color: #FFDF2C;
     transition: all 300ms ease;
+    cursor: pointer;
 }
 
 .profile-logout {
     text-decoration: underline;
     margin-top: 25px;
     font-size: 20px;
+    background-color: transparent;
+    border: none;
+}
+
+.profile-logout:hover {
+    color: #AB2A3B;
+    transition: all 300ms ease;
+    cursor: pointer;
 }

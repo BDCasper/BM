@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
 import Referee from "../Chessboard-chessboard/Referee-main/Referee";
 import "./Panel.css"
 import { backend } from "../../App";
 import {useLocation} from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Podpiska from "../Podpiska/podpiska";
-import { arch } from "os";
+import useSound from 'use-sound';
 
 interface Props {
   puzzle_id: number;
@@ -16,7 +16,7 @@ interface Props {
   weight: number;
   mode: string;
   difficulty: string;
-  variants: string[];
+  variants: string;
   closed: boolean;
 }
 
@@ -44,10 +44,13 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
   const [solved, setSolved] = useState<number>(0);
   const [arrayOfObjects, setArrayOfObjects] = useState<Props[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isTest, setIsTest] = useState<boolean>(false);
+  const [answer, setAnswer] = useState<string>('');
+  const [answered, setAnswered] = useState<boolean>(false);
+  const [isCorrect, setIsCorrect] = useState<boolean>();
   const location = useLocation();
   const navigate = useNavigate();
-  const [test, setTest] = useState<Test>({qTitles: ["How to win", "how to win", "how to win", "how to win", "how to win"], qVariants:["YES", "YES", "YES", "YES", "YES",]});
+  const [winSound] = useSound('win.wav', { volume: 0.2 });
+  const [wrongSound] = useSound('wrong.mp3');
 
   const handlePopUp = async() => {
     setPopOpen(!popOpen);
@@ -77,11 +80,51 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
     )();
   }, []);
 
+  const handleAnswer = async() => {
+    await fetch( `${backend}/api/checkmove`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+            // credentials: 'include',
+            body: JSON.stringify({
+                id: arrayOfObjects[activeIndex].puzzle_id,
+                answer: answer
+            })
+    }).then((res) => {
+      if (res && res.status === 200) {
+        res.json().then((data) => { 
+          setIsCorrect(data.correct === "yes" ? true : false);
+          if(data.correct === "yes"){
+            arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzle_id);
+            setAnswered(true);
+            winSound();
+            if(arrayOfObjects[activeIndex+1]) 
+            {
+              setActiveIndex(activeIndex+1);
+            }
+            else {
+              alert("Молодец")
+              navigate("/")
+            }
+          } 
+          else {
+            wrongSound();
+          }
+        });
+      } else {
+        console.log("No answer")
+      }
+    })
+    setAnswered(true);
+  }
+
   useEffect(() => {
     (
       async () => {
         activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log("Жду");
-        if(activeIndex === 0 && arrayOfObjects[0]) setCurrentFen(arrayOfObjects[activeIndex].fen)
+        if(activeIndex === 0 && arrayOfObjects[0]){
+          setCurrentFen(arrayOfObjects[activeIndex].fen)
+        }
+        setAnswered(false);
       }
       )();
     },[activeIndex]);
@@ -150,13 +193,43 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                           }
                           else setPopOpen(true);
                           }}>
-                          <div className="block-checkSign"><img alt="" className={arrayOfSolved[location.state.id-1] ? (arrayOfSolved[location.state.id-1].includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
-                          {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
-                          <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
-                          <div className="zadachi-text" >
-                            <div className="id" >Задание №{index+1}</div>
-                            <div className="title" >{puzzle.subtopic}</div>
-                          </div>
+                            {puzzle.mode === 'test' ? 
+                              <>
+                              <div className="zadachi-content">
+                                <div className="block-checkSign"><img alt="" className={arrayOfSolved[location.state.id-1] ? (arrayOfSolved[location.state.id-1].includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
+                                <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                <div className="zadachi-text" >
+                                  <div className="id" >Задание №{index+1}</div>
+                                  <div className="title" >{puzzle.title}</div>
+                                </div>
+                              </div>
+                              {index === activeIndex && 
+                                <div className="zadachi-test">
+                                  {JSON.parse(puzzle.variants).map((variant: string) => (
+                                      <tr className="zadachi-test-q">
+                                        <td><input type="radio" className="zadachi-test-r" onChange={() => setAnswer(variant)} name="inp"/></td>
+                                        <td className="zadachi-test-t">{variant}</td>
+                                      </tr>
+                                  ))}
+                                  {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">Неправильный ответ</div>}
+                                  <button className="zadachi-test-b" onClick={handleAnswer}>Отправить</button>
+                                </div>
+                              }
+                              </>
+                            : 
+                              <>
+                                <div className="zadachi-content">
+                                  <div className="block-checkSign"><img alt="" className={arrayOfSolved[location.state.id-1] ? (arrayOfSolved[location.state.id-1].includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                  {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
+                                  <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                  <div className="zadachi-text" >
+                                    <div className="id" >Задание №{index+1}</div>
+                                    <div className="title" >{puzzle.subtopic}</div>
+                                  </div>
+                                </div>
+                              </>
+                            }
                         </div>
                   ))}
                 </div>

@@ -64,7 +64,7 @@ export default function Main({inp}:MainProps) {
           <div className="main-panel">
             <div className="main-panel-content">
             {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (
-              <>
+              <div key={dif}>
                 <p className="levelName">{dif === 'easy' ? "Для начинающих" : dif === 'medium' ? "Для продолжающих" : dif === 'hard' ? "Для продвинутых" : ''}</p>
                 <div className="pro-level">
                   {inp !== '' ? 
@@ -108,7 +108,7 @@ export default function Main({inp}:MainProps) {
                     </>
                   }
                 </div>
-              </>
+              </div>
             ))}
             </div>
           </div>

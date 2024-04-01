@@ -47,3 +47,9 @@
 .rights-text {
     font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #B7B7B7;
 }
+
+.footer a {
+    -webkit-user-drag: none;
+    text-decoration: none;
+    color: #AB2A3B;
+}

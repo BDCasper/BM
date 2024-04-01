@@ -85,6 +85,11 @@
     -webkit-user-drag: none;
 }
 
+.poisk:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .reg {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     -webkit-user-drag: none;
