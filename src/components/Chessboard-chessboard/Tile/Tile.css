@@ -22,11 +22,11 @@
 }
 
 .black-tile {
-    background-color: #664639;
+    background-color: #90695a;
 }
 
 .white-tile {
-    background-color: #ffffff;
+    background-color: #fff6f0;
 }
 
 
@@ -63,19 +63,19 @@
 }
 
 .black-tile > #digit {
-    color: #ffffff;
+    color: #fff6f0;
 }
 
 .white-tile > #digit {
-    color: #664639;
+    color: #90695a;
 }
 
 .black-tile > #symbol {
-    color: #ffffff;
+    color: #fff6f0;
 }
 
 .white-tile > #symbol {
-    color: #664639;
+    color: #90695a;
 }
 
 .rightMoveWhite1 {

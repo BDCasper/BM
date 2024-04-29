@@ -1,16 +1,23 @@
 #chessboard {
+    margin-top: 20px;
+    margin-left: 20px;
     display: grid;
     grid-template-columns: repeat(8, 57.2px);
     grid-template-rows: repeat(8, 57.2px);
     width: 458px;
     height: 457.7px;
     background-color: rgb(255, 255, 255);
-    border: 1px rgb(0, 0, 0) solid;
 }
 
 .chessboardWrapper {
     display: flex;
     flex-direction: column;
+}
+
+.chessboard-board {
+    width: 498px;
+    height: 497.7px;
+    background-color: #57340b;
 }
 
 .modal {
@@ -19,6 +26,7 @@
     right: 0px;
     bottom: 0px;
     left: 0px;
+    z-index: 100;
 }
 
 .modal.hidden {
@@ -27,18 +35,18 @@
 
 .modal > .modal-body {
     position: absolute;
-    top: calc(50% - 150px);
-    left: calc(50% - 400px);
+    top: 50%;
+    left: 10%;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    height: 300px;
+    height: 550px;
     width: 800px;
     background-color: rgba(127, 127, 127, 0.8);
 }
 
 .modal > .modal-body > img {
-    height: 120px;
+    height: 80px;
     padding: 20px;
     border-radius: 50%;
 }
@@ -74,7 +82,7 @@
     font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
     width: 200px;
 }
 
@@ -111,4 +119,129 @@
     font-size: 26px;font-weight: semibold;color: #AB2A3B;
     position: relative;
     top:3px
+}
+
+@media screen and (max-width: 1200px) {
+    #chessboard {
+        margin-top: 20px;
+        margin-left: 20px;
+        display: grid;
+        grid-template-columns: repeat(8, 35px);
+        grid-template-rows: repeat(8, 35px);
+        width: 280px;
+        height: 280px;
+        background-color: rgb(255, 255, 255);
+    }
+    
+    .chessboardWrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chessboard-board {
+        width: 498px;
+        height: 497.7px;
+        background-color: #57340b;
+    }
+    
+    .modal {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        z-index: 100;
+    }
+    
+    .modal.hidden {
+        display: none;
+    }
+    
+    .modal > .modal-body {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 550px;
+        width: 800px;
+        background-color: rgba(127, 127, 127, 0.8);
+    }
+    
+    .modal > .modal-body > img {
+        height: 80px;
+        padding: 20px;
+        border-radius: 50%;
+    }
+    
+    .modal > .modal-body > img:hover {
+        background-color: rgba(255, 0, 0, 0.3);
+        cursor: pointer;
+    }
+    
+    .modal > .modal-body > .checkmate-body {
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+    }
+    
+    .modal > .modal-body > .checkmate-body > span {
+        font-size: 32px;
+    }
+    
+    .modal > .modal-body > .checkmate-body > button {
+        border: none;
+        border-radius: 8px;
+        padding: 24px 48px;
+        font-size: 32px;
+        color: white;
+    }
+    
+    .modal > .modal-body > .checkmate-body > button:hover {
+        cursor: pointer;
+    }
+    
+    .turn {
+        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+        align-self: center;
+        text-align: center;
+        margin-top: 20px;
+        width: 200px;
+    }
+    
+    .lives {
+    
+        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+        align-self: center;
+        text-align: center;
+        margin-top: 11px;
+        width: 200px;
+    }
+    
+    .task-name {
+        margin-bottom: 11px;
+        font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: bold;color: #AB2A3B;
+        align-self: center;
+        text-align: center;
+    }
+    
+    .task-description {
+        margin-bottom: 47px;
+        font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #282323;
+        align-self: center;
+        text-align: center;
+    }
+    
+    .move_symbol {
+        margin-right: 8px;
+        position: relative;
+        top: 5px;
+    }
+    
+    .lives span {
+        font-size: 26px;font-weight: semibold;color: #AB2A3B;
+        position: relative;
+        top:3px
+    }
 }

@@ -71,7 +71,8 @@ export default function Login() {
         <div className="log-page">
             <div className="log-ramka">
                 <img src="/assets/images/logo.svg" className="log-logo"/>
-                <div className="log-text">Добро пожаловать в шахматную школу "Будущие миллионеры"</div>
+                <div className="log-text">Добро пожаловать в шахматную школу</div>
+                <div className="log-text">"Будущие миллионеры"</div>
                 <div className="log-inputs">
                     <div className="log-email">
                         <div className={emailEmpty ? "log-email-text" : "log-email-text log-empty"}>E-mail</div>
@@ -83,7 +84,7 @@ export default function Login() {
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>
-                    <span className="log-to-reg-text">Нет аккаунта? <a href="/registration">Зарегистрироваться</a></span>
+                    <div className="log-to-reg-text">Нет аккаунта? <a href="/registration">Зарегистрироваться</a></div>
                     <div className="log-to-reg"></div>
                     <div className="log-google"><img src="/assets/images/google-logo.svg" className="log-google-logo"/><p>Войти через Google</p></div>
                 </div>

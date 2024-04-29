@@ -112,13 +112,100 @@
     margin-left: 3%;
 }
 
+a {
+    text-decoration: none;
+}
+
 .header a {
     -webkit-user-drag: none;
-    text-decoration: none;
     color: #AB2A3B;
 }
 
 .subscribe a {
     -webkit-user-drag: none;
     color: #FFFFFF;
+}
+
+@media screen and (max-width: 1200px) {
+    
+    .headerImg {
+        position: absolute;
+        left: 30px;
+        width: 56px;
+        z-index: 0;
+        -webkit-user-drag: none;
+    }
+
+    .lang {
+        position: absolute;
+        right: 100px;
+        font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
+        -webkit-user-drag: none;
+    }
+      
+    .dropdown-menu a {
+        font-family: 'Open Sans';font-size: 14px;font-weight: 300;color: #000000;
+    }
+    
+    .menu-trigger img{
+        position: absolute;
+        right: 20px;
+        top: 28px;
+        width: 40px;
+        overflow: hidden;
+        background-color: #fff;
+    }
+    
+    .dropdown-menu{
+        position: absolute;
+        top: 90px;
+        right: 20px;
+        background-color: #fff;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.05);;
+        width: 160px;
+        height: fit-content;
+        z-index: 10;
+    }
+    
+    .dropdown-menu.active{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        transition: var(--speed) ease;
+    }
+    
+    .dropdown-menu.inactive{
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: var(--speed) ease;
+    }
+    
+    ul {
+        padding-left: 0;
+        margin-top: 0;
+    }
+
+    .dropdown-menu ul li{
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        width: 160px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        padding-left: 16px;
+    }
+
+    .dropdown-menu ul li:last-child{
+        border-bottom: none;
+    }
+    
+    .dropdownItem{
+        display: flex;
+    }
+    
+    .dropdownItem a{
+        transition: var(--speed);
+    }
+
 }

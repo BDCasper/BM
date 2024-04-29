@@ -29,11 +29,11 @@ interface fenComponents {
 
 const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen}) => {
 
-    const [promotionPawn, setPromotionPawn] = useState<Piece>();
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
     const [fen, setFen] = useState<Piece[]>([]);
+    const [checkPromote, setCheckPromote] = useState<boolean>(false);
 
     const DecodeFen: any = (fen: String)=>{
         const newboard: fenComponents = {
@@ -120,7 +120,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         )();
       }, [fen]);
 
-    function playMove(playedPiece: Piece, destination: Position): boolean {
+    const playMove = async(playedPiece: Piece, destination: Position): Promise<boolean> => {
 
         if (playedPiece.possibleMoves === undefined) return false;
         
@@ -149,17 +149,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             return clonedBoard;
         })
 
-
-        let promotionRow = (playedPiece.team === TeamType.OUR) ? 7 : 0;
-
-        if (destination.y === promotionRow && playedPiece.isPawn) {
-            modalRef.current?.classList.remove("hidden");
-            setPromotionPawn((previousPromotionPawn) => {
-                const clonedPlayedPiece = playedPiece.clone();
-                clonedPlayedPiece.position = destination.clone();
-                return clonedPlayedPiece;
-            });
-        }
         return playedMoveIsValid;
     }
 
@@ -193,7 +182,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         return false;
     }
 
-
     function isValidMove(initialPosition: Position, desiredPosition: Position, type: PieceType, team: TeamType) {
         let validMove = false;
         switch (type) {
@@ -218,35 +206,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
         return validMove;
     }
-
-    function promotePawn(pieceType: PieceType) {
-        if (promotionPawn === undefined) {
-            return;
-        }
-
-        setBoard((previousBoard) => {
-            const clonedBoard = previousBoard.clone();
-            clonedBoard.pieces = clonedBoard.pieces.reduce((results, piece) => {
-                if (piece.samePiecePosition(promotionPawn)) {
-                    results.push(new Piece(piece.position.clone(), pieceType,
-                        piece.team, true, piece.skin));
-                } else {
-                    results.push(piece);
-                }
-                return results;
-            }, [] as Piece[]);
-
-            clonedBoard.calculateAllMoves();
-
-            return clonedBoard;
-        })
-
-        modalRef.current?.classList.add("hidden");
-    }
-
-    function promotionTeamType() {
-        return (promotionPawn?.team === TeamType.OUR) ? "w" : "b";
-    }
     
     function restartGame() {
         checkmateModalRef.current?.classList.add("hidden");
@@ -255,23 +214,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
     return (
         <>
-            
-            <div className="modal hidden" ref={modalRef}>
-                <div className="modal-body">
-                    <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
-                    <img onClick={() => promotePawn(PieceType.BISHOP)} src={`/assets/images/bishop_${promotionTeamType()}.png`} />
-                    <img onClick={() => promotePawn(PieceType.KNIGHT)} src={`/assets/images/knight_${promotionTeamType()}.png`} />
-                    <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
-                </div>
-            </div>
-            <div className="modal hidden" ref={checkmateModalRef}>
-                <div className="modal-body">
-                    <div className="checkmate-body">
-                        <span>The winning team is {board.winningTeam === TeamType.OUR ? "white" : "black"}!</span>
-                        <button onClick={restartGame}>Play again</button>
-                    </div>
-                </div>
-            </div>
             
             <Chessboard playMove={playMove}
                 pieces={board.pieces} 
@@ -285,6 +227,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 isTest={isTest}
                 closed={closed}
                 setPopOpen={setPopOpen}
+                setBoard={setBoard}
+                board={board}
                 />
         </>
     )

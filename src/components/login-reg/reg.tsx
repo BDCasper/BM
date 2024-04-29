@@ -63,7 +63,8 @@ export default function Reg() {
         <div className="reg-page">
             <div className="reg-ramka">
                 <img src="/assets/images/logo.svg" className="reg-logo" alt=""/>
-                <div className="reg-text">Добро пожаловать в шахматную школу "Будущие миллионеры"</div>
+                <div className="reg-text">Добро пожаловать в шахматную школу</div>
+                <div className="reg-text">"Будущие миллионеры"</div>
                 <div className="reg-inputs">
                     <div className="email">
                         <div className={!emailNotEmpty||!emailCorrect||!emailFree ? "email-text incorrect" : "email-text"}>E-mail</div>

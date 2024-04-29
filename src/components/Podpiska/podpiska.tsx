@@ -7,7 +7,7 @@ interface Props {
 
 export default function Podpiska({setPopOpen}:Props) {
 
-    const [checkPath, setCheckPath] = useState<boolean>(false);
+    const [checkPath, setCheckPath] = useState<boolean>(true);
 
     useEffect(() => {
         (
@@ -18,7 +18,7 @@ export default function Podpiska({setPopOpen}:Props) {
             }
         )()
     },[window.location.pathname])
-
+    
 
     return(
         <>
@@ -39,9 +39,9 @@ export default function Podpiska({setPopOpen}:Props) {
                         </div>
                         <div className="sub-numbers">
                                 <ul>
-                                    <li>22 курса</li>
-                                    <li>200 уроков</li>
-                                    <li>4000 задач</li>
+                                    <li><span>22 курса</span></li>
+                                    <li><span>200 уроков</span></li>
+                                    <li><span>4000 задач</span></li>
                                 </ul>
                         </div>
                         <div className="sub-lower-text">

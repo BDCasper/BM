@@ -28,13 +28,6 @@
     cursor: pointer;
 }
 
-.vseKursy {
-    position: relative;
-    font-family: 'Open Sans';font-size: 18px;font-weight: lighter;color: #FFFFFF;
-    margin-left: 30px;
-    width: 100px;
-}
-
 .podpiska {
     display: flex;
     flex-direction: column;
@@ -104,7 +97,7 @@
 }
 
 .setOn {
-    background-color: #AB2A3B;
+    background-color: #AB2A3B !important;
 }
 
 .setOn .podpiska-text {
@@ -118,6 +111,7 @@
     margin-top: 132px;
     width: 890px; 
     margin-left: 5%;
+    margin-bottom: 5%;
     height: fit-content;
     background-color: rgb(255, 255, 255);
     -webkit-box-shadow: 0px 0px 22px -11px rgba(0,0,0,0.75);
@@ -200,7 +194,6 @@
     display: flex;
     font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
     white-space: nowrap;
-    
 }
 
 .theme-puzzles {
@@ -214,4 +207,254 @@
 
 .theme-info li{
     color: red;
+}
+
+@media screen and (max-width: 1200px) {
+    
+    .course-list {
+        width: 90%;
+        max-width: 800px;
+        height: 53px;
+        -webkit-box-shadow: 0px 4px 10px -4px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 4px 10px -4px rgba(0,0,0,0.75);
+        box-shadow: 0px 4px 10px -4px rgba(0,0,0,0.75);
+        border-radius: 20px;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .all-courses {
+        display: flex;
+        width: 25%;
+        height: 100%;
+        background-color: #ffffff;
+        align-items: center;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        border-top-right-radius: 0;
+    }
+    
+    .all-courses:hover {
+        cursor: pointer;
+    }
+    
+    .podpiska {
+        display: flex;
+        flex-direction: row;
+        width: 75%;
+        height: 100%;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+    
+    .podpiska1 {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        width: 33.3%;
+        height: 100%;
+        border: none;
+    }
+    
+    .podpiska1:hover {
+        cursor: pointer;
+    }
+    
+    .podpiska2:hover {
+        cursor: pointer;
+    }
+    
+    .podpiska3:hover {
+        cursor: pointer;
+    }
+    
+    .podpiska2 {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        width: 33.3%;
+        height: 100%;
+        border-radius: none;
+    }
+    .podpiska3 {
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        width: 33.4%;
+        height: 100%;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+    
+    .podpiska-text {
+        position: relative;
+        font-family: 'Open Sans';font-size: 16px;font-weight: lighter;color: #000000;
+        text-align: center;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    @media screen and (max-width: 540px) {
+        .podpiska-text {
+            position: relative;
+            font-family: 'Open Sans';font-size: 14px;font-weight: lighter;color: #000000;
+            text-align: center;
+            margin-left: 0;
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 470px) {
+        .podpiska-text {
+            position: relative;
+            font-family: 'Open Sans';font-size: 10px;font-weight: lighter;color: #000000;
+            text-align: center;
+            margin-left: 0;
+            width: 100%;
+        }
+    }
+    
+    @media screen and (max-width:700px) {
+        .theme-name {
+            font-family: 'Open Sans', sans-serif;font-size: 13px;font-weight: normal;color: #282323;
+        }
+        
+        .theme-info {
+            font-family: 'Open Sans', sans-serif;font-size: 12px;font-weight: lighter;
+        }
+        
+        .theme-puzzles {
+            font-family: 'Open Sans', sans-serif;font-size: 12px;font-weight: lighter;
+        }
+    }
+
+    @media screen and (min-width: 700px) {
+        .theme-name {
+            font-family: 'Open Sans', sans-serif;font-size: 17px;font-weight: normal;color: #282323;
+        }
+        
+        .theme-info {
+            font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
+        }
+        
+        .theme-puzzles {
+            font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
+        }
+    }
+
+    .podpiskaImg {
+        width: 0;
+        margin-left: 0;
+    }
+    
+    .setOn .podpiskaImg {
+        margin-left: 0;
+        width: 0;
+        transform: rotate(-90deg);
+    }
+
+    .main-page {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-panel {
+        margin-top: 26px;
+        width: 90%; 
+        max-width: 800px;
+        margin-left: 0;
+        margin-bottom: 26px;
+    }
+    
+    .main-panel-content {
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 25px;
+    }
+    
+    .levelName {
+        width: 100%;
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: 550;color: #AB2A3B;
+    }
+    
+    .pro-level {
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .theme-block {
+        width: 40%;
+        height: fit-content;
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+    
+    .theme-content {
+        background-color: rgb(255, 255, 255);
+        box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
+        border-radius: 4%;
+        width: 100%;   
+        height: 131px;
+    }
+    
+    .theme-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .themeImg {
+        position: relative;
+        top: 26px;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        overflow: visible;
+    }
+    
+    .themeImgSize {
+        width: 100%;
+        height: 100%;
+    }
+
+    .themeImgPoloska {
+        position: relative;
+        bottom: 47.5px;
+        width: 105px;
+        height: 26px;
+        background-color: #fe1212;
+    }
+
+    .theme-name {
+        margin-top: 28px;
+        height: fit-content;
+    }
+    
+    .theme-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100px;
+        margin-top: 5px;
+    }
+    
+    .theme-puzzles {
+        margin-left: 0;
+    }
+    
+    .theme-info span{
+        color: #282323;
+    }
+    
+    .theme-info li{
+        color: red;
+    }
+
 }

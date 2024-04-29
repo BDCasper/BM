@@ -172,3 +172,264 @@
     background-color: #AB2A3B;
     font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #ffffff;
 }
+
+
+@media screen and (max-width: 1200px) {
+    .sub {
+        position: fixed;
+        z-index: 3;
+        width: 100vw;
+        height: 100%;
+        left: 0;
+        top: 0;
+        overflow: auto;
+        background-color: rgba(
+            0,
+            0,
+            0,
+            0.4
+        );
+    }
+    
+    .sub-main {
+        width: 100vw;
+        max-width: 100%;
+        height: 637px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .sub-block {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        z-index: 4;
+    }
+    
+    .sub-block-close {
+        z-index: 3;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    
+    .sub-ramka {
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        max-width: 600px;
+        height: 510px;
+        border-radius: 30px;
+        -webkit-box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
+        box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
+        background-color: #FFFFFF;
+    }
+    
+    .sub-upper-text {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        position: relative;
+        top: 30px;
+        width: 100%;
+        height: fit-content;
+    }
+    
+    .sub-title {
+        font-family: 'Open Sans';font-size: 24px;font-weight: bold;color: #AB2A3B;
+    }
+    
+    .sub-status {
+        position: relative;
+        top: 5px;
+        font-family: 'Open Sans';font-size: 20px;font-weight: 200;color: #B7B7B7;
+    }
+    
+    .sub-descr {
+        position: relative;
+        top: 20px;
+        font-family: 'Open Sans';font-size: 22px;font-weight: 200;color: #000000;
+    }
+    
+    .sub-lenta {
+        position: relative;
+        top: 70px;
+        width: 110%;
+        height: 94px;
+    }
+    
+    .sub-lenta-center {
+        background-color: #AB2A3B;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 60px;
+        text-align: center;
+    }
+    
+    .sub-lenta-center-text {
+        top: 0;
+        font-family: 'Open Sans';font-size: 20px;font-weight: 600;color: #FFFFFF;
+    }
+    
+    .sub-lenta-sides {
+        display: flex;
+        width: 100%;
+        height: 21px;
+    }
+    
+    .sub-lenta-left {
+        position: relative;
+        width: 4.5%;
+        height: 21px;
+        background-color: #912F3C;
+        clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+    
+    .sub-lenta-right {
+        position: relative;
+        width: 4.5%;
+        left: 91%;
+        height: 21px;
+        background-color: #912F3C;
+        clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+    
+    .sub-numbers {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        top: 70px;
+        margin-right: 10px;
+        width: 100%;
+    }
+    
+    .sub-numbers ul {
+        margin-left: 10px;
+    }
+
+    li span {
+        position: relative;
+        left: -3px;
+    }
+
+    @media screen and (max-width:353px) {
+        .sub-numbers li {
+            float: left;
+            margin-left: 20px;
+            font-family: 'Open Sans';font-size: 11px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-numbers li::marker {
+            color: #AB2A3B;
+            font-size: 12px;        
+        }
+
+        .sub-lower-text li {
+            font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-button {
+            font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #ffffff;
+        }
+    }
+
+    @media screen and (min-width: 353px) and (max-width:500px) {
+        .sub-numbers li {
+            float: left;
+            margin-left: 22px;
+            font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-numbers li::marker {
+            color: #AB2A3B;
+            font-size: 12px;        
+        }
+
+        .sub-lower-text li {
+            font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-button {
+            font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #ffffff;
+        }
+
+    }
+
+    @media screen and (min-width:500px) and (max-width: 600px) {
+        .sub-numbers li {
+            float: left;
+            margin-left: 22px;
+            font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-numbers li::marker {
+            color: #AB2A3B;
+            font-size: 15px;        
+        }
+
+        .sub-lower-text li {
+            font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-button {
+            font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #ffffff;
+        }
+
+    }
+    
+    @media screen and (min-width: 600px) {
+        .sub-numbers li {
+            float: left;
+            margin-left: 48px;
+            font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-numbers li::marker {
+            color: #AB2A3B;
+            font-size: 15px;        
+        }
+
+        .sub-lower-text li {
+            font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
+        }
+        
+        .sub-button {
+            font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #ffffff;
+        }
+    }
+    
+    .sub-lower-text {
+        position: relative;
+        top: 60px;
+    }
+    
+    .sub-lower-text ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+    
+    .sub-lower-text li {
+        background: url('../../../public/assets/images/podpiska-check.svg') no-repeat left;
+        margin-top: 15px;
+        padding-left: 20px;
+    }
+    
+    .sub-button {
+        position: relative;
+        top: 90px;
+        width: 80%;
+        height: 49px;
+        border-radius: 10px;
+        border: none;
+        background-color: #AB2A3B;
+    }
+}

@@ -8,10 +8,12 @@ export default function Footer() {
             <div className="footer-content">
                 <img src="/assets/images/footer-logo.svg" className="footerImg"/>
                 <div className="footer-text">
-                    <div className="footer-text-font"><a href="/">Главная</a></div>
-                    <div className="footer-text-font">Контакты</div>
-                    <div className="footer-text-font">Служба поддержки</div>
-                    <div className="footer-text-font">Политика пользования</div>
+                    <div className="footer-text-top">
+                        <div className="footer-text-font"><a href="/">Главная</a></div>
+                        <div className="footer-text-font">Служба поддержки</div>
+                        <div className="footer-text-font">Контакты</div>
+                    </div>
+                    <div className="footer-text-bottom">Политика пользования</div>
                 </div>
             </div>
             <div className="rights">
