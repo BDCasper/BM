@@ -79,7 +79,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
     if (lengthOfArray - 1 === activeIndex) {
           winSound();
-          alert("Молодец")
           navigate("/")
     } 
     else if(closed === true)
