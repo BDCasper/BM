@@ -9,6 +9,7 @@ import Reg from "./components/login-reg/reg";
 import Login from "./components/login-reg/login";
 import Podpiska from "./components/Podpiska/podpiska";
 import Profile from "./components/Profile/profile";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 interface User {
   user_id?: number;
@@ -50,6 +51,7 @@ function App() {
 
   return (
     <div className="app">
+        <SpeedInsights/>
         <Header checkUserLog={checkUserLog} setInp={setInp}/>
         <BrowserRouter>
           <Routes>

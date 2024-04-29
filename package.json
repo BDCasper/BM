@@ -12,6 +12,7 @@
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
     "@types/redux-logger": "^3.0.13",
+    "@vercel/speed-insights": "^1.0.10",
     "axios": "^1.6.8",
     "primereact": "^10.5.3",
     "react": "^18.2.0",
