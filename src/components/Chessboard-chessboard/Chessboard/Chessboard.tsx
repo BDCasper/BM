@@ -4,7 +4,6 @@ import Tile from "../Tile/Tile";
 import {
   VERTICAL_AXIS,
   HORIZONTAL_AXIS,
-  GRID_SIZE,
 } from "../Constants";
 import { Piece, Position } from "../models";
 import boardCompanents from "../Referee-main/Referee"
@@ -50,7 +49,23 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const modalRef = useRef<HTMLDivElement>(null);
   const [promotionPawn, setPromotionPawn] = useState<Piece>();
+  const [GRID_SIZE, setGridSize] = useState<number>(0);
+  const [boardSize, setBoardSize] = useState<number>(0);
   
+  useEffect(() => {
+    (
+      async() => {
+        if(window.screen.width < 1200) {
+          setGridSize(35);
+          setBoardSize(280);
+        }
+        else {
+          setGridSize(57.2);
+          setBoardSize(458.4);
+        }
+      }
+    )()
+  },[])
 
   const botMove = async(botPosition:Position[]) => {
     const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
@@ -60,7 +75,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const win = async() => {
-    if( arrayOfSolved[location.state.id] && !arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzle_id)
+    if(arrayOfSolved[location.state.id] && !arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzle_id)
     localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
     if (lengthOfArray - 1 === activeIndex) {
           winSound();
@@ -225,7 +240,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if (element.classList.contains("chess-piece") && chessboard) {
         const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
         const grabY = Math.abs(
-          Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - 458.4) / GRID_SIZE)
+          Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
         );
         setGrabPosition(new Position(grabX, grabY));
   
@@ -243,7 +258,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
         const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
         const y = Math.abs(
-          Math.ceil((e.clientY - chessboard.offsetTop - 458.4  + window.scrollY) / GRID_SIZE)
+          Math.ceil((e.clientY - chessboard.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
         );
             
         const currentPiece = pieces.find((p) =>
@@ -283,12 +298,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   return (
     <div className="chessboardWrapper">
         <div className="modal hidden" ref={modalRef}>
-          <div className="modal-body">
-              <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
-              <img onClick={() => promotePawn(PieceType.BISHOP)} src={`/assets/images/bishop_${promotionTeamType()}.png`} />
-              <img onClick={() => promotePawn(PieceType.KNIGHT)} src={`/assets/images/knight_${promotionTeamType()}.png`} />
-              <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
-          </div>
+            <div className="modal-body">
+                <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
+                <img onClick={() => promotePawn(PieceType.BISHOP)} src={`/assets/images/bishop_${promotionTeamType()}.png`} />
+                <img onClick={() => promotePawn(PieceType.KNIGHT)} src={`/assets/images/knight_${promotionTeamType()}.png`} />
+                <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
+            </div>
         </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="task-description">{arrayOfObjects[activeIndex]?.title}</div>

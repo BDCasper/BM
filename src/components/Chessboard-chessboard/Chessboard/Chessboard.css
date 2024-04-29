@@ -22,11 +22,11 @@
 
 .modal {
     position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+    top: 50%;
+    left: 10%;
     z-index: 100;
+    height: 550px;
+    width: 800px;
 }
 
 .modal.hidden {
@@ -35,12 +35,11 @@
 
 .modal > .modal-body {
     position: absolute;
-    top: 50%;
-    left: 10%;
+    top: 20%;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    height: 550px;
+    height: 300px;
     width: 800px;
     background-color: rgba(127, 127, 127, 0.8);
 }
@@ -139,18 +138,18 @@
     }
     
     .chessboard-board {
-        width: 498px;
-        height: 497.7px;
+        width: 320px;
+        height: 320px;
         background-color: #57340b;
     }
     
     .modal {
         position: absolute;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
+        top: 45%;
+        left: 10%;
         z-index: 100;
+        height: 280px;
+        width: 280px;
     }
     
     .modal.hidden {
@@ -159,19 +158,18 @@
     
     .modal > .modal-body {
         position: absolute;
-        top: 50%;
-        left: 10%;
+        top: 5%;
         display: flex;
         align-items: center;
         justify-content: space-around;
-        height: 550px;
-        width: 800px;
+        height: 150px;
+        width: 280px;
         background-color: rgba(127, 127, 127, 0.8);
     }
     
     .modal > .modal-body > img {
-        height: 80px;
-        padding: 20px;
+        height: 40px;
+        padding: 10px;
         border-radius: 50%;
     }
     
@@ -203,45 +201,47 @@
     }
     
     .turn {
-        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+        font-family: 'Open Sans', sans-serif;font-size: 15px;font-weight: normal;color: #282323;
         align-self: center;
         text-align: center;
-        margin-top: 20px;
-        width: 200px;
+        margin-top: 10px;
+        width: 100%;
     }
     
     .lives {
     
-        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+        font-family: 'Open Sans', sans-serif;font-size: 15px;font-weight: normal;color: #282323;
         align-self: center;
         text-align: center;
         margin-top: 11px;
-        width: 200px;
+        width: 100%;
+
     }
     
     .task-name {
-        margin-bottom: 11px;
-        font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: bold;color: #AB2A3B;
+        margin-bottom: 0;
+        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: bold;color: #AB2A3B;
         align-self: center;
         text-align: center;
     }
     
     .task-description {
-        margin-bottom: 47px;
-        font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #282323;
+        margin-bottom: 20px;
+        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
         align-self: center;
         text-align: center;
     }
     
     .move_symbol {
         margin-right: 8px;
+        width: 15px;
         position: relative;
         top: 5px;
     }
     
     .lives span {
-        font-size: 26px;font-weight: semibold;color: #AB2A3B;
+        font-size: 18px;font-weight: semibold;color: #AB2A3B;
         position: relative;
-        top:3px
+        top: 1px;
     }
 }

@@ -322,8 +322,8 @@ input:focus {
         position: relative;
         align-self: center;
         text-align: center;
-        top: 50px;
-        height: 39px;
+        top: 90px;
+        height: 0;
         width: 80%;
         border-bottom: 1px solid #AB2A3B;
     }
@@ -333,7 +333,7 @@ input:focus {
         align-self: center;
         display: flex;
         align-items: center;
-        top: 80px;
+        top: 115px;
         width: 80%;
         height: 49px;
         border: 1px solid #B7B7B7;

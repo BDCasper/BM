@@ -6,6 +6,7 @@ import {useLocation} from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Podpiska from "../Podpiska/podpiska";
 import useSound from 'use-sound';
+import MediaQuery from "react-responsive";
 
 interface Props {
   puzzle_id: number;
@@ -79,6 +80,7 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
       }
     )();
   }, []);
+
 
   const handleAnswer = async() => {
     await fetch( `${backend}/api/checkmove`, {
@@ -181,7 +183,19 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                 />
               </div>
             </div>
-              <div className="spisok">
+            <MediaQuery maxWidth={1200}>
+              <div className="arrows">
+                <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+                <img className="arrow" src="/assets/images/leftArrow.svg" />
+                </div>
+                <div className="rightArrowWrap" onClick={() => {
+                  if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
+                  else setPopOpen(true);
+                  }}>
+                  <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
+              </div>
+            </MediaQuery>
+            <div className="spisok">
               {location.state.topic && <div className="topic"><p>{location.state.topic}</p></div>}
                 <div className="spisokList">
                   {arrayOfObjects.map((puzzle, index) => (
@@ -235,16 +249,18 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                 </div>
               </div>
           </div>
-          <div className="arrows">
-            <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
-            <img className="arrow" src="/assets/images/leftArrow.svg" />
+          <MediaQuery minWidth={1200}>
+            <div className="arrows">
+              <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+              <img className="arrow" src="/assets/images/leftArrow.svg" />
+              </div>
+              <div className="rightArrowWrap" onClick={() => {
+                if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
+                else setPopOpen(true);
+                }}>
+                <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
             </div>
-            <div className="rightArrowWrap" onClick={() => {
-              if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
-              else setPopOpen(true);
-              }}>
-              <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
-          </div>
+          </MediaQuery>
         </div>
       </div>
     );

@@ -72,10 +72,10 @@ export default function Header({checkUserLog, setInp}:Props) {
                             {!token?.includes('.') ? (
                                 <>
                                 <li className = 'dropdownItem'>
-                                    <a href="/registration">Вход</a>
+                                    <a href="/login">Вход</a>
                                 </li>
                                 <li className = 'dropdownItem'>
-                                    <a href="/login">Регистрация</a>
+                                    <a href="/registration">Регистрация</a>
                                 </li>
                                 </>
                             ) : (
