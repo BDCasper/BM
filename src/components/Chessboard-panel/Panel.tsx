@@ -43,6 +43,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [answer, setAnswer] = useState<string>('');
   const [answered, setAnswered] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<boolean>();
+  const [progressWidthcnt, setProgressWidthcnt] = useState<number>(0);
   const location = useLocation();
   const navigate = useNavigate();
   const [winSound] = useSound('win.wav', { volume: 0.2 });
@@ -135,7 +136,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     )();
   },[popOpen]);
     
-    useEffect(() => {
+  useEffect(() => {
       (
         async () => {
           arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log("жду");
@@ -144,7 +145,18 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     )();
   },[arrayOfObjects])
 
-    const popup = (
+  const progressWidth = async() => {
+    let cnt = 0;
+    if(arrayOfSolved && arrayOfObjects) {
+      arrayOfObjects.map((puz) => {
+          if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
+        }
+      )
+    }
+    setProgressWidthcnt(cnt);
+  }
+
+  const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
           <Podpiska setPopOpen={setPopOpen}/>
       </div>
@@ -154,8 +166,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
       <div className="chess-page">
         {popOpen && popup}
         <div className="progressBar">
-          <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*arrayOfSolved.size/arrayOfObjects.length : 0}%`}}></div>
-          <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*arrayOfSolved.size/arrayOfObjects.length : 0)}% выполнено</div>
+          <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
+          <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0)}% выполнено</div>
         </div>
         <div className="panel-content">
           <div className="panel-spisok">
