@@ -20,7 +20,7 @@ interface RefereeProps {
     closed: boolean;
     setPopOpen: (pop: boolean) => any;
     user: User;
-    arrayOfSolved: number[];
+    arrayOfSolved: Set<number>;
 }
 
 interface fenComponents {

@@ -29,7 +29,7 @@ function App() {
   const [checkUserLog, setUserLog] = useState<boolean>(false);
   const [inp, setInp] = useState<string>('');
   const [popOpen, setPopOpen] = useState<boolean>(false);
-  const [arrayOfSolved, setArrayOfSolved] = useState<number[]>([]);
+  const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
 
   let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
 
@@ -44,7 +44,7 @@ function App() {
           if (response && response.status === 200) {
             response.json().then((data) => {
               setUser(data.user);
-              setArrayOfSolved(data.solved);
+              setArrayOfSolved(new Set<number>(data.solved));
               console.log(data);
             })
           }

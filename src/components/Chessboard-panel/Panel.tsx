@@ -31,7 +31,7 @@ interface PanelProps {
   popOpen: boolean;
   setPopOpen: (pop: boolean) => any;
   user: User;
-  arrayOfSolved: number[];
+  arrayOfSolved: Set<number>;
 }
 
 export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelProps) {
@@ -85,7 +85,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
         res.json().then((data) => { 
           setIsCorrect(data.correct === "yes" ? true : false);
           if(data.correct === "yes"){
-            arrayOfSolved.push(arrayOfObjects[activeIndex].puzzle_id);
+            arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id);
             setAnswered(true);
             winSound();
             if(arrayOfObjects[activeIndex+1]) 
@@ -126,7 +126,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     (
       async () => {
         if(arrayOfObjects[activeIndex+1] && arrayOfSolved) {
-          if(arrayOfObjects[activeIndex+1].closed === true && !popOpen && arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) {
+          if(arrayOfObjects[activeIndex+1].closed === true && !popOpen && arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) {
             if(arrayOfObjects[activeIndex-1]) setActiveIndex(activeIndex-1)
             else navigate('/');
           }
@@ -154,8 +154,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
       <div className="chess-page">
         {popOpen && popup}
         <div className="progressBar">
-          <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*arrayOfSolved.length/arrayOfObjects.length : 0}%`}}></div>
-          <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*arrayOfSolved.length/arrayOfObjects.length : 0)}% выполнено</div>
+          <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*arrayOfSolved.size/arrayOfObjects.length : 0}%`}}></div>
+          <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*arrayOfSolved.size/arrayOfObjects.length : 0)}% выполнено</div>
         </div>
         <div className="panel-content">
           <div className="panel-spisok">
@@ -203,7 +203,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                             {puzzle.mode === 'test' ? 
                               <>
                               <div className="zadachi-content">
-                                <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
                                 {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                 <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                 <div className="zadachi-text" >
@@ -227,7 +227,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                             : 
                               <>
                                 <div className="zadachi-content">
-                                  <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                  <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
                                   {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                   <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                   <div className="zadachi-text" >

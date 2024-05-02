@@ -31,7 +31,7 @@ interface Props {
   setBoard: (previousBoard: any) => any;
   board: Board;
   user: User;
-  arrayOfSolved: number[];
+  arrayOfSolved: Set<number>;
 }
 
 let totalTurns = 0;
@@ -79,7 +79,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const win = async() => {
-    if(arrayOfSolved && !arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.push(arrayOfObjects[activeIndex].puzzle_id)
+    if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
     localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved));
     if (lengthOfArray - 1 === activeIndex) {
           winSound();
