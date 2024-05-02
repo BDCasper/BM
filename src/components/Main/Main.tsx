@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { backend } from "../../App";
 import "./Main.css"
 import { useNavigate } from "react-router-dom";
+import { User } from "../../App";
 import MediaQuery from "react-responsive";
 
 interface Props {
@@ -14,13 +15,15 @@ interface Props {
 
 interface MainProps {
   inp: string;
+  user: User;
 }
 
-export default function Main({inp}:MainProps) {
+export default function Main({inp, user}:MainProps) {
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
+
     useEffect(() => {
         (
           async () => {
@@ -73,8 +76,7 @@ export default function Main({inp}:MainProps) {
                   {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic) => (
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                    <div key={topic.topic_id} className="theme-block" onClick={() => {
-                      navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}})}}>
+                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src="/assets/images/courseImg.svg"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
@@ -93,7 +95,7 @@ export default function Main({inp}:MainProps) {
                 :
                   <>
                   {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic) => (
-                    <div key={topic.topic_id} className="theme-block" onClick={() => navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}})}>
+                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src="/assets/images/courseImg.svg" className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">

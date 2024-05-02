@@ -61,7 +61,7 @@ function App() {
             <Route path="/subscription" element={<Podpiska setPopOpen={setPopOpen}/>}/>
             <Route path="/registration" element={<Reg/>}/>
             <Route path="/login" element={<Login />}/>
-            <Route path="/" element={<Main inp={inp} />} />
+            <Route path="/" element={<Main inp={inp} user={user}/>} />
             {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
             <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user}/>} />
           </Routes>
