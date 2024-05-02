@@ -63,7 +63,7 @@ export default function Login() {
             if (res && res.status === 200) {
                 alert('darova')
             } else {
-                alert('ne darova')
+                setAccExist(false);
             }
         })
     }
