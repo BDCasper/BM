@@ -67,17 +67,17 @@ export default function Panel({popOpen, setPopOpen, user}:PanelProps) {
             console.log("No FEN :(")
           }
         })
-        // if(user) {
-        //   await fetch(`${backend}/api/solved?id=${user.user_id}`, {
-        //     method: "GET",
-        //   }).then((response) => {
-        //     if (response && response.status === 200) {
-        //       response.json().then((data) => {
-        //         setArrayOfSolved(data.solved);
-        //       })
-        //     }
-        //   })
-        // }
+        if(user) {
+          await fetch(`${backend}/api/solved?id=${user.user_id}`, {
+            method: "GET",
+          }).then((response) => {
+            if (response && response.status === 200) {
+              response.json().then((data) => {
+                setArrayOfSolved(data.solved);
+              })
+            }
+          })
+        }
       }
     )();
   }, []);
