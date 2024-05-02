@@ -145,16 +145,20 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     )();
   },[arrayOfObjects])
 
-  const progressWidth = async() => {
-    let cnt = 0;
-    if(arrayOfSolved && arrayOfObjects) {
-      arrayOfObjects.map((puz) => {
-          if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
+  useEffect(() => {
+    (
+      async () => {
+        let cnt = 0;
+        if(arrayOfSolved && arrayOfObjects) {
+          arrayOfObjects.map((puz) => {
+              if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
+            }
+          )
         }
-      )
+        setProgressWidthcnt(cnt);
     }
-    setProgressWidthcnt(cnt);
-  }
+  )();
+},[arrayOfSolved])
 
   const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
