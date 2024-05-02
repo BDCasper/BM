@@ -54,6 +54,9 @@ export default function Login() {
             {
                 setAccExist(false);
             }
+            else{
+                setAccExist(false);
+            }
         })
 
         await fetch( `${backend}/api/refresh`, {
@@ -63,7 +66,7 @@ export default function Login() {
             if (res && res.status === 200) {
                 alert('darova')
             } else {
-                setAccExist(false);
+                alert('не дарова')
             }
         })
     }

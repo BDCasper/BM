@@ -211,7 +211,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                   <div className="title" >{puzzle.title}</div>
                                 </div>
                               </div>
-                              {index === activeIndex && 
+                              {!puzzle.closed && index === activeIndex && 
                                 <div className="zadachi-test">
                                   {JSON.parse(puzzle.variants).map((variant: string) => (
                                       <tr className="zadachi-test-q">
