@@ -29,6 +29,7 @@ function App() {
   const [checkUserLog, setUserLog] = useState<boolean>(false);
   const [inp, setInp] = useState<string>('');
   const [popOpen, setPopOpen] = useState<boolean>(false);
+  const [arrayOfSolved, setArrayOfSolved] = useState<number[]>([]);
 
   let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
 
@@ -43,6 +44,8 @@ function App() {
           if (response && response.status === 200) {
             response.json().then((data) => {
               setUser(data.user);
+              setArrayOfSolved(data.solved);
+              console.log(data);
             })
           }
         })
@@ -59,7 +62,7 @@ function App() {
             <Route path="/registration" element={<Reg/>}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/" element={<Main inp={inp} />} />
-            {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user}/>} />}
+            {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
             <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user}/>} />
           </Routes>
         </BrowserRouter>

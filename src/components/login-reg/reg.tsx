@@ -75,7 +75,7 @@ export default function Reg() {
                         <input type="text" className={!passwordNotEmpty||!passwordCorrect ? "passwordBar incorrectBar" : "passwordBar"} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <button className="reg-button" onClick={register}>Зарегистрироваться</button>
-                    {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс недействителен</div>}
+                    {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}
                     <div className="reg-to-log">Уже есть аккаунт? <a href="/login">Войти</a></div>
                     <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo" alt=""/><p>Войти через Google</p></div>
                 </div>

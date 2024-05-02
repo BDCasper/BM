@@ -31,9 +31,10 @@ interface PanelProps {
   popOpen: boolean;
   setPopOpen: (pop: boolean) => any;
   user: User;
+  arrayOfSolved: number[];
 }
 
-export default function Panel({popOpen, setPopOpen, user}:PanelProps) {
+export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelProps) {
 
   const [fenCode, setCurrentFen] = useState<string>("");
   const [solved, setSolved] = useState<number>(0);
@@ -46,8 +47,6 @@ export default function Panel({popOpen, setPopOpen, user}:PanelProps) {
   const navigate = useNavigate();
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('wrong.mp3');
-  const [arrayOfSolved, setArrayOfSolved] = useState<number[]>([]);
-
 
   const handlePopUp = async() => {
     setPopOpen(!popOpen);
@@ -67,17 +66,6 @@ export default function Panel({popOpen, setPopOpen, user}:PanelProps) {
             console.log("No FEN :(")
           }
         })
-        if(user) {
-          await fetch(`${backend}/api/solved?id=${user.user_id}`, {
-            method: "GET",
-          }).then((response) => {
-            if (response && response.status === 200) {
-              response.json().then((data) => {
-                setArrayOfSolved(data.solved);
-              })
-            }
-          })
-        }
       }
     )();
   }, []);
