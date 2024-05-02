@@ -80,7 +80,7 @@ export default function Login() {
                     </div>
                     <div className="log-password">
                         <div className={passwordEmpty ? "log-password-text" : "log-password-text log-empty"}>Пароль</div>
-                        <input type="text" className={passwordEmpty ? "log-passwordBar" : "log-passwordBar log-incorrectBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" className={passwordEmpty ? "log-passwordBar" : "log-passwordBar log-incorrectBar"} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>

@@ -72,7 +72,7 @@ export default function Reg() {
                     </div>
                     <div className="password">
                         <div className={!passwordNotEmpty||!passwordCorrect ? "password-text incorrect" : "password-text"}>Придумайте пароль</div>
-                        <input type="text" className={!passwordNotEmpty||!passwordCorrect ? "passwordBar incorrectBar" : "passwordBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" className={!passwordNotEmpty||!passwordCorrect ? "passwordBar incorrectBar" : "passwordBar"} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <button className="reg-button" onClick={register}>Зарегистрироваться</button>
                     {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}
