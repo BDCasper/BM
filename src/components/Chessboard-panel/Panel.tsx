@@ -73,7 +73,7 @@ export default function Panel({popOpen, setPopOpen, user}:PanelProps) {
           }).then((response) => {
             if (response && response.status === 200) {
               response.json().then((data) => {
-                setArrayOfSolved(data.solved);
+                setArrayOfSolved(data.solved[0]);
               })
             }
           })
