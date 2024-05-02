@@ -66,7 +66,7 @@
 }
 
 .spisokList {
-    overflow-y: hidden; /*TODO*/
+    overflow-y: auto; /*TODO*/
 }
 
 .spisokList::-webkit-scrollbar {
