@@ -30,6 +30,7 @@ export default function Reg() {
             setEmailCorrect(true);
             setPasswordNotEmpty(true);
             setPasswordCorrect(true);
+            setEmailFree(true);
             if(email.length === 0) setEmailNotEmpty(false);
             if(password.length === 0) setPasswordNotEmpty(false);
             if(!eRegex.test(email)) setEmailCorrect(false);

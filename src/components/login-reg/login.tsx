@@ -11,6 +11,7 @@ export default function Login() {
     const [password, setPassword] = useState<string>("");
     const [emailEmpty, setEmailEmpty] = useState<boolean>(true);
     const [passwordEmpty, setPasswordEmpty] = useState<boolean>(true);
+    const [accExist, setAccExist] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,6 +24,7 @@ export default function Login() {
 
     const login = async(e: FormEvent) => {
         e.preventDefault();
+        setAccExist(true)
         setEmailEmpty(true);
         setPasswordEmpty(true);
         if(email.length === 0 || password.length === 0) {
@@ -50,7 +52,7 @@ export default function Login() {
             }
             if(response.status === 400)
             {
-                alert("Ne ZAEBIS")
+                setAccExist(false);
             }
         })
 
@@ -84,6 +86,7 @@ export default function Login() {
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>
+                    {(!accExist) && <div className="log-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}
                     <div className="log-to-reg-text">Нет аккаунта? <a href="/registration">Зарегистрироваться</a></div>
                     <div className="log-to-reg"></div>
                     <div className="log-google"><img src="/assets/images/google-logo.svg" className="log-google-logo"/><p>Войти через Google</p></div>

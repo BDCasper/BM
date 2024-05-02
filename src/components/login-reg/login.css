@@ -368,7 +368,7 @@ input:focus {
         position: relative;
         top: 60px;
         text-align: center;
-        font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #DD8A8A;
+        font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #DD8A8A;
     }
 
 }
