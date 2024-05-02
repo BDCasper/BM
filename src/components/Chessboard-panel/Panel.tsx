@@ -125,7 +125,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect (() => {
     (
       async () => {
-        if(arrayOfObjects[activeIndex+1] && arrayOfSolved[location.state.id - 1]) {
+        if(arrayOfObjects[activeIndex+1] && arrayOfSolved) {
           if(arrayOfObjects[activeIndex+1].closed === true && !popOpen && arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) {
             if(arrayOfObjects[activeIndex-1]) setActiveIndex(activeIndex-1)
             else navigate('/');

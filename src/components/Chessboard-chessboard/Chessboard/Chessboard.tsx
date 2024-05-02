@@ -79,7 +79,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const win = async() => {
-    if(arrayOfSolved[location.state.id] && !arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.push(arrayOfObjects[activeIndex].puzzle_id)
+    if(arrayOfSolved && !arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.push(arrayOfObjects[activeIndex].puzzle_id)
     localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved));
     if (lengthOfArray - 1 === activeIndex) {
           winSound();
