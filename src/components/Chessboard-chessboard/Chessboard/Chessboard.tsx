@@ -10,10 +10,10 @@ import boardCompanents from "../Referee-main/Referee"
 import { backend } from "../../../App";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TaskProps from "../../Chessboard-panel/Panel"
-import { arrayOfSolved } from "../../Chessboard-panel/Panel";
 import useSound from 'use-sound';
 import { PieceType, TeamType } from "../Types";
 import { Board } from "../models/Board";
+import { User } from "../../../App";
 
 interface Props {
   playMove: (piece: Piece, position: Position) => Promise<boolean>;
@@ -30,14 +30,17 @@ interface Props {
   setPopOpen: (pop: boolean) => any;
   setBoard: (previousBoard: any) => any;
   board: Board;
+  user: User;
+  arrayOfSolved: number[];
 }
 
 let totalTurns = 0;
+let promoteLetter: string;
 const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, user, arrayOfSolved} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -49,6 +52,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const modalRef = useRef<HTMLDivElement>(null);
   const [promotionPawn, setPromotionPawn] = useState<Piece>();
+  const [sendPromote, setSendPromote] = useState<boolean>(false);
   const [GRID_SIZE, setGridSize] = useState<number>(0);
   const [boardSize, setBoardSize] = useState<number>(0);
   
@@ -75,8 +79,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const win = async() => {
-    if(arrayOfSolved[location.state.id] && !arrayOfSolved[location.state.id-1].includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzle_id)
-    localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved[location.state.id-1]));
+    if(arrayOfSolved[location.state.id] && !arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.push(arrayOfObjects[activeIndex].puzzle_id)
+    localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved));
     if (lengthOfArray - 1 === activeIndex) {
           winSound();
           navigate("/")
@@ -116,6 +120,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const promoteNow = async(playedPiece: Piece, destination: Position) => {
     let promotionRow = (playedPiece.team === TeamType.OUR) ? 7 : 0;
     if (destination.y === promotionRow && playedPiece.isPawn) {
+        setSendPromote(true);
         modalRef.current?.classList.remove("hidden");
         setPromotionPawn((previousPromotionPawn) => {
             const clonedPlayedPiece = playedPiece.clone();
@@ -123,7 +128,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             return clonedPlayedPiece;
         });
         const promise = new Promise((resolved:(arg0:PieceType)=>void) => {_promote = resolved})
-        await promise.then();
+        let type;
+        await promise.then((res) => {type = res});
         return true;
     }
     return false;
@@ -149,6 +155,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         clonedBoard.calculateAllMoves();
         return clonedBoard;
     })
+    if(pieceType === 'rook') promoteLetter = 'R';
+    if(pieceType === 'knight') promoteLetter = 'K';
+    if(pieceType === 'bishop') promoteLetter = 'B';
+    if(pieceType === 'queen') promoteLetter = 'Q';
     modalRef.current?.classList.add("hidden");
   }
 
@@ -166,7 +176,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 turn: totalTurns,
                 team: currentPiece.skin,
                 move: [pos1,pos2],
-                lives: lives
+                lives: lives,
+                user_id: user.user_id,
             })
     }).then((response) => {
       if (response && response.status === 200) {
@@ -189,7 +200,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 turn: totalTurns,
                 team: currentPiece.skin,
                 move: [pos1,pos2],
-                lives: lives
+                lives: lives,
+                user_id: user.user_id,
+                //promote: (sendPromote ? promoteLetter : undefined)
             })
     }).then((response) => {
       if (response && response.status === 200) {
@@ -231,7 +244,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       }
     })
   }
-
+  
   async function clickPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;

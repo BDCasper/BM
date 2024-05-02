@@ -6,6 +6,7 @@ import { bishopMove, getPossibleBishopMoves, getPossibleKingMoves, getPossibleKn
 import { PieceType, TeamType } from "../Types";
 import Chessboard from "../Chessboard/Chessboard";
 import TaskProps from "../../Chessboard-panel/Panel"
+import { User } from "../../../App";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -18,6 +19,8 @@ interface RefereeProps {
     isTest: boolean;
     closed: boolean;
     setPopOpen: (pop: boolean) => any;
+    user: User;
+    arrayOfSolved: number[];
 }
 
 interface fenComponents {
@@ -27,7 +30,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
@@ -229,6 +232,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 setPopOpen={setPopOpen}
                 setBoard={setBoard}
                 board={board}
+                user={user}
+                arrayOfSolved={arrayOfSolved}
                 />
         </>
     )

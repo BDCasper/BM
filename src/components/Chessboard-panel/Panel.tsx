@@ -2,11 +2,12 @@ import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect,
 import Referee from "../Chessboard-chessboard/Referee-main/Referee";
 import "./Panel.css"
 import { backend } from "../../App";
-import {useLocation} from 'react-router-dom';
+import {redirect, useLocation} from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Podpiska from "../Podpiska/podpiska";
 import useSound from 'use-sound';
 import MediaQuery from "react-responsive";
+import { User } from "../../App";
 
 interface Props {
   puzzle_id: number;
@@ -29,17 +30,10 @@ interface Test {
 interface PanelProps {
   popOpen: boolean;
   setPopOpen: (pop: boolean) => any;
+  user: User;
 }
 
-export let arrayOfSolved:number[][] = [
-  [],
-  [],
-  [],
-  [],
-  []
-];
-
-export default function Panel({popOpen, setPopOpen}:PanelProps) {
+export default function Panel({popOpen, setPopOpen, user}:PanelProps) {
 
   const [fenCode, setCurrentFen] = useState<string>("");
   const [solved, setSolved] = useState<number>(0);
@@ -52,6 +46,8 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
   const navigate = useNavigate();
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('wrong.mp3');
+  const [arrayOfSolved, setArrayOfSolved] = useState<number[]>([]);
+
 
   const handlePopUp = async() => {
     setPopOpen(!popOpen);
@@ -60,13 +56,7 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
   useEffect(() => {
     (
       async () => {
-        // const value = localStorage.getItem(location.state.id);
-        // if (typeof value === 'string') {
-        //   const solved = JSON.parse(value)
-        //   if (solved) {
-        //     arrayOfSolved[location.state.id-1] = solved;
-        //   }
-        // }
+        if(location.state.id === undefined) redirect('/'); 
         await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
           headers: { 'Content-Type': 'apppcation/json' },
           // credentials: 'include'
@@ -77,10 +67,20 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
             console.log("No FEN :(")
           }
         })
+        // if(user) {
+        //   await fetch(`${backend}/api/solved?id=${user.user_id}`, {
+        //     method: "GET",
+        //   }).then((response) => {
+        //     if (response && response.status === 200) {
+        //       response.json().then((data) => {
+        //         setArrayOfSolved(data.solved);
+        //       })
+        //     }
+        //   })
+        // }
       }
     )();
   }, []);
-
 
   const handleAnswer = async() => {
     await fetch( `${backend}/api/checkmove`, {
@@ -89,14 +89,15 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
             // credentials: 'include',
             body: JSON.stringify({
                 id: arrayOfObjects[activeIndex].puzzle_id,
-                answer: answer
+                answer: answer,
+                user_id: user.user_id
             })
     }).then((res) => {
       if (res && res.status === 200) {
         res.json().then((data) => { 
           setIsCorrect(data.correct === "yes" ? true : false);
           if(data.correct === "yes"){
-            arrayOfSolved[location.state.id-1].push(arrayOfObjects[activeIndex].puzzle_id);
+            arrayOfSolved.push(arrayOfObjects[activeIndex].puzzle_id);
             setAnswered(true);
             winSound();
             if(arrayOfObjects[activeIndex+1]) 
@@ -127,6 +128,8 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
           setCurrentFen(arrayOfObjects[activeIndex].fen)
         }
         setAnswered(false);
+        console.log(arrayOfSolved)
+        console.log(user)
       }
       )();
     },[activeIndex]);
@@ -135,7 +138,7 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
     (
       async () => {
         if(arrayOfObjects[activeIndex+1] && arrayOfSolved[location.state.id - 1]) {
-          if(arrayOfObjects[activeIndex+1].closed === true && !popOpen && arrayOfSolved[location.state.id - 1].includes(arrayOfObjects[activeIndex].puzzle_id)) {
+          if(arrayOfObjects[activeIndex+1].closed === true && !popOpen && arrayOfSolved.includes(arrayOfObjects[activeIndex].puzzle_id)) {
             if(arrayOfObjects[activeIndex-1]) setActiveIndex(activeIndex-1)
             else navigate('/');
           }
@@ -163,8 +166,8 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
       <div className="chess-page">
         {popOpen && popup}
         <div className="progressBar">
-          <div className="progress-line" style={{width: `${(arrayOfSolved[location.state.id-1]) ? 100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length : 0}%`}}></div>
-          <div className="progress-percentage">{Math.ceil((arrayOfSolved[location.state.id-1]) ? 100*arrayOfSolved[location.state.id-1].length/arrayOfObjects.length : 0)}% выполнено</div>
+          <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*arrayOfSolved.length/arrayOfObjects.length : 0}%`}}></div>
+          <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*arrayOfSolved.length/arrayOfObjects.length : 0)}% выполнено</div>
         </div>
         <div className="panel-content">
           <div className="panel-spisok">
@@ -180,6 +183,8 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                 isTest={arrayOfObjects[activeIndex] ? (arrayOfObjects[activeIndex].mode === 'test' ? true : false) : false}
                 closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
                 setPopOpen={setPopOpen}
+                user={user}
+                arrayOfSolved={arrayOfSolved}
                 />
               </div>
             </div>
@@ -210,7 +215,7 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                             {puzzle.mode === 'test' ? 
                               <>
                               <div className="zadachi-content">
-                                <div className="block-checkSign"><img alt="" className={arrayOfSolved[location.state.id-1] ? (arrayOfSolved[location.state.id-1].includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
                                 {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                 <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                 <div className="zadachi-text" >
@@ -234,7 +239,7 @@ export default function Panel({popOpen, setPopOpen}:PanelProps) {
                             : 
                               <>
                                 <div className="zadachi-content">
-                                  <div className="block-checkSign"><img alt="" className={arrayOfSolved[location.state.id-1] ? (arrayOfSolved[location.state.id-1].includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                  <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.includes(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
                                   {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                   <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                   <div className="zadachi-text" >

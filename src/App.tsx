@@ -11,7 +11,7 @@ import Podpiska from "./components/Podpiska/podpiska";
 import Profile from "./components/Profile/profile";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
-interface User {
+export interface User {
   user_id?: number;
   name?: string; 
   surname?: string;  
@@ -59,7 +59,7 @@ function App() {
             <Route path="/registration" element={<Reg/>}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/" element={<Main inp={inp} />} />
-            <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen}/>} />
+            {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user}/>} />}
             <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user}/>} />
           </Routes>
         </BrowserRouter>
