@@ -167,7 +167,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
-    await fetch( `${backend}/api/checkmove`, {
+    await fetch( `${backend}/api/checkbefore`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
             // credentials: 'include',
