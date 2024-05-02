@@ -67,14 +67,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             console.log("No FEN :(")
           }
         })
-        let cnt = 0;
-        if(arrayOfSolved && arrayOfObjects) {
-          arrayOfObjects.map((puz) => {
-              if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
-            }
-          )
-        }
-        setProgressWidthcnt(cnt);
       }
     )();
   }, []);
@@ -155,6 +147,14 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
         async () => {
           arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log("жду");
           setSolved(arrayOfObjects.length);
+          let cnt = 0;
+          if(arrayOfSolved && arrayOfObjects) {
+          arrayOfObjects.map((puz) => {
+              if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
+              }
+            )
+          }
+          setProgressWidthcnt(cnt);
       }
     )();
   },[arrayOfObjects])
