@@ -86,7 +86,7 @@ export default function Login() {
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>
-                    {(!accExist) && <div className="log-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}
+                    {(!accExist) && <div className="log-email-incorrect">Неправильно введены эл. адресс или пароль</div>}
                     <div className="log-to-reg-text">Нет аккаунта? <a href="/registration">Зарегистрироваться</a></div>
                     <div className="log-to-reg"></div>
                     <div className="log-google"><img src="/assets/images/google-logo.svg" className="log-google-logo"/><p>Войти через Google</p></div>
