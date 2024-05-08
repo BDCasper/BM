@@ -11,7 +11,7 @@
 
 .headerImg {
     width: 56px;
-    margin-right: 3%;
+    margin-right: 2%;
     z-index: 0;
     -webkit-user-drag: none;
 }
@@ -20,8 +20,15 @@
     width: 80px;
     height: 22px;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #000000;
-    margin-right: 3%;
+    margin-right: 1%;
     -webkit-user-drag: none;
+}
+
+.web-site {
+    width: 100px;
+    height: 22px;
+    font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
+    margin-right: 1.5%;
 }
 
 .subscribe {
@@ -101,8 +108,13 @@
     margin-left: 2%;
 }
 
+.username {
+    margin-left: 280px;
+    font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
+}
+
 .header-profile {
-    margin-left: 325px;
+    margin-left: 20px;
     -webkit-user-drag: none;
 }
 

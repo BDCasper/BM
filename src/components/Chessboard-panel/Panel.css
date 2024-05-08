@@ -77,8 +77,8 @@
 .spisokList::-webkit-scrollbar-thumb {
     background: #B7B7B7;
     border-radius: 50px;
-    height: 20px;
 }
+
 
 .zadachi {
     display: flex;
@@ -87,6 +87,10 @@
     width: 100%;
     height: fit-content;
     border-bottom: 1px solid #DD8A8A;
+}
+
+.zadachi:last-child {
+    border-bottom: none;
 }
 
 .zadachi-content {
@@ -113,7 +117,7 @@
 }
 
 .zadachi-text {
-    height: 70px;
+    height: 80px;
     width: 250px;
     text-align: center;
 }
@@ -125,7 +129,7 @@
 
 .title {
     font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: lighter;color: #282323;
-    margin-top: 5px;
+    margin-top: 2px;
 }
 
 .active {

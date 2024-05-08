@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./header.css";
 import Main from "../Main/Main";
 import MediaQuery from "react-responsive";
+import { User } from "../../App";
 
 interface Props {
     checkUserLog: boolean;
     setInp: (inp:string) => any;
+    user: User;
 }
 
-export default function Header({checkUserLog, setInp}:Props) {
+export default function Header({checkUserLog, setInp, user}:Props) {
 
     let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
     const [inputText, setInputText] = useState<string>('');
@@ -29,7 +31,8 @@ export default function Header({checkUserLog, setInp}:Props) {
         <div className="header">
             <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
             <MediaQuery minWidth={1200}>
-                <div className="allCourse"><a href="/">Все курсы</a></div>
+                <div className="allCourse"><a href="/">Главная</a></div>
+                <div className="web-site"><a href="/">Сайт школы</a></div>
                 <a className="subscribe" href="/subscription"><div >Подписка</div></a>
                     {window.location.pathname === '/' ? 
                     <div className="search ">
@@ -50,7 +53,10 @@ export default function Header({checkUserLog, setInp}:Props) {
                         <div className="login"><a href="/login">Вход</a></div>
                     </>
                 ) : (
-                        <a href="/profile" className="header-profile"><img src="assets/images/header-profile.svg"/></a>
+                        <>
+                            <div className="username">{user.email}</div>
+                            <a href="/profile" className="header-profile"><img src="assets/images/header-profile.svg"/></a>
+                        </>
                 )}
                 <div className="lang">RU</div>
             </MediaQuery>

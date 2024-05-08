@@ -12,6 +12,7 @@
 .chessboardWrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .chessboard-board {
