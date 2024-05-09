@@ -113,7 +113,7 @@ export default function Profile({setUserLog, user}:Props) {
                     <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
                     <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                 </div>
-                <div className="profile-score">Количество очков: {score}</div>
+                <div className="profile-score">Количество очков: {user.score}</div>
                 <div className="profile-inputs">
                     <div className="profile-inputs-block">
                         <div className="profile-name">Имя</div>
