@@ -327,7 +327,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         }
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
-      <div className="lives">Осталось жизней: <span>{lives}</span></div>
+      {isTest === false && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
     </div>
   );
 }
