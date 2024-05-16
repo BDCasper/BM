@@ -65,9 +65,7 @@ export default function Login() {
         }).then((res) => {
             if (res && res.status === 200) {
                 alert('darova')
-            } else {
-                alert('не дарова')
-            }
+            } 
         })
     }
 
