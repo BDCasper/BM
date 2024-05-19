@@ -62,7 +62,7 @@ export default function Header({checkUserLog, setInp, user}:Props) {
             </MediaQuery>
             <MediaQuery maxWidth={1200}>
                 <div className="lang">RU</div>
-                {!token?.includes('.') && <div className="username">Daulet_Belkairov</div>}
+                {token?.includes('.') && <div className="username">{user.email}</div>}
                 <div className='menu-container'>
                     <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
                         <img src={`assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
