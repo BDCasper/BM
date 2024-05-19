@@ -32,7 +32,7 @@ export default function Header({checkUserLog, setInp, user}:Props) {
             <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
             <MediaQuery minWidth={1200}>
                 <div className="allCourse"><a href="/">Главная</a></div>
-                <div className="web-site"><a href="/">Сайт школы</a></div>
+                <div className="web-site"><a href="https://school.bm-chess.com/" target="_blank">Сайт школы</a></div>
                 <a className="subscribe" href="/subscription"><div >Подписка</div></a>
                     {window.location.pathname === '/' ? 
                     <div className="search ">
@@ -62,6 +62,7 @@ export default function Header({checkUserLog, setInp, user}:Props) {
             </MediaQuery>
             <MediaQuery maxWidth={1200}>
                 <div className="lang">RU</div>
+                {!token?.includes('.') && <div className="username">Daulet_Belkairov</div>}
                 <div className='menu-container'>
                     <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
                         <img src={`assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
@@ -73,6 +74,9 @@ export default function Header({checkUserLog, setInp, user}:Props) {
                             </li>
                             <li className = 'dropdownItem'>
                                 <a href="/subscription">Подписка</a>
+                            </li>
+                            <li className = 'dropdownItem'>
+                                <a href="https://school.bm-chess.com/" target="_blank">Сайт школы</a>
                             </li>
 
                             {!token?.includes('.') ? (

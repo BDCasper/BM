@@ -150,11 +150,16 @@ a {
 
     .lang {
         position: absolute;
-        right: 100px;
+        right: 80px;
         font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
         -webkit-user-drag: none;
     }
       
+    .username {
+        margin-left: 0;
+        font-family: 'Open Sans';font-size: 14px;font-weight: 550;color: #AB2A3B;
+    }
+
     .dropdown-menu a {
         font-family: 'Open Sans';font-size: 14px;font-weight: 300;color: #000000;
     }
