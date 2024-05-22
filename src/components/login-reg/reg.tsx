@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 export default function Reg() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState<string>("");
+    const [userName, setUserName] = useState<string>("");
     const [emailFree, setEmailFree] = useState<boolean>(true);
-    const [emailNotEmpty, setEmailNotEmpty] = useState<boolean>(true);
+    const [emailEmpty, setEmailEmpty] = useState<boolean>(false);
+    const [passwordEmpty, setPasswordEmpty] = useState<boolean>(false);
+    const [usernameEmpty, setUsernameEmpty] = useState<boolean>(false);
     const [emailCorrect, setEmailCorrect] = useState<boolean>(true);
-    const [passwordNotEmpty, setPasswordNotEmpty] = useState<boolean>(true);
     const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
     const eRegex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
@@ -25,14 +27,16 @@ export default function Reg() {
     }, [email, password])
 
     const register = async() => {
-        if(email.length === 0 || password.length === 0 || !eRegex.test(email) ) {
-            setEmailNotEmpty(true);
-            setEmailCorrect(true);
-            setPasswordNotEmpty(true);
-            setPasswordCorrect(true);
-            setEmailFree(true);
-            if(email.length === 0) setEmailNotEmpty(false);
-            if(password.length === 0) setPasswordNotEmpty(false);
+        setEmailCorrect(true);
+        setPasswordCorrect(true);
+        setEmailFree(true);
+        setEmailEmpty(false);
+        setPasswordEmpty(false);
+        setUsernameEmpty(false);
+        if(email.length === 0 || password.length === 0 || userName.length === 0 || !eRegex.test(email) ) {
+            if(email.length === 0) setEmailEmpty(true);
+            if(userName.length === 0) setUsernameEmpty(true);
+            if(password.length === 0) setPasswordEmpty(true);
             if(!eRegex.test(email)) setEmailCorrect(false);
             //if(!pRegex.test(password)) setPasswordCorrect(false);
             return;
@@ -68,12 +72,16 @@ export default function Reg() {
                 <div className="reg-text">"Будущие миллионеры"</div>
                 <div className="reg-inputs">
                     <div className="email">
-                        <div className={!emailNotEmpty||!emailCorrect||!emailFree ? "email-text incorrect" : "email-text"}>E-mail</div>
-                        <input type="text" className={!emailNotEmpty||!emailCorrect||!emailFree ? "emailBar incorrectBar" : "emailBar"} onChange={(e) => setEmail(e.target.value)}/>
+                        <div className={emailEmpty || !emailCorrect || !emailFree ? "reg-input-text incorrect" : "reg-input-text"}>E-mail</div>
+                        <input type="text" className={emailEmpty || !emailCorrect || !emailFree ? "regBar incorrectBar" : "regBar"} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="password">
-                        <div className={!passwordNotEmpty||!passwordCorrect ? "password-text incorrect" : "password-text"}>Придумайте пароль</div>
-                        <input type="password" className={!passwordNotEmpty||!passwordCorrect ? "passwordBar incorrectBar" : "passwordBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <div className={ passwordEmpty || !passwordCorrect ? "reg-input-text incorrect" : "reg-input-text"}>Придумайте пароль</div>
+                        <input type="password" className={ passwordEmpty || !passwordCorrect ? "regBar incorrectBar" : "regBar"} onChange={(e) => setPassword(e.target.value)}/>
+                    </div>
+                    <div className="reg-username">
+                        <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>Имя пользователя</div>
+                        <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onChange={(e) => setUserName(e.target.value)}/>
                     </div>
                     <button className="reg-button" onClick={register}>Зарегистрироваться</button>
                     {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}

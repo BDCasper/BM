@@ -36,7 +36,7 @@ export default function Main({inp, user}:MainProps) {
                 setTopicList(data);
               });
               } else {
-                console.log("No FEN :(")
+                console.log("No DATA:(")
               }
             })
           }
@@ -45,6 +45,7 @@ export default function Main({inp, user}:MainProps) {
 
     return(
       <div className="main-page">
+        <div className="lists-wrapper">
           <div className="course-list">
             <div className={filterTopic === '' ? "all-courses setOn" : "all-courses"} onClick={() => setFilter('')}>
                 <div className="podpiska-text">Все курсы</div>
@@ -65,6 +66,13 @@ export default function Main({inp, user}:MainProps) {
               </div>
             </div>
           </div>
+          <div className="game-list">
+            <div className="game-type" onClick={() => navigate("/topic", {state:{gameWithBot: true}})}>
+                <div className="podpiska-text">Играть вдвоём</div>
+                <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+              </div>
+          </div>
+        </div>
         <div className="main-panel">
           <div className="main-panel-content">
           {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (

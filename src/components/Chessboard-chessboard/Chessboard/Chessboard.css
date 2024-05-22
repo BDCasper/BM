@@ -21,10 +21,14 @@
     background-color: #57340b;
 }
 
+.referee {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .modal {
     position: absolute;
-    top: 50%;
-    left: 10%;
     z-index: 100;
     height: 550px;
     width: 800px;
@@ -42,7 +46,7 @@
     justify-content: space-around;
     height: 300px;
     width: 800px;
-    background-color: rgba(127, 127, 127, 0.8);
+    background-color: rgba(94, 94, 94, 0.8);
 }
 
 .modal > .modal-body > img {
@@ -63,7 +67,7 @@
 }
 
 .modal > .modal-body > .checkmate-body > span {
-    font-size: 32px;
+    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #ffffff;
 }
 
 .modal > .modal-body > .checkmate-body > button {
@@ -71,10 +75,67 @@
     border-radius: 8px;
     padding: 24px 48px;
     font-size: 32px;
-    color: white;
+    background-color: #AB2A3B;
+    color: #ffffff;
 }
 
 .modal > .modal-body > .checkmate-body > button:hover {
+    cursor: pointer;
+}
+
+.modal-checkmate {
+    position: absolute;
+    z-index: 100;
+    height: 550px;
+    width: 800px;
+}
+
+.modal.hidden-checkmate {
+    display: none;
+}
+
+.modal-checkmate > .modal-body-checkmate {
+    position: absolute;
+    top: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 300px;
+    width: 800px;
+    background-color: rgba(94, 94, 94, 0.8);
+}
+
+.modal-checkmate > .modal-body-checkmate > img {
+    height: 80px;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.modal-checkmate > .modal-body-checkmate > img:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > span {
+    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #ffffff;
+}
+
+.modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > button {
+    border: none;
+    border-radius: 8px;
+    padding: 24px 48px;
+    font-size: 32px;
+    background-color: #AB2A3B;
+    color: #ffffff;
+}
+
+.modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > button:hover {
     cursor: pointer;
 }
 
@@ -146,8 +207,6 @@
     
     .modal {
         position: absolute;
-        top: 45%;
-        left: 10%;
         z-index: 100;
         height: 280px;
         width: 280px;
@@ -186,14 +245,14 @@
     }
     
     .modal > .modal-body > .checkmate-body > span {
-        font-size: 32px;
+        font-size: 20px;
     }
     
     .modal > .modal-body > .checkmate-body > button {
         border: none;
         border-radius: 8px;
-        padding: 24px 48px;
-        font-size: 32px;
+        padding: 10px 30px;
+        font-size: 20px;
         color: white;
     }
     
@@ -201,6 +260,59 @@
         cursor: pointer;
     }
     
+    .modal-checkmate {
+        position: absolute;
+        z-index: 100;
+        top: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+        width: 300px;
+    }
+    
+    .modal.hidden-checkmate {
+        display: none;
+    }
+    
+    .modal-checkmate > .modal-body-checkmate {
+        position: absolute;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-content: space-around;
+        height: 150px;
+        width: 300px;
+        background-color: rgba(94, 94, 94, 0.8);
+    }
+    
+    .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > span {
+        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #ffffff;
+    }
+    
+    .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > button {
+        border: none;
+        border-radius: 8px;
+        align-self: center;
+        padding: 0;
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
+        background-color: #AB2A3B;
+        color: #ffffff;
+    }
+    
+    .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > button:hover {
+        cursor: pointer;
+    }
+
     .turn {
         font-family: 'Open Sans', sans-serif;font-size: 15px;font-weight: normal;color: #282323;
         align-self: center;

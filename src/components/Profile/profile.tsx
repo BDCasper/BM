@@ -19,7 +19,7 @@ export default function Profile({setUserLog, user}:Props) {
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [checkPhone, setCheckPhone] = useState(false);
-
+    const [userName, setUserName] = useState<string>('');
     const [birth, setBirth] = useState<string>('');
     const [location, setLocation] = useState<string>('');
     const [avatar, setAvatar] = useState<string>('');
@@ -114,6 +114,10 @@ export default function Profile({setUserLog, user}:Props) {
                     <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                 </div>
                 <div className="profile-score">Количество очков: {user.score}</div>
+                    <div className="profile-username">
+                        <div className="profile-name">Имя пользователя</div>
+                        <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                    </div>
                 <div className="profile-inputs">
                     <div className="profile-inputs-block">
                         <div className="profile-name">Имя</div>

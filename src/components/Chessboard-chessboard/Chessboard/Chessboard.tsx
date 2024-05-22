@@ -55,6 +55,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [sendPromote, setSendPromote] = useState<boolean>(false);
   const [GRID_SIZE, setGridSize] = useState<number>(0);
   const [boardSize, setBoardSize] = useState<number>(0);
+  const [gameWithBot, setGameWithBot] = useState<boolean>(true);
   
   useEffect(() => {
     (
@@ -245,6 +246,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     })
   }
   
+  const playWithBot = async(currentPiece: Piece, pos2: Position) => {
+    await playMove(currentPiece.clone(), pos2)
+    await promoteNow(currentPiece.clone(), pos2)
+  }
+
   async function clickPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;
@@ -279,7 +285,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
         if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
             totalTurns++;
-            playMoveFunction(grabPosition, new Position(x,y), currentPiece);
+            if(gameWithBot) playWithBot(currentPiece.clone(), new Position(x,y))
+            else playMoveFunction(grabPosition, new Position(x,y), currentPiece);
+            if(fenComponents.turn === "w") fenComponents.turn = "b";
+            else fenComponents.turn = "w";
         }
 
         setActivePiece(null);
@@ -327,7 +336,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         }
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
-      {isTest === false && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
+      {isTest === false || !gameWithBot && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
     </div>
   );
 }

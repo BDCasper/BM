@@ -12,7 +12,7 @@
     flex-direction: column;
     align-items: center;
     width: 720px;
-    height: 725px;
+    height: 780px;
     border-radius: 30px;
     -webkit-box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 4px 40px -10px rgba(0,0,0,0.75);
@@ -21,28 +21,25 @@
 }
 
 .log-logo {
-    position: relative;
     margin-top: 32px;
     width: 80px;
+    margin-bottom: 10px;
 }
 
 .log-text {
-    position: relative;
-    top: 23px;
     font-family: 'Open Sans';font-size: 24px;font-weight: 400;color: #000000;
     text-align: center;
 }
 
 .log-inputs {
-    position: relative;
     display: flex;
     flex-direction: column;
     width: 416px;
     height: 399px;
-    top: 40px;
+    margin-top: 40px;
 }
 
-.log-email-text {
+.log-input-text {
     font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
 }
 
@@ -56,8 +53,7 @@ input:focus {
     height: 83px;
 }
 
-.log-emailBar {
-    position: relative;
+.logBar {
     padding-left: 20px;
     width: 393px;
     height: 49px;
@@ -65,37 +61,19 @@ input:focus {
     border: 1px solid #B7B7B7;
     border-radius: 10px;
     font-family: 'Open Sans';font-size: 20px;font-weight: 400;
-    top: 5px;
+    margin-top: 5px;
 }
 
 .log-password {
-    position: relative;
     width: 100%;
     height: 83px;
-    top: 30px;
-}
-
-.log-password-text {
-    font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
-}
-
-.log-passwordBar {
-    position: relative;
-    padding-left: 20px;
-    width: 393px;
-    height: 49px;
-    background-color: transparent;
-    border: 1px solid #B7B7B7;
-    border-radius: 10px;
-    font-family: 'Open Sans';font-size: 20px;font-weight: 400;
-    top: 5px;
+    margin-top: 30px;
 }
 
 .log-button {
-    position: relative;
-    top: 55px;
+    margin-top: 30px;
     width: 416px;
-    height: 52px;
+    min-height: 52px;
     border-radius: 10px;
     background-color: #AB2A3B;
     border: none;
@@ -111,14 +89,12 @@ input:focus {
 
 .log-password-recover {
     align-self: center;
-    position: relative;
     font-family: 'Open Sans';font-size: 16px;font-weight: 400;color: #AB2A3B;
-    top: 73px;
+    margin-top: 10px;
 }
 
 .log-to-reg {
-    position: relative;
-    top: 90px;
+    margin-top: 10px;
     align-self: center;
     text-align: center;
     height: 10px;
@@ -128,8 +104,7 @@ input:focus {
 }
 
 .log-to-reg-text {
-    position: relative;
-    top: 90px;
+    margin-top: 10px;
     align-self: center;
     text-align: center;
     width: 400px;
@@ -137,10 +112,9 @@ input:focus {
 }
 
 .log-google {
-    position: relative;
     display: flex;
     align-items: center;
-    top: 115px;
+    margin-top: 30px;
     width: 416px;
     height: 49px;
     border: 1px solid #B7B7B7;
@@ -148,14 +122,12 @@ input:focus {
 }
 
 .log-google p {
-    position: relative;
     font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
-    left: 28px;
+    margin-left: 28px;
 }
 
 .log-google-logo {
-    position: relative;
-    left: 13px;
+    margin-left: 13px;
 }
 
 .log-page a {
@@ -172,8 +144,7 @@ input:focus {
 
 .log-email-incorrect {
     height: 20px;
-    position: relative;
-    top: 60px;
+    margin-top: 10px;
     text-align: center;
     font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #DD8A8A;
 }
@@ -211,7 +182,7 @@ input:focus {
     
     .log-text {
         position: relative;
-        top: 23px;
+        top: 5px;
         font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
         text-align: center;
     }
@@ -222,10 +193,10 @@ input:focus {
         flex-direction: column;
         width: 100%;
         height: 399px;
-        top: 50px;
+        top: 10px;
     }
     
-    .log-email-text {
+    .log-input-text {
         align-self: baseline;
         font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
     }
@@ -244,7 +215,7 @@ input:focus {
         height: 83px;
     }
     
-    .log-emailBar {
+    .logBar {
         position: relative;
         padding-left: 20px;
         width: 100%;
@@ -266,28 +237,10 @@ input:focus {
         top: 10px;
     }
     
-    .log-password-text {
-        align-self: baseline;
-        font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
-    }
-    
-    .log-passwordBar {
-        position: relative;
-        padding-left: 20px;
-        width: 100%;
-        height: 40px;
-        background-color: transparent;
-        border: 1px solid #B7B7B7;
-        border-radius: 10px;
-        font-family: 'Open Sans';font-size: 20px;font-weight: 400;
-        top: 5px;
-    }
-    
     .log-button {
-        position: relative;
         align-self: center;
-        top: 40px;
-        width: 90%;
+        margin-top: 40px;
+        width: 85%;
         height: 52px;
         border-radius: 10px;
         background-color: #AB2A3B;
@@ -306,12 +259,10 @@ input:focus {
         align-self: center;
         position: relative;
         font-family: 'Open Sans';font-size: 16px;font-weight: 400;color: #AB2A3B;
-        top: 50px;
     }
 
     .log-to-reg-text {
-        position: relative;
-        top: 80px;
+        margin-top: 10px;
         align-self: center;
         text-align: center;
         width: 100%;
@@ -319,21 +270,19 @@ input:focus {
     }
 
     .log-to-reg {
-        position: relative;
         align-self: center;
         text-align: center;
-        top: 90px;
+        margin-top: 5px;
         height: 0;
         width: 80%;
         border-bottom: 1px solid #AB2A3B;
     }
     
     .log-google {
-        position: relative;
         align-self: center;
         display: flex;
         align-items: center;
-        top: 115px;
+        margin-top: 15px;
         width: 80%;
         height: 49px;
         border: 1px solid #B7B7B7;
@@ -341,14 +290,12 @@ input:focus {
     }
     
     .log-google p {
-        position: relative;
         font-family: 'Open Sans';font-size: 18px;font-weight: 400;color: #000000;
-        left: 28px;
+        margin-left: 28px;
     }
     
     .log-google-logo {
-        position: relative;
-        left: 13px;
+        margin-left: 13px;
     }
     
     .log-page a {
@@ -365,8 +312,7 @@ input:focus {
     
     .log-email-incorrect {
         height: 20px;
-        position: relative;
-        top: 60px;
+        margin-top: 5px;
         text-align: center;
         font-family: 'Open Sans';font-size: 14px;font-weight: 400;color: #DD8A8A;
     }

@@ -36,7 +36,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const checkmateModalRef = useRef<HTMLDivElement>(null);
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
     const [fen, setFen] = useState<Piece[]>([]);
-    const [checkPromote, setCheckPromote] = useState<boolean>(false);
 
     const DecodeFen: any = (fen: String)=>{
         const newboard: fenComponents = {
@@ -216,8 +215,15 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     }
 
     return (
-        <>
-            
+        <div className="referee">
+            <div className="modal-checkmate hidden" ref={checkmateModalRef}>
+                <div className="modal-body-checkmate">
+                    <div className="checkmate-body-checkmate">
+                        <span>The winning team is {board.winningTeam === TeamType.OUR ? "white" : "black"}!</span>
+                        <button onClick={restartGame}>Play again</button>
+                    </div>
+                </div>
+            </div>
             <Chessboard playMove={playMove}
                 pieces={board.pieces} 
                 fenComponents={newboard} 
@@ -235,7 +241,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 user={user}
                 arrayOfSolved={arrayOfSolved}
                 />
-        </>
+        </div>
     )
 }
 

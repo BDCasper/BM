@@ -50,10 +50,6 @@ export default function Login() {
                     window.location.reload();
                 })
             }
-            if(response.status === 400)
-            {
-                setAccExist(false);
-            }
             else{
                 setAccExist(false);
             }
@@ -78,12 +74,12 @@ export default function Login() {
                 <div className="log-text">"Будущие миллионеры"</div>
                 <div className="log-inputs">
                     <div className="log-email">
-                        <div className={emailEmpty ? "log-email-text" : "log-email-text log-empty"}>E-mail</div>
-                        <input type="text" className={emailEmpty ? "log-emailBar" : "log-emailBar log-incorrectBar"} onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <div className={emailEmpty ? "log-input-text" : "log-input-text log-empty"}>E-mail</div>
+                        <input type="text" className={emailEmpty ? "logBar" : "logBar log-incorrectBar"} onChange={(e) => setEmail(e.target.value)} value={email}/>
                     </div>
                     <div className="log-password">
-                        <div className={passwordEmpty ? "log-password-text" : "log-password-text log-empty"}>Пароль</div>
-                        <input type="password" className={passwordEmpty ? "log-passwordBar" : "log-passwordBar log-incorrectBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <div className={passwordEmpty ? "log-input-text" : "log-input-text log-empty"}>Пароль</div>
+                        <input type="password" className={passwordEmpty ? "logBar" : "logBar log-incorrectBar"} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>

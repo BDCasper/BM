@@ -8,6 +8,7 @@ import Podpiska from "../Podpiska/podpiska";
 import useSound from 'use-sound';
 import MediaQuery from "react-responsive";
 import { User } from "../../App";
+import Chessboard from "../Chessboard-chessboard/Chessboard/Chessboard";
 
 interface Props {
   puzzle_id: number;
@@ -56,17 +57,19 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
     (
       async () => {
-        if(location.state.id === undefined) redirect('/'); 
-        await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
-          headers: { 'Content-Type': 'apppcation/json' },
-          // credentials: 'include'
-        }).then((res) => {
-          if (res && res.status === 200) {
-          res.json().then((data) => setArrayOfObjects(data));
-          } else {
-            console.log("No FEN :(")
-          }
-        })
+        if(location.state.gameWithBot === undefined){
+          if(location.state.id === undefined) redirect('/'); 
+          await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
+            headers: { 'Content-Type': 'apppcation/json' },
+            // credentials: 'include'
+          }).then((res) => {
+            if (res && res.status === 200) {
+            res.json().then((data) => setArrayOfObjects(data));
+            } else {
+              console.log("No FEN :(")
+            }
+          })
+        }
       }
     )();
   }, []);
@@ -166,111 +169,134 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     )
 
     return (
-      <div className="chess-page">
-        {popOpen && popup}
-        <div className="progressBar">
-          <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
-          <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0)}% выполнено</div>
-        </div>
-        <div className="panel-content">
-          <div className="panel-spisok">
-            <div className="panel">    
-              <div className="referee">
-                <Referee fenCode={fenCode} 
-                setSolved={setSolved} 
-                solved={solved} 
-                activeIndex={activeIndex} 
-                setActiveIndex={setActiveIndex} 
-                lengthOfArray={arrayOfObjects.length} 
-                arrayOfObjects={arrayOfObjects}
-                isTest={arrayOfObjects[activeIndex] ? (arrayOfObjects[activeIndex].mode === 'test' ? true : false) : false}
-                closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
-                setPopOpen={setPopOpen}
-                user={user}
-                arrayOfSolved={arrayOfSolved}
-                />
-              </div>
+      <>
+        {
+          location.state.gameWithBot === undefined ?
+          <>
+          <div className="chess-page">
+            {popOpen && popup}
+            <div className="progressBar">
+              <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
+              <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0)}% выполнено</div>
             </div>
-            <MediaQuery maxWidth={1200}>
-              <div className="arrows">
-                <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
-                <img className="arrow" src="/assets/images/leftArrow.svg" />
+            <div className="panel-content">
+              <div className="panel-spisok">
+                <div className="panel">    
+                  <div className="referee">
+                    <Referee fenCode={fenCode} 
+                    setSolved={setSolved} 
+                    solved={solved} 
+                    activeIndex={activeIndex} 
+                    setActiveIndex={setActiveIndex} 
+                    lengthOfArray={arrayOfObjects.length} 
+                    arrayOfObjects={arrayOfObjects}
+                    isTest={arrayOfObjects[activeIndex] ? (arrayOfObjects[activeIndex].mode === 'test' ? true : false) : false}
+                    closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
+                    setPopOpen={setPopOpen}
+                    user={user}
+                    arrayOfSolved={arrayOfSolved}
+                    />
+                  </div>
                 </div>
-                <div className="rightArrowWrap" onClick={() => {
-                  if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
-                  else setPopOpen(true);
-                  }}>
-                  <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
-              </div>
-            </MediaQuery>
-            <div className="spisok">
-              {location.state.topic && <div className="topic"><p>{location.state.topic}</p></div>}
-                <div className="spisokList">
-                  {arrayOfObjects.map((puzzle, index) => (
-                        <div className={puzzle.closed === false ? (index === activeIndex ? "zadachi active" :"zadachi") : "zadachi zadachi-closed"} key={puzzle.puzzle_id} onClick={() => {
-                          if(puzzle.closed === false)
-                          {
-                            setActiveIndex(index)
-                            setCurrentFen(arrayOfObjects[index].fen)
-                          }
-                          else setPopOpen(true);
-                          }}>
-                            {puzzle.mode === 'test' ? 
-                              <>
-                              <div className="zadachi-content">
-                                <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
-                                {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
-                                <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
-                                <div className="zadachi-text" >
-                                  <div className="id" >Задание №{index+1}</div>
-                                  <div className="title" >{puzzle.title}</div>
-                                </div>
-                              </div>
-                              {!puzzle.closed && index === activeIndex && 
-                                <div className="zadachi-test">
-                                  {JSON.parse(puzzle.variants).map((variant: string) => (
-                                      <tr className="zadachi-test-q">
-                                        <td><input type="radio" className="zadachi-test-r" onChange={() => setAnswer(variant)} name="inp"/></td>
-                                        <td className="zadachi-test-t">{variant}</td>
-                                      </tr>
-                                  ))}
-                                  {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">Неправильный ответ</div>}
-                                  <button className="zadachi-test-b" onClick={handleAnswer}>Отправить</button>
-                                </div>
+                <MediaQuery maxWidth={1200}>
+                  <div className="arrows">
+                    <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+                    <img className="arrow" src="/assets/images/leftArrow.svg" />
+                    </div>
+                    <div className="rightArrowWrap" onClick={() => {
+                      if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
+                      else setPopOpen(true);
+                      }}>
+                      <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
+                  </div>
+                </MediaQuery>
+                <div className="spisok">
+                  {location.state.topic && <div className="topic"><p>{location.state.topic}</p></div>}
+                    <div className="spisokList">
+                      {arrayOfObjects.map((puzzle, index) => (
+                            <div className={puzzle.closed === false ? (index === activeIndex ? "zadachi active" :"zadachi") : "zadachi zadachi-closed"} key={puzzle.puzzle_id} onClick={() => {
+                              if(puzzle.closed === false)
+                              {
+                                setActiveIndex(index)
+                                setCurrentFen(arrayOfObjects[index].fen)
                               }
-                              </>
-                            : 
-                              <>
-                                <div className="zadachi-content">
-                                  <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
-                                  {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
-                                  <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
-                                  <div className="zadachi-text" >
-                                    <div className="id" >Задание №{index+1}</div>
-                                    <div className="title" >{puzzle.subtopic}</div>
+                              else setPopOpen(true);
+                              }}>
+                                {puzzle.mode === 'test' ? 
+                                  <>
+                                  <div className="zadachi-content">
+                                    <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                    {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
+                                    <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                    <div className="zadachi-text" >
+                                      <div className="id" >Задание №{index+1}</div>
+                                      <div className="title" >{puzzle.title}</div>
+                                    </div>
                                   </div>
-                                </div>
-                              </>
-                            }
-                        </div>
-                  ))}
+                                  {!puzzle.closed && index === activeIndex && 
+                                    <div className="zadachi-test">
+                                      {JSON.parse(puzzle.variants).map((variant: string) => (
+                                          <tr className="zadachi-test-q">
+                                            <td><input type="radio" className="zadachi-test-r" onChange={() => setAnswer(variant)} name="inp"/></td>
+                                            <td className="zadachi-test-t">{variant}</td>
+                                          </tr>
+                                      ))}
+                                      {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">Неправильный ответ</div>}
+                                      <button className="zadachi-test-b" onClick={handleAnswer}>Отправить</button>
+                                    </div>
+                                  }
+                                  </>
+                                : 
+                                  <>
+                                    <div className="zadachi-content">
+                                      <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                      {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
+                                      <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                      <div className="zadachi-text" >
+                                        <div className="id" >Задание №{index+1}</div>
+                                        <div className="title" >{puzzle.subtopic}</div>
+                                      </div>
+                                    </div>
+                                  </>
+                                }
+                            </div>
+                      ))}
+                    </div>
+                  </div>
+              </div>
+              <MediaQuery minWidth={1200}>
+                <div className="arrows">
+                  <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+                  <img className="arrow" src="/assets/images/leftArrow.svg" />
+                  </div>
+                  <div className="rightArrowWrap" onClick={() => {
+                    if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
+                    else setPopOpen(true);
+                    }}>
+                    <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
                 </div>
-              </div>
-          </div>
-          <MediaQuery minWidth={1200}>
-            <div className="arrows">
-              <div className="leftArrowWrap" onClick={() => arrayOfObjects[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
-              <img className="arrow" src="/assets/images/leftArrow.svg" />
-              </div>
-              <div className="rightArrowWrap" onClick={() => {
-                if(arrayOfObjects[activeIndex + 1] && arrayOfObjects[activeIndex + 1].closed === false) setActiveIndex(activeIndex + 1);
-                else setPopOpen(true);
-                }}>
-                <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
+              </MediaQuery>
             </div>
-          </MediaQuery>
-        </div>
-      </div>
+            </div>
+          </>
+          :
+          <div className="gameWithBot">
+              <Referee fenCode={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"} 
+                    setSolved={setSolved} 
+                    solved={solved} 
+                    activeIndex={activeIndex} 
+                    setActiveIndex={setActiveIndex} 
+                    lengthOfArray={arrayOfObjects.length} 
+                    arrayOfObjects={arrayOfObjects}
+                    isTest={arrayOfObjects[activeIndex] ? (arrayOfObjects[activeIndex].mode === 'test' ? true : false) : false}
+                    closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
+                    setPopOpen={setPopOpen}
+                    user={user}
+                    arrayOfSolved={arrayOfSolved}
+                    />
+          </div>
+        }
+        </>
     );
 
 }
