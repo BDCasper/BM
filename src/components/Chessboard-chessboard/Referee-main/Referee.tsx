@@ -21,6 +21,7 @@ interface RefereeProps {
     setPopOpen: (pop: boolean) => any;
     user: User;
     arrayOfSolved: Set<number>;
+    gameWithBot: boolean|undefined;
 }
 
 interface fenComponents {
@@ -30,7 +31,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithBot}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
@@ -216,6 +217,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
     return (
         <div className="referee">
+            {gameWithBot &&
             <div className="modal-checkmate hidden" ref={checkmateModalRef}>
                 <div className="modal-body-checkmate">
                     <div className="checkmate-body-checkmate">
@@ -224,6 +226,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                     </div>
                 </div>
             </div>
+            }
             <Chessboard playMove={playMove}
                 pieces={board.pieces} 
                 fenComponents={newboard} 
@@ -240,6 +243,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 board={board}
                 user={user}
                 arrayOfSolved={arrayOfSolved}
+                gameWithBot={gameWithBot}
                 />
         </div>
     )

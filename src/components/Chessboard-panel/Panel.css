@@ -16,7 +16,7 @@
 
 .panel-spisok {
     margin-top: 75px;
-    height: 786px;
+    min-height: 786px;
 }
 
 .panel {
@@ -25,7 +25,8 @@
     justify-content: center;
     min-width: 840px;
     width: 840px;
-    height: 786px;
+    min-height: 786px;
+    height: fit-content;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
     border-radius: 20px;
@@ -96,6 +97,8 @@
 .zadachi-content {
     display: flex;
     flex-direction: row;
+    overflow: hidden;
+    min-height: 80px;
 }
 
 .block-spisokImg {
@@ -117,7 +120,7 @@
 }
 
 .zadachi-text {
-    height: 80px;
+    height: fit-content;
     width: 250px;
     text-align: center;
 }
@@ -129,6 +132,7 @@
 
 .title {
     font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: lighter;color: #282323;
+    height: fit-content;
     margin-top: 2px;
 }
 
@@ -179,7 +183,6 @@
 }
 
 .zadachi-test-q {
-    height: 40px;
     display: flex;
     align-items: center;
     margin-left: 30px;
@@ -243,11 +246,10 @@ input[type="radio"] {
 }
 
 .arrows {
-    position: relative;
     display: flex;
     justify-content: center;
     margin-top: 51px;
-    right: 160px;
+    margin-right: 160px;
     width: 170px;
     height: 52px;
     border: 1px solid #DD8A8A;

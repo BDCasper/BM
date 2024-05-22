@@ -49,6 +49,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const navigate = useNavigate();
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('wrong.mp3');
+  const [gameWithBot, setGameWithBot] = useState<boolean|undefined>(location.state.gameWithBot);
 
   const handlePopUp = async() => {
     setPopOpen(!popOpen);
@@ -177,7 +178,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             {popOpen && popup}
             <div className="progressBar">
               <div className="progress-line" style={{width: `${(arrayOfSolved && arrayOfObjects) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
-              <div className="progress-percentage">{Math.ceil((arrayOfSolved && arrayOfObjects) ? 100*progressWidthcnt/arrayOfObjects.length : 0)}% выполнено</div>
+              <div className="progress-percentage">{(arrayOfSolved && arrayOfObjects && arrayOfObjects.length !== 0) ? Math.ceil(100*progressWidthcnt/arrayOfObjects.length) : 0}% выполнено</div>
             </div>
             <div className="panel-content">
               <div className="panel-spisok">
@@ -195,6 +196,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     setPopOpen={setPopOpen}
                     user={user}
                     arrayOfSolved={arrayOfSolved}
+                    gameWithBot={gameWithBot}
                     />
                   </div>
                 </div>
@@ -293,6 +295,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     setPopOpen={setPopOpen}
                     user={user}
                     arrayOfSolved={arrayOfSolved}
+                    gameWithBot={gameWithBot}
                     />
           </div>
         }

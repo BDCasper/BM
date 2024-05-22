@@ -162,12 +162,12 @@
 }
 
 .theme-block {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 250px;
-    height: 250px;
+    min-height: 250px;
+    height: fit-content;
     margin-right: 35px;
     bottom: 20px;
 }
@@ -181,7 +181,8 @@
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
     border-radius: 4%;
     width: 250px;   
-    height: 156px;
+    min-height: 156px;
+    height: fit-content;
 }
 
 .theme-text {
@@ -210,7 +211,7 @@
 .theme-name {
     margin-top: 40px;
     font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
-    height: 40px;
+    height: fit-content;
 }
 
 .theme-info {

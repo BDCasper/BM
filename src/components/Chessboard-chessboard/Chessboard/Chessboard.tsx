@@ -32,6 +32,7 @@ interface Props {
   board: Board;
   user: User;
   arrayOfSolved: Set<number>;
+  gameWithBot: boolean|undefined;
 }
 
 let totalTurns = 0;
@@ -40,7 +41,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, user, arrayOfSolved} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, user, arrayOfSolved, gameWithBot} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -55,7 +56,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [sendPromote, setSendPromote] = useState<boolean>(false);
   const [GRID_SIZE, setGridSize] = useState<number>(0);
   const [boardSize, setBoardSize] = useState<number>(0);
-  const [gameWithBot, setGameWithBot] = useState<boolean>(true);
   
   useEffect(() => {
     (
@@ -285,10 +285,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
         if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
             totalTurns++;
-            if(gameWithBot) playWithBot(currentPiece.clone(), new Position(x,y))
+            if(gameWithBot){
+              playWithBot(currentPiece.clone(), new Position(x,y))
+              if(fenComponents.turn === "w") fenComponents.turn = "b";
+              else fenComponents.turn = "w";
+            } 
             else playMoveFunction(grabPosition, new Position(x,y), currentPiece);
-            if(fenComponents.turn === "w") fenComponents.turn = "b";
-            else fenComponents.turn = "w";
+            
         }
 
         setActivePiece(null);
@@ -336,7 +339,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         }
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
-      {isTest === false || !gameWithBot && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
+      {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
     </div>
   );
 }
