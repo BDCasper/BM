@@ -115,7 +115,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
     (
       async () => {
-        activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log("Жду");
+        activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log();
         if(activeIndex === 0 && arrayOfObjects[0]){
           setCurrentFen(arrayOfObjects[activeIndex].fen)
         }
@@ -148,7 +148,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
       (
         async () => {
-          arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log("жду");
+          arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log();
           setSolved(arrayOfObjects.length);
           let cnt = 0;
           if(arrayOfSolved && arrayOfObjects) {
@@ -176,8 +176,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
           <div className="chess-page">
             {popOpen && popup}
             <div className="progressBar">
-              <div className="progress-line" style={{width: `${(arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
-              <div className="progress-percentage">{Math.ceil((arrayOfSolved) ? 100*progressWidthcnt/arrayOfObjects.length : 0)}% выполнено</div>
+              <div className="progress-line" style={{width: `${(arrayOfSolved && arrayOfObjects) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
+              <div className="progress-percentage">{Math.ceil((arrayOfSolved && arrayOfObjects) ? 100*progressWidthcnt/arrayOfObjects.length : 0)}% выполнено</div>
             </div>
             <div className="panel-content">
               <div className="panel-spisok">
