@@ -31,7 +31,24 @@ export default function Podpiska({setPopOpen}:Props) {
                             <div className="sub-descr">Безлимитный доступ ко всем урокам</div>
                         </div>
                         <div className="sub-lenta">
-                            <div className="sub-lenta-center"><span className="sub-lenta-center-text">33$ в месяц</span></div>
+                            <div className="sub-lenta-center">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>1 месяц:</th>
+                                            <th>3 месяца:</th>
+                                            <th>6 месяцев:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>8990 ₸</td>
+                                            <td>18990 ₸ (30% скидка)</td>
+                                            <td>26990 ₸ (50% скидка)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>    
+                            </div>
                             <div className="sub-lenta-sides">
                                 <div className="sub-lenta-left"></div>
                                 <div className="sub-lenta-right"></div>
@@ -65,7 +82,24 @@ export default function Podpiska({setPopOpen}:Props) {
                         <div className="sub-descr">Безлимитный доступ ко всем урокам</div>
                     </div>
                     <div className="sub-lenta">
-                        <div className="sub-lenta-center"><span className="sub-lenta-center-text">33$ в месяц</span></div>
+                        <div className="sub-lenta-center">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>1 месяц:</th>
+                                        <th>3 месяца:</th>
+                                        <th>6 месяцев:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>8990 ₸</td>
+                                        <td>18990 ₸ (30% скидка)</td>
+                                        <td>26990 ₸ (50% скидка)</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
                         <div className="sub-lenta-sides">
                             <div className="sub-lenta-left"></div>
                             <div className="sub-lenta-right"></div>

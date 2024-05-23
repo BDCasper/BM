@@ -78,7 +78,7 @@ export class Board {
                             piece.possibleMoves = piece.possibleMoves?.filter(m => !m.samePosition(move));
                         }
                     } else {
-                        if (enemy.possibleMoves.some(m => m.samePosition(clonedKing.position))) {
+                        if (enemy && clonedKing && enemy.possibleMoves.some(m => m.samePosition(clonedKing.position))) {
                             piece.possibleMoves = piece.possibleMoves?.filter(m => !m.samePosition(move));
                         }
                     }

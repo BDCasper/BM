@@ -24,6 +24,7 @@
 
 .referee {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -120,6 +121,7 @@
 .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 48px;
 }
 

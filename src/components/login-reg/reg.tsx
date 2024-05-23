@@ -18,6 +18,10 @@ export default function Reg() {
     const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
     const navigate = useNavigate();
 
+    const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
+        if( e.key === 'Enter' ) register();
+    };
+
     useEffect(() => {
         (
         async () => {
@@ -77,11 +81,11 @@ export default function Reg() {
                     </div>
                     <div className="password">
                         <div className={ passwordEmpty || !passwordCorrect ? "reg-input-text incorrect" : "reg-input-text"}>Придумайте пароль</div>
-                        <input type="password" className={ passwordEmpty || !passwordCorrect ? "regBar incorrectBar" : "regBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" className={ passwordEmpty || !passwordCorrect ? "regBar incorrectBar" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <div className="reg-username">
                         <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>Имя пользователя</div>
-                        <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onChange={(e) => setUserName(e.target.value)}/>
+                        <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setUserName(e.target.value)}/>
                     </div>
                     <button className="reg-button" onClick={register}>Зарегистрироваться</button>
                     {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}

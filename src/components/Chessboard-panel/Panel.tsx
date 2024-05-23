@@ -300,6 +300,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     gameWithBot={gameWithBot}
                     />
           </div>
+          
         }
         </>
     );

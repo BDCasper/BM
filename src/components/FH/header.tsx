@@ -18,7 +18,7 @@ export default function Header({checkUserLog, setInp, user}:Props) {
 
     const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
         if( e.key === 'Enter' ) setInp(inputText);
-      };
+    };
 
     useEffect(() => {
         (
@@ -44,7 +44,7 @@ export default function Header({checkUserLog, setInp, user}:Props) {
                     <div className="search sHidden">
                         <img src="assets/images/search.svg" className="loop"/>
                         <input type="text" className="searchBar"/>
-                        <button name="button" className="poisk" onClick={() => console.log("hello")}>Поиск</button>
+                        <button name="button" className="poisk">Поиск</button>
                     </div>
                 }
                 {!token?.includes('.') ? (

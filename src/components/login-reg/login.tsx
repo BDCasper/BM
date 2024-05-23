@@ -14,6 +14,10 @@ export default function Login() {
     const [accExist, setAccExist] = useState<boolean>(true);
     const navigate = useNavigate();
 
+    const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
+        if( e.key === 'Enter' ) login(e);
+    };
+
     useEffect(() => {
         (
         async () => {
@@ -75,11 +79,11 @@ export default function Login() {
                 <div className="log-inputs">
                     <div className="log-email">
                         <div className={emailEmpty ? "log-input-text" : "log-input-text log-empty"}>E-mail</div>
-                        <input type="text" className={emailEmpty ? "logBar" : "logBar log-incorrectBar"} onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <input type="text" className={emailEmpty ? "logBar" : "logBar log-incorrectBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setEmail(e.target.value)} value={email}/>
                     </div>
                     <div className="log-password">
                         <div className={passwordEmpty ? "log-input-text" : "log-input-text log-empty"}>Пароль</div>
-                        <input type="password" className={passwordEmpty ? "logBar" : "logBar log-incorrectBar"} onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" className={passwordEmpty ? "logBar" : "logBar log-incorrectBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <button className="log-button" onClick={login}>Войти</button>
                     <div className="log-password-recover"><a href="">Забыли пароль?</a></div>

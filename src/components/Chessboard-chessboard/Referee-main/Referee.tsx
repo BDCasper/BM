@@ -7,6 +7,7 @@ import { PieceType, TeamType } from "../Types";
 import Chessboard from "../Chessboard/Chessboard";
 import TaskProps from "../../Chessboard-panel/Panel"
 import { User } from "../../../App";
+import useSound from "use-sound";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -37,6 +38,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const checkmateModalRef = useRef<HTMLDivElement>(null);
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
     const [fen, setFen] = useState<Piece[]>([]);
+    const [winSound] = useSound('win.wav', { volume: 0.2 });
+    const [everyMove, setEveryMover] = useState<Board[]>([]);
+    const [movePtr, setMovePtr] = useState<number>(0);
 
     const DecodeFen: any = (fen: String)=>{
         const newboard: fenComponents = {
@@ -123,6 +127,18 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         )();
       }, [fen]);
 
+      useEffect(() => {
+        (
+            async () => {
+                if(board.pieces.length !== 0)
+                    {
+                        if(!everyMove.some((bord) => (bord === board)))
+                        everyMove.push(board);
+                    }
+            }
+        )();
+      }, [board]);
+
     const playMove = async(playedPiece: Piece, destination: Position): Promise<boolean> => {
 
         if (playedPiece.possibleMoves === undefined) return false;
@@ -138,7 +154,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             playedPiece.type,
             playedPiece.team
         );  
-
+        setMovePtr(movePtr + 1);
         setBoard((previousBoard) => {
             const clonedBoard = previousBoard.clone();
             clonedBoard.totalTurns += 1;
@@ -148,6 +164,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
+                winSound();
             }
             return clonedBoard;
         })
@@ -209,7 +226,37 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
         return validMove;
     }
-    
+
+    useEffect(() => {
+        (
+            async () => {
+                console.log(movePtr)
+                console.log(everyMove)
+            }
+        )();
+      }, [movePtr]);
+
+    function changeMove(way:number) {
+        if(everyMove && everyMove.length !== 0){
+            if(way === 1 && movePtr + 1 < everyMove.length){
+                if(movePtr === everyMove.length-1) 
+                {
+                    setBoard(everyMove[movePtr])
+                    setMovePtr(movePtr+1)
+                }
+                else 
+                {
+                    setBoard(everyMove[movePtr+1])
+                    setMovePtr(movePtr+1)
+                }
+            }
+            if(way === -1 && movePtr - 1 >= 0){
+                setBoard(everyMove[movePtr-1])
+                if(movePtr !== 0) setMovePtr(movePtr-1)
+            }
+        }
+    }
+
     function restartGame() {
         checkmateModalRef.current?.classList.add("hidden");
         setBoard(initialBoard.clone());
@@ -218,14 +265,26 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     return (
         <div className="referee">
             {gameWithBot &&
-            <div className="modal-checkmate hidden" ref={checkmateModalRef}>
-                <div className="modal-body-checkmate">
-                    <div className="checkmate-body-checkmate">
-                        <span>The winning team is {board.winningTeam === TeamType.OUR ? "white" : "black"}!</span>
-                        <button onClick={restartGame}>Play again</button>
+            <>
+                <div className="modal-checkmate hidden" ref={checkmateModalRef}>
+                    <div className="modal-body-checkmate">
+                        <div className="checkmate-body-checkmate">
+                            <span>Победа {board.winningTeam === TeamType.OUR ? "белых" : "чёрных"}!</span>
+                            <button onClick={restartGame}>Играть снова</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div>
+                    <div className="arrows">
+                    <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
+                        <img className="arrow" src="/assets/images/leftArrow.svg" />
+                    </div>
+                    <div className="rightArrowWrap" onClick={() => {changeMove(1)}}>
+                        <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
+                    </div>
+                </div>
+            </>
+
             }
             <Chessboard playMove={playMove}
                 pieces={board.pieces} 
@@ -244,6 +303,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 user={user}
                 arrayOfSolved={arrayOfSolved}
                 gameWithBot={gameWithBot}
+                everyMove={everyMove}
+                movePtr={movePtr}
                 />
         </div>
     )
