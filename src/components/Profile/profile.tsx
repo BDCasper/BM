@@ -11,9 +11,10 @@ import 'react-phone-input-2/lib/style.css';
 interface Props {
     setUserLog: (use: boolean) => any;
     user: User;
+    token: string;
 }
 
-export default function Profile({setUserLog, user}:Props) {
+export default function Profile({setUserLog, user, token}:Props) {
     const [name, setName] = useState<string>('');   
     const [surname, setSurname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -40,6 +41,14 @@ export default function Profile({setUserLog, user}:Props) {
             setAvatar(cachedURL)
         }
     }
+
+    useEffect(() => {
+        (
+            async() => {
+                if(token === null) navigate('/login');
+            }
+        )()
+    },[])
 
     const handleUserChange = async() => {
 
@@ -106,47 +115,49 @@ export default function Profile({setUserLog, user}:Props) {
 
     return(
         <div className="profile">
-            <div className="profile-ramka">
-                <div className="profile-upper-text">Личный профиль</div>
-                <div className="profile-image-block">                
-                    <div className="profile-image-wrapper" style={{backgroundImage: `url(assets/images/profile-avatar.svg)`}}><img alt="" src={avatar} className="profile-image"/></div>
-                    <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
-                    <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
+            {token !== null &&
+                <div className="profile-ramka">
+                    <div className="profile-upper-text">Личный профиль</div>
+                    <div className="profile-image-block">                
+                        <div className="profile-image-wrapper" style={{backgroundImage: `url(assets/images/profile-avatar.svg)`}}><img alt="" src={avatar} className="profile-image"/></div>
+                        <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
+                        <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
+                    </div>
+                    <div className="profile-score">Количество очков: {user.score}</div>
+                        <div className="profile-username">
+                            <div className="profile-name">Имя пользователя</div>
+                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                        </div>
+                    <div className="profile-inputs">
+                        <div className="profile-inputs-block">
+                            <div className="profile-name">Имя</div>
+                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={name} onChange={(e) => setName(e.target.value)}/>
+                        </div>
+                        <div className="profile-inputs-block">
+                            <div className="profile-name">Фамилия</div>
+                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={surname} onChange={(e) => setSurname(e.target.value)}/>
+                        </div>
+                        <div className="profile-inputs-block">
+                            <div className="profile-name">E-mail</div>
+                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        </div>
+                        <div className="profile-inputs-block">
+                            <div className="profile-name">Телефон</div>
+                            <PhoneInput containerClass={inpChange ? (checkPhone ? "phone-containter" : "phone-containter wrong-input") : "phone-containter input-disabled"} inputClass="phone-input" buttonClass="phone-input-button" country={'kz'} placeholder="+7 777 777 77 77" value={phone} inputProps={{required: true,}} onChange={handlePhoneChange}/>
+                        </div>
+                        <div className="profile-inputs-block">
+                            <div className="profile-name">Дата рождения</div>
+                            <input type="date" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={birth} onChange={(e) => setBirth(e.target.value)}/>
+                        </div>
+                        <div className="profile-inputs-block">
+                            <div className="profile-name">Местоположение</div>
+                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={location} onChange={(e) => setLocation(e.target.value)}/>
+                        </div>
+                    </div>
+                    <button className="profile-button" onClick={handleUserChange}>{buttonName}</button>
+                    <button className="profile-logout" onClick={logout}>Выйти</button>
                 </div>
-                <div className="profile-score">Количество очков: {user.score}</div>
-                    <div className="profile-username">
-                        <div className="profile-name">Имя пользователя</div>
-                        <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={userName} onChange={(e) => setUserName(e.target.value)}/>
-                    </div>
-                <div className="profile-inputs">
-                    <div className="profile-inputs-block">
-                        <div className="profile-name">Имя</div>
-                        <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={name} onChange={(e) => setName(e.target.value)}/>
-                    </div>
-                    <div className="profile-inputs-block">
-                        <div className="profile-name">Фамилия</div>
-                        <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={surname} onChange={(e) => setSurname(e.target.value)}/>
-                    </div>
-                    <div className="profile-inputs-block">
-                        <div className="profile-name">E-mail</div>
-                        <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    </div>
-                    <div className="profile-inputs-block">
-                        <div className="profile-name">Телефон</div>
-                        <PhoneInput containerClass={inpChange ? (checkPhone ? "phone-containter" : "phone-containter wrong-input") : "phone-containter input-disabled"} inputClass="phone-input" buttonClass="phone-input-button" country={'kz'} placeholder="+7 777 777 77 77" value={phone} inputProps={{required: true,}} onChange={handlePhoneChange}/>
-                    </div>
-                    <div className="profile-inputs-block">
-                        <div className="profile-name">Дата рождения</div>
-                        <input type="date" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={birth} onChange={(e) => setBirth(e.target.value)}/>
-                    </div>
-                    <div className="profile-inputs-block">
-                        <div className="profile-name">Местоположение</div>
-                        <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={location} onChange={(e) => setLocation(e.target.value)}/>
-                    </div>
-                </div>
-                <button className="profile-button" onClick={handleUserChange}>{buttonName}</button>
-                <button className="profile-logout" onClick={logout}>Выйти</button>
-            </div>
+            }
         </div>
     )
 }

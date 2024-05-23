@@ -50,6 +50,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('wrong.mp3');
   const [gameWithBot, setGameWithBot] = useState<boolean|undefined>(location.state.gameWithBot);
+  const [chooseQ, setChooseQ] = useState<number>(-1);
 
   const handlePopUp = async() => {
     setPopOpen(!popOpen);
@@ -73,7 +74,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
         }
       }
     )();
-  }, []);
+  }, [location.state.id]);
 
   const handleAnswer = async() => {
     await fetch( `${backend}/api/checkmove`, {
@@ -117,6 +118,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     (
       async () => {
         activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log();
+        setChooseQ(-1);
         if(activeIndex === 0 && arrayOfObjects[0]){
           setCurrentFen(arrayOfObjects[activeIndex].fen)
         }
@@ -237,10 +239,10 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                   </div>
                                   {!puzzle.closed && index === activeIndex && 
                                     <div className="zadachi-test">
-                                      {JSON.parse(puzzle.variants).map((variant: string) => (
-                                          <tr className="zadachi-test-q">
-                                            <td><input type="radio" className="zadachi-test-r" onChange={() => setAnswer(variant)} name="inp"/></td>
-                                            <td className="zadachi-test-t">{variant}</td>
+                                      {JSON.parse(puzzle.variants).map((variant: string, ind: number) => (
+                                          <tr key={ind} className= {chooseQ === ind ? "zadachi-test-q activeQ" : "zadachi-test-q"} onClick={() => setChooseQ(ind)}>
+                                            <td key={ind}><input type="radio" className="zadachi-test-r" checked={chooseQ === ind} onChange={() => setAnswer(variant)} name="inp"/></td>
+                                            <td key={ind} className="zadachi-test-t">{variant}</td>
                                           </tr>
                                       ))}
                                       {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">Неправильный ответ</div>}

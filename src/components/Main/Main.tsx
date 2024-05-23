@@ -34,6 +34,7 @@ export default function Main({inp, user}:MainProps) {
               if (res && res.status === 200) {
               res.json().then((data) => {
                 setTopicList(data);
+                topicList.sort();
               });
               } else {
                 console.log("No DATA:(")

@@ -73,7 +73,7 @@ export class Board {
                     enemy.possibleMoves = simulatedBoard.getValidMoves(enemy, simulatedBoard.pieces);
 
                     if (enemy.isPawn) {
-                        if (enemy.possibleMoves.some(m => m.x !== enemy.position.x
+                        if (enemy && clonedKing && enemy.possibleMoves.some(m => m.x !== enemy.position.x
                             && m.samePosition(clonedKing.position))) {
                             piece.possibleMoves = piece.possibleMoves?.filter(m => !m.samePosition(move));
                         }

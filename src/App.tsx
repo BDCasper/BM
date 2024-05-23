@@ -30,8 +30,7 @@ function App() {
   const [inp, setInp] = useState<string>('');
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
-
-  let token = JSON.parse(JSON.stringify(sessionStorage.getItem("token")));
+  const [token, setToken] = useState<string>(JSON.parse(JSON.stringify(sessionStorage.getItem("token"))))
 
   useEffect(() => {
     (
@@ -63,7 +62,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/" element={<Main inp={inp} user={user}/>} />
             {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
-            <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user}/>} />
+            {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
           </Routes>
         </BrowserRouter>
         <Footer />
@@ -73,7 +72,7 @@ function App() {
 
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
-//export const backend = "http://195.49.215.186:10000";
+export const backend = "http://195.49.215.186:10000";
 //export const backend = "https://bm-back.onrender.com";
-export const backend = "https://api.bm-chess.com";
+//export const backend = "https://api.bm-chess.com";
 
