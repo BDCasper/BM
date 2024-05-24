@@ -227,15 +227,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         return validMove;
     }
 
-    useEffect(() => {
-        (
-            async () => {
-                console.log(movePtr)
-                console.log(everyMove)
-            }
-        )();
-      }, [movePtr]);
-
     function changeMove(way:number) {
         if(everyMove && everyMove.length !== 0){
             if(way === 1 && movePtr + 1 < everyMove.length){
