@@ -336,7 +336,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="task-description">{arrayOfObjects[activeIndex]?.title}</div>
       <div className="chessboard-board">
-        <div onClick={(e) => isTest === true || movePtr !== everyMove.length-1 ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
+        <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
       {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}

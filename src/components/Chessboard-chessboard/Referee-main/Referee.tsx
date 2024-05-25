@@ -164,7 +164,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
-                winSound();
+                if(gameWithBot) winSound();
             }
             return clonedBoard;
         })
