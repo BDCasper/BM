@@ -53,6 +53,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [moveSound] = useSound('move-self.mp3');
   const [wrongSound] = useSound('wrong.mp3');
   const [winSound] = useSound('win.wav', { volume: 0.2 });
+  const [topicWin] = useSound('topicWin.mp3');
   const modalRef = useRef<HTMLDivElement>(null);
   const [promotionPawn, setPromotionPawn] = useState<Piece>();
   const [sendPromote, setSendPromote] = useState<boolean>(false);
@@ -84,9 +85,24 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const win = async() => {
     if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
     localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved));
+    let chk;
+    let ind = 0;
+    chk = false;
+    for(let i = 0; i < lengthOfArray; i++)
+    {
+      if(!arrayOfSolved.has(arrayOfObjects[i].puzzle_id)) {
+        ind = i;
+        chk = true;
+        break;
+      }
+    }
     if (lengthOfArray - 1 === activeIndex) {
-          winSound();
-          navigate("/")
+      if(chk) setActiveIndex(ind)
+      else {
+        topicWin();
+        navigate("/")
+      }
+      chk = false;
     } 
     else if(closed === true)
     {
@@ -96,11 +112,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     else 
     {
         winSound();
-        setActiveIndex(activeIndex + 1)
-        setSolved(solved - 1);
+        if(arrayOfSolved.has(arrayOfObjects[activeIndex + 1].puzzle_id) && chk) setActiveIndex(ind)
+        else setActiveIndex(activeIndex + 1)
+        chk = false;
         totalTurns = 0;
     }
   }
+
 
   const nullRightMoves = () => {
     rightMove[0].x = -1;

@@ -24,6 +24,22 @@ export default function Main({inp, user}:MainProps) {
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
 
+    function getNoun(num: number, one: string, two: string, five: string) {
+      let n = Math.abs(num);
+      n %= 100;
+      if (n >= 5 && n <= 20 || n === 0) {
+        return five;
+      }
+      n %= 10;
+      if (n === 1) {
+        return one;
+      }
+      if (n >= 2 && n <= 4) {
+        return two;
+      }
+      return five;
+    }
+
     useEffect(() => {
         (
           async () => {
@@ -43,6 +59,7 @@ export default function Main({inp, user}:MainProps) {
           }
         )();
       }, []);
+
 
     return(
       <div className="main-page">
@@ -91,8 +108,8 @@ export default function Main({inp, user}:MainProps) {
                             <div className="theme-text">
                                 <div className="theme-name">{topic.topic}</div>
                                 <ul className="theme-info">
-                                    <li className="theme-lessons"><span>{topic.lessons} уроков</span></li> 
-                                    <li className="theme-puzzles"><span>{topic.puzzles} задачи</span></li>
+                                    <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
+                                    <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -109,10 +126,14 @@ export default function Main({inp, user}:MainProps) {
                         <div className="theme-content">
                             <div className="theme-text">
                                 <div className="theme-name">{topic.topic}</div>
-                                <ul className="theme-info">
-                                    <li className="theme-lessons"><span>{topic.lessons} уроков</span></li> 
-                                    <li className="theme-puzzles"><span>{topic.puzzles} задачи</span></li>
-                                </ul>
+                                <div className="theme-info">
+                                  <ul>
+                                    <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
+                                  </ul>
+                                  <ul>
+                                    <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
+                                  </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

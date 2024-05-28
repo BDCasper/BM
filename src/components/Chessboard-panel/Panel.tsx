@@ -99,7 +99,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
               setActiveIndex(activeIndex+1);
             }
             else {
-              alert("Молодец")
               navigate("/")
             }
           } 
