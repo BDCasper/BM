@@ -185,6 +185,16 @@
     flex-direction: column;
 }
 
+.zadachi:last-child .zadachi-test {
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.active:last-child {
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+}
+
 .zadachi-test-q {
     display: flex;
     margin-left: 30px;

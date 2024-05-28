@@ -168,9 +168,9 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
       <div className={popOpen ? "sub-show" : "hidden"}>
           <Podpiska setPopOpen={setPopOpen}/>
       </div>
-    )
+  )
 
-    return (
+  return (
       <>
         {
           location.state.gameWithBot === undefined ?
@@ -239,9 +239,12 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                   {!puzzle.closed && index === activeIndex && 
                                     <div className="zadachi-test">
                                       {JSON.parse(puzzle.variants).map((variant: string, ind: number) => (
-                                          <tr key={ind} className= {chooseQ === ind ? "zadachi-test-q activeQ" : "zadachi-test-q"} onClick={() => setChooseQ(ind)}>
-                                            <td key={ind}><input type="radio" className="zadachi-test-r" checked={chooseQ === ind} onChange={() => setAnswer(variant)} name="inp"/></td>
-                                            <td key={ind} className="zadachi-test-t">{variant}</td>
+                                          <tr key={ind} className= {chooseQ === ind ? "zadachi-test-q activeQ" : "zadachi-test-q"} onClick={() => {
+                                            setChooseQ(ind)
+                                            setAnswer(variant)
+                                            }}>
+                                            <td><input type="radio" className="zadachi-test-r" checked={chooseQ === ind} onChange={() => setAnswer(variant)} name="inp"/></td>
+                                            <td className="zadachi-test-t">{variant}</td>
                                           </tr>
                                       ))}
                                       {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">Неправильный ответ</div>}
