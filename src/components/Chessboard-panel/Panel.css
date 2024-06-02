@@ -279,6 +279,7 @@ input[type="radio"] {
     height: 52px;
     border: 1px solid #DD8A8A;
     border-radius: 60px;
+    user-select: none; /* Standard */
 }
 
 .leftArrowWrap {
@@ -288,6 +289,7 @@ input[type="radio"] {
     height: 52px;
     width: 65px;
     border-right: 1px solid #DD8A8A;
+    user-select: none; /* Standard */
 }
 
 .rightArrowWrap {
@@ -296,6 +298,7 @@ input[type="radio"] {
     justify-content: right;
     height: 52px;
     width: 65px;
+    user-select: none; /* Standard */
 }
 
 .arrow {
