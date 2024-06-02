@@ -84,7 +84,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
   const win = async() => {
     if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
-    localStorage.setItem(location.state.id, JSON.stringify(arrayOfSolved));
     let chk;
     let ind = 0;
     chk = false;
@@ -97,7 +96,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       }
     }
     if (lengthOfArray - 1 === activeIndex) {
-      if(chk) setActiveIndex(ind)
+      if(chk) {
+        winSound();
+        setActiveIndex(ind)
+      }
       else {
         topicWin();
         navigate("/")

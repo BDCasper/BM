@@ -92,18 +92,18 @@ export default function Main({inp, user}:MainProps) {
           </div>
         </div>
         <div className="main-panel">
-          <div className="main-panel-content">
+          <div className="main-panel-content">  
           {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (
             <div key={dif}>
               <p className="levelName">{dif === 'easy' ? "Для начинающих" : dif === 'medium' ? "Для продолжающих" : dif === 'hard' ? "Для продвинутых" : ''}</p>
               <div className="pro-level">
                 {inp !== '' ? 
                   <>
-                  {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic) => (
+                  {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic, ind) => (
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src="/assets/images/courseImg.svg"/></div>
+                        <div className="themeImg"><img src={`/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG`} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
                                 <div className="theme-name">{topic.topic}</div>
@@ -120,9 +120,9 @@ export default function Main({inp, user}:MainProps) {
                   </> 
                 :
                   <>
-                  {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic) => (
+                  {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src="/assets/images/courseImg.svg" className="themeImgSize"/></div>
+                        <div className="themeImg"><img src={`/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG`} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
                                 <div className="theme-name">{topic.topic}</div>

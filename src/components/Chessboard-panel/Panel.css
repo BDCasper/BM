@@ -54,7 +54,7 @@
     height: 786px;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
-    border-radius: 20px;
+    border-radius: 26px;
 }
 
 .topic {
@@ -186,13 +186,13 @@
 }
 
 .zadachi:last-child .zadachi-test {
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 19px;
+    border-bottom-right-radius: 19px;
 }
 
 .active:last-child {
-    border-bottom-left-radius: 60px;
-    border-bottom-right-radius: 60px;
+    border-bottom-left-radius: 21px;
+    border-bottom-right-radius: 21px;
 }
 
 .zadachi-test-q {

@@ -7,6 +7,7 @@ import InputMask from 'react-input-mask';
 import { User } from "../../App";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import ReactFlagsSelect from "react-flags-select";
 
 interface Props {
     setUserLog: (use: boolean) => any;
@@ -28,6 +29,7 @@ export default function Profile({setUserLog, user, token}:Props) {
     const [buttonName, setButtonName] = useState<string>("Изменить");
     const [score, setScore] = useState<number>(0);
     const navigate = useNavigate();
+    const [selected, setSelected] = useState("");
     const fileUploadRef = useRef<HTMLInputElement>(null);
 
     const handleAvatarUpload = async() => {
@@ -71,7 +73,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         (
             async() => {
                 setCheckPhone(true);
-                if(phone === '' || phone.length < 11) setCheckPhone(false);
+                if(phone !== '' && phone.length < 11) setCheckPhone(false);
             }
         )()
     },[phone])
@@ -151,7 +153,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                         </div>
                         <div className="profile-inputs-block">
                             <div className="profile-name">Местоположение</div>
-                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={location} onChange={(e) => setLocation(e.target.value)}/>
+                            <ReactFlagsSelect selected={location} onSelect={(code) => setLocation(code)}  searchable={true} className={inpChange ? "profile-country" : "profile-country input-disabled"}/>
                         </div>
                     </div>
                     <button className="profile-button" onClick={handleUserChange}>{buttonName}</button>

@@ -120,6 +120,13 @@
     border-bottom-right-radius: 10px !important;
 }
 
+.profile-country button {
+    margin-top: 5px;
+    border-radius: 10px;
+    width: 348px !important;
+    height: 52px !important;
+}
+
 .input-disabled {
     pointer-events: none;
 }
@@ -243,6 +250,20 @@
         margin-top: 20px;
     }
     
+    .profile-country {
+        margin-top: 5px;
+        border-radius: 10px;
+        width: 104% !important;
+        height: 52px !important;
+    }
+
+    .profile-country button {
+        margin-top: 5px;
+        border-radius: 10px;
+        width: 100% !important;
+        height: 52px !important;
+    }
+
     .profile-input {
         width: 100%;
         padding-left: 10px;
