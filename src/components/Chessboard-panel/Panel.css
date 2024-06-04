@@ -16,16 +16,16 @@
 
 .panel-spisok {
     margin-top: 75px;
-    min-height: 786px;
+    min-height: 710px;
 }
 
 .panel {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 840px;
-    width: 840px;
-    min-height: 786px;
+    min-width: 800px;
+    width: 800px;
+    min-height: 650px;
     height: fit-content;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
@@ -51,7 +51,7 @@
     flex-direction: column;
     left: 100px;
     width: 319px;
-    height: 786px;
+    height: 692px;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
     border-radius: 26px;
@@ -273,7 +273,6 @@ input[type="radio"] {
 .arrows {
     display: flex;
     justify-content: center;
-    margin-top: 31px;
     margin-right: 320px;
     width: 170px;
     height: 52px;

@@ -354,7 +354,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             </div>
         </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
-      <div className="task-description">{arrayOfObjects[activeIndex]?.title}</div>
       <div className="chessboard-board">
         <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
       </div>

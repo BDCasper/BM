@@ -160,18 +160,18 @@
 }
 
 .task-name {
-    margin-bottom: 11px;
+    margin-bottom: 20px;
     font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: bold;color: #AB2A3B;
     align-self: center;
     text-align: center;
 }
 
-.task-description {
+/* .task-description {
     margin-bottom: 47px;
     font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
-}
+} */
 
 .move_symbol {
     margin-right: 8px;

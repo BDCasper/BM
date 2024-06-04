@@ -72,6 +72,19 @@ function App() {
   );
 }
 
+const indexedDB = window.indexedDB;
+
+export const requestDB = indexedDB.open("DataBase", 1);
+
+requestDB.onerror = function (event){
+  console.log("Error in indexedDB: ", event);
+}
+
+requestDB.onupgradeneeded = function(event){
+  const db = requestDB.result;
+  const store = db.createObjectStore("token", {keyPath: 'key', autoIncrement: true});
+}
+
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
 //export const backend = "http://195.49.215.186:10000";
