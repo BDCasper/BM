@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { User } from "../../App";
 import MediaQuery from "react-responsive";
 
+const arrOfFigures = ["Пешка", "Слон", "Ладья", "Ферзь", "Король", "Конь", "Слон"];
+
 interface Props {
     topic_id: number;
     topic: string;
@@ -103,7 +105,7 @@ export default function Main({inp, user}:MainProps) {
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src={`/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG`} className="themeImgSize"/></div>
+                        <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
                                 <div className="theme-name">{topic.topic}</div>
@@ -122,7 +124,7 @@ export default function Main({inp, user}:MainProps) {
                   <>
                   {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src={`/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG`} className="themeImgSize"/></div>
+                        <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
                                 <div className="theme-name">{topic.topic}</div>
