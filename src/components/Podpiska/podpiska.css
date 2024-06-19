@@ -181,6 +181,12 @@
     border: none;
     background-color: #AB2A3B;
     font-family: 'Open Sans';font-size: 22px;font-weight: 400;color: #ffffff;
+    transition-duration: 0.4s;
+}
+
+.sub-button:hover {
+    background-color: #FFDF2C;
+    transition-duration: 0.4s;
 }
 
 

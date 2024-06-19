@@ -6,72 +6,9 @@ interface Props {
 }
 
 export default function Podpiska({setPopOpen}:Props) {
-
-    const [checkPath, setCheckPath] = useState<boolean>(true);
-
-    useEffect(() => {
-        (
-            async() => {
-                if(window.location.pathname === '/subscription')
-                    setCheckPath(true);
-                else setCheckPath(false);
-            }
-        )()
-    },[window.location.pathname])
     
-
     return(
         <>
-        {checkPath === true ? 
-            <div className="sub-main">
-                    <div className="sub-ramka">
-                        <div className="sub-upper-text">
-                            <div className="sub-title">ПОДПИСКА</div>
-                            <div className="sub-status">Неактивировано</div>
-                            <div className="sub-descr">Безлимитный доступ ко всем урокам</div>
-                        </div>
-                        <div className="sub-lenta">
-                            <div className="sub-lenta-center">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>1 месяц:</th>
-                                            <th>3 месяца:</th>
-                                            <th>6 месяцев:</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>8990 ₸</td>
-                                            <td>18990 ₸ (30% скидка)</td>
-                                            <td>26990 ₸ (50% скидка)</td>
-                                        </tr>
-                                    </tbody>
-                                </table>    
-                            </div>
-                            <div className="sub-lenta-sides">
-                                <div className="sub-lenta-left"></div>
-                                <div className="sub-lenta-right"></div>
-                            </div>
-                        </div>
-                        <div className="sub-numbers">
-                                <ul>
-                                    <li><span>22 курса</span></li>
-                                    <li><span>200 уроков</span></li>
-                                    <li><span>4000 задач</span></li>
-                                </ul>
-                        </div>
-                        <div className="sub-lower-text">
-                            <ul>
-                                <li>Для взрослых</li>
-                                <li>Для детей</li>
-                                <li>Для продолжающих</li>
-                            </ul>
-                        </div>
-                        <button className="sub-button">Оформить подписку</button>
-                    </div>
-            </div>
-        :
             <div className="sub">
                 <div className="sub-block-close" onClick={() => setPopOpen(false)}></div>
                 <div className="sub-block">
@@ -123,7 +60,6 @@ export default function Podpiska({setPopOpen}:Props) {
                 </div>
                 </div>
             </div>
-        }
         </>
     );
 }

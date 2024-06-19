@@ -52,10 +52,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [gameWithBot, setGameWithBot] = useState<boolean|undefined>(location.state.gameWithBot);
   const [chooseQ, setChooseQ] = useState<number>(-1);
 
-  const handlePopUp = async() => {
-    setPopOpen(!popOpen);
-  }
-
   useEffect(() => {
     (
       async () => {
@@ -228,7 +224,10 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                 {puzzle.mode === 'test' ? 
                                   <>
                                   <div className="zadachi-content">
+                                    <div>
                                     <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
+                                    {/* <img src="/assets/images/coin_null.png" className="spisok-coin-img" alt="" /> */}
+                                    </div>
                                     {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                     <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                     <div className="zadachi-text" >

@@ -96,6 +96,12 @@
     border-bottom: none;
 }
 
+.spisok-coin-img {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
 .zadachi-content {
     display: flex;
     flex-direction: row;

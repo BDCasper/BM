@@ -42,6 +42,7 @@
     border-radius: 30px;
     margin-right: 3%;
     -webkit-user-drag: none;
+    cursor: pointer;
 }
 
 .search {

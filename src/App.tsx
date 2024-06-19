@@ -30,7 +30,24 @@ function App() {
   const [inp, setInp] = useState<string>('');
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
-  const [token, setToken] = useState<string>(JSON.parse(JSON.stringify(sessionStorage.getItem("token"))))
+  const [token, setToken] = useState<string>('');
+
+
+  useEffect(() => {
+    (
+      async () => {
+        if(requestDB) {
+          const db = requestDB.result;
+          const transaction = db.transaction("token", "readwrite");
+          const store = transaction.objectStore("token")
+          const res = store.getAll();
+          res.onsuccess = () => {
+              setToken(res.result[0].value)
+          }
+        }
+      })();
+  }, [requestDB])
+
 
   useEffect(() => {
     (
@@ -56,12 +73,11 @@ function App() {
   return (
     <div className="app">
         <SpeedInsights/>
-        <Header checkUserLog={checkUserLog} setInp={setInp} user={user}/>
+        <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen}/>
         <BrowserRouter>
           <Routes>
-            <Route path="/subscription" element={<Podpiska setPopOpen={setPopOpen}/>}/>
             <Route path="/registration" element={<Reg/>}/>
-            <Route path="/login" element={<Login />}/>
+            <Route path="/login" element={<Login/>}/>
             <Route path="/" element={<Main inp={inp} user={user}/>} />
             {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
             {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
@@ -87,7 +103,7 @@ requestDB.onupgradeneeded = function(event){
 
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
-//export const backend = "http://195.49.215.186:10000";
+// export const backend = "http://195.49.215.186:10000";
 //export const backend = "https://bm-back.onrender.com";
 export const backend = "https://api.bm-chess.com";
 

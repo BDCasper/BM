@@ -8,6 +8,7 @@ import { User } from "../../App";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import ReactFlagsSelect from "react-flags-select";
+import { requestDB } from "../../App";
 
 interface Props {
     setUserLog: (use: boolean) => any;
@@ -103,7 +104,13 @@ export default function Profile({setUserLog, user, token}:Props) {
         }).then((response) => { 
             if (response && response.status === 200)
             {
-                window.sessionStorage.setItem("token", "");
+                const db = requestDB.result;
+                const transaction = db.transaction("token", "readwrite");
+                const store = transaction.objectStore("token")
+                const res = store.getAll();
+                res.onsuccess = () => {
+                    store.put({ key: 0, value: ''})
+                }
                 setUserLog(false);
                 navigate('/login');
                 window.location.reload();
