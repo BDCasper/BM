@@ -225,8 +225,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                   <>
                                   <div className="zadachi-content">
                                     <div>
-                                    <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "hidden") : ''} src="/assets/images/solved.svg" /></div>
-                                    {/* <img src="/assets/images/coin_null.png" className="spisok-coin-img" alt="" /> */}
+                                    <div className="block-checkSign"><img alt="" className="solved" src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/coin_win.png" : "/assets/images/coin_null.png") : '' }/></div>
                                     </div>
                                     {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                     <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>

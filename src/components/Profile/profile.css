@@ -61,8 +61,17 @@
 }
 
 .profile-score {
+    display: flex;
+    width: fit-content;
+    align-items: center;
     margin-top: 15px;
     font-family: 'Open Sans';font-size: 20px;font-weight: 400;
+}
+
+.profile-score img {
+    width: 20px;
+    margin-left: 5px;
+    margin-top: 2px;
 }
 
 .profile-username {

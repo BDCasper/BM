@@ -132,7 +132,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                         <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
                         <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                     </div>
-                    <div className="profile-score">Количество очков: {user.score}</div>
+                    <div className="profile-score">Количество очков: {user.score} <img src="/assets/images/coin_win.png" alt="" /></div>
                         <div className="profile-username">
                             <div className="profile-name">Имя пользователя</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={userName} onChange={(e) => setUserName(e.target.value)}/>
