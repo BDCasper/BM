@@ -161,6 +161,10 @@
     height: 23px;
 }
 
+.black {
+    opacity: 0.5;
+}
+
 .hidden {
     display: none;
 }

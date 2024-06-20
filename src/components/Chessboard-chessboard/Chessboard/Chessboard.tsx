@@ -59,6 +59,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [sendPromote, setSendPromote] = useState<boolean>(false);
   const [GRID_SIZE, setGridSize] = useState<number>(0);
   const [boardSize, setBoardSize] = useState<number>(0);
+  const [review, setReview] = useState<boolean>(false);
   
   useEffect(() => {
     (
@@ -83,42 +84,44 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const win = async() => {
+    setReview(true);
     if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
-    let chk;
-    let ind = 0;
-    chk = false;
-    for(let i = 0; i < lengthOfArray; i++)
-    {
-      if(!arrayOfSolved.has(arrayOfObjects[i].puzzle_id)) {
-        ind = i;
-        chk = true;
-        break;
-      }
-    }
-    if (lengthOfArray - 1 === activeIndex) {
-      if(chk) {
-        winSound();
-        setActiveIndex(ind)
-      }
-      else {
-        topicWin();
-        navigate("/")
-      }
-      chk = false;
-    } 
-    else if(closed === true)
-    {
-      winSound();
-      setPopOpen(true);
-    }
-    else 
-    {
-        winSound();
-        if(arrayOfSolved.has(arrayOfObjects[activeIndex + 1].puzzle_id) && chk) setActiveIndex(ind)
-        else setActiveIndex(activeIndex + 1)
-        chk = false;
-        totalTurns = 0;
-    }
+    winSound();
+    // let chk;
+    // let ind = 0;
+    // chk = false;
+    // for(let i = 0; i < lengthOfArray; i++)
+    // {
+    //   if(!arrayOfSolved.has(arrayOfObjects[i].puzzle_id)) {
+    //     ind = i;
+    //     chk = true;
+    //     break;
+    //   }
+    // }
+    // if (lengthOfArray - 1 === activeIndex) {
+    //   if(chk) {
+    //     winSound();
+    //     setActiveIndex(ind)
+    //   }
+    //   else {
+    //     topicWin();
+    //     navigate("/")
+    //   }
+    //   chk = false;
+    // } 
+    // else if(closed === true)
+    // {
+    //   winSound();
+    //   setPopOpen(true);
+    // }
+    // else 
+    // {
+    //     winSound();
+    //     if(arrayOfSolved.has(arrayOfObjects[activeIndex + 1].puzzle_id) && chk) setActiveIndex(ind)
+    //     else setActiveIndex(activeIndex + 1)
+    //     chk = false;
+    //     totalTurns = 0;
+    // }
   }
 
 
@@ -135,6 +138,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         totalTurns = 0
         setLives(3);
         setActivePiece(null);
+        setReview(false);
         nullRightMoves();
       }
     )();
@@ -355,7 +359,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="chessboard-board">
-        <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
+        <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) || review ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
       {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
