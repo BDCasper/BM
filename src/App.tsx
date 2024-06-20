@@ -23,6 +23,16 @@ export interface User {
   score?: number;
 }
 
+window.onload = () => {
+  if( !localStorage.getItem('firstLoad') )
+    {
+      localStorage['firstLoad'] = true;
+      window.location.reload();
+    }  
+    else
+      localStorage.removeItem('firstLoad');
+}
+
 function App() {
 
   const [user, setUser] = useState<User>({});
@@ -31,7 +41,6 @@ function App() {
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
   const [token, setToken] = useState<string>('');
-
 
   useEffect(() => {
     (
@@ -103,7 +112,7 @@ requestDB.onupgradeneeded = function(event){
 
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
-//export const backend = "http://195.49.215.186:10000";
+export const backend = "http://195.49.215.186:10000";
 //export const backend = "https://bm-back.onrender.com";
-export const backend = "https://api.bm-chess.com";
+//export const backend = "https://api.bm-chess.com";
 
