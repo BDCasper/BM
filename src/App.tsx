@@ -112,7 +112,7 @@ requestDB.onupgradeneeded = function(event){
 
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
-export const backend = "http://195.49.215.186:10000";
+//export const backend = "http://195.49.215.186:10000";
 //export const backend = "https://bm-back.onrender.com";
-//export const backend = "https://api.bm-chess.com";
+export const backend = "https://api.bm-chess.com";
 
