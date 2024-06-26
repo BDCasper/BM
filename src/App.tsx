@@ -30,7 +30,7 @@ function App() {
   const [inp, setInp] = useState<string>('');
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
-  const [token, setToken] = useState<string>(JSON.parse(localStorage.getItem('token') || ''));
+  const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
 
   useEffect(() => {
     (

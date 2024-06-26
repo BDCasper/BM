@@ -15,7 +15,7 @@ interface Props {
 
 export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen}:Props) {
 
-    const [token, setToken] = useState<string>(localStorage.getItem('token') || '');
+    const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
 
     const [inputText, setInputText] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
