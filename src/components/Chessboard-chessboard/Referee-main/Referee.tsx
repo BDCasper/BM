@@ -23,6 +23,7 @@ interface RefereeProps {
     user: User;
     arrayOfSolved: Set<number>;
     gameWithBot: boolean|undefined;
+    handleAnimation: () => any;
 }
 
 interface fenComponents {
@@ -32,7 +33,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithBot}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithBot, handleAnimation}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
@@ -323,6 +324,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 gameWithBot={gameWithBot}
                 everyMove={everyMove}
                 movePtr={movePtr}
+                handleAnimation={handleAnimation}
                 />
         </div>
     )

@@ -8,6 +8,7 @@ import Podpiska from "../Podpiska/podpiska";
 import useSound from 'use-sound';
 import MediaQuery from "react-responsive";
 import { User } from "../../App";
+import ThreeScene from "../winScene";
 import Chessboard from "../Chessboard-chessboard/Chessboard/Chessboard";
 
 interface Props {
@@ -51,6 +52,12 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [wrongSound] = useSound('wrong.mp3');
   const [gameWithBot, setGameWithBot] = useState<boolean|undefined>(location.state.gameWithBot);
   const [chooseQ, setChooseQ] = useState<number>(-1);
+  const [startAnimation, setStartAnimation] = useState(false);
+
+  const handleAnimation = () => {
+      setStartAnimation(true);
+  };
+
 
   useEffect(() => {
     (
@@ -95,7 +102,10 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
               setActiveIndex(activeIndex+1);
             }
             else {
-              navigate("/")
+              handleAnimation();
+              setTimeout(() => {
+                navigate("/")
+              }, 4000);
             }
           } 
           else {
@@ -168,6 +178,11 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
 
   return (
       <>
+      { startAnimation &&
+        <div className="chess-win-scene">
+          <ThreeScene startAnimation={startAnimation} />
+        </div>
+      }
         {
           location.state.gameWithBot === undefined ?
           <>
@@ -194,6 +209,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     user={user}
                     arrayOfSolved={arrayOfSolved}
                     gameWithBot={gameWithBot}
+                    handleAnimation={handleAnimation}
                     />
                   </div>
                 </div>
@@ -298,6 +314,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     user={user}
                     arrayOfSolved={arrayOfSolved}
                     gameWithBot={gameWithBot}
+                    handleAnimation={handleAnimation}
                     />
           </div>
           

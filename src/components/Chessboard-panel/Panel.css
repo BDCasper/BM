@@ -160,6 +160,14 @@
     width: 40px;
 }
 
+.chess-win-scene {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 5;
+}
+
 .black {
     opacity: 0.5;
 }

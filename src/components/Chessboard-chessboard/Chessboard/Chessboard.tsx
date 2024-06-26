@@ -35,6 +35,7 @@ interface Props {
   gameWithBot: boolean|undefined;
   everyMove: Board[];
   movePtr: number;
+  handleAnimation: () => any;
 }
 
 let totalTurns = 0;
@@ -43,7 +44,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr, handleAnimation} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -87,17 +88,20 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     setReview(true);
     if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
     winSound();
-    // let chk;
+    let chk;
     // let ind = 0;
-    // chk = false;
-    // for(let i = 0; i < lengthOfArray; i++)
-    // {
-    //   if(!arrayOfSolved.has(arrayOfObjects[i].puzzle_id)) {
-    //     ind = i;
-    //     chk = true;
-    //     break;
-    //   }
-    // }
+    chk = false;
+    for(let i = 0; i < lengthOfArray; i++)
+    {
+      chk = true;
+      if(!arrayOfSolved.has(arrayOfObjects[i].puzzle_id)) {
+        chk = false;
+        break;
+      }
+    }
+    if(chk === true) {
+      handleAnimation();
+    }
     // if (lengthOfArray - 1 === activeIndex) {
     //   if(chk) {
     //     winSound();
