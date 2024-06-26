@@ -104,7 +104,7 @@ export default function Main({inp, user}:MainProps) {
                   {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic, ind) => (
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                    <div key={topic.topic_id} className="theme-block" onClick={() => /*user.user_id ?*/ navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) /*: navigate("/login")*/}>
+                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
@@ -123,7 +123,7 @@ export default function Main({inp, user}:MainProps) {
                 :
                   <>
                   {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
-                    <div key={topic.topic_id} className="theme-block" onClick={() => /*user.user_id ?*/ navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) /*: navigate("/login")*/}>
+                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">

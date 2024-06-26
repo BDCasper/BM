@@ -3,7 +3,6 @@ import "./header.css";
 import Main from "../Main/Main";
 import MediaQuery from "react-responsive";
 import { User } from "../../App";
-import { requestDB } from "../../App";
 import Podpiska from "../Podpiska/podpiska";
 
 interface Props {
@@ -16,17 +15,7 @@ interface Props {
 
 export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen}:Props) {
 
-    const [token, setToken] = useState<string>('');
-
-    requestDB.onsuccess = () => {
-            const db = requestDB.result;
-            const transaction = db.transaction("token", "readwrite");
-            const store = transaction.objectStore("token")
-            const res = store.getAll();
-            res.onsuccess = () => {
-                setToken(res.result[0].value)
-            }
-    }
+    const [token, setToken] = useState<string>(localStorage.getItem('token') || '');
 
     const [inputText, setInputText] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
@@ -56,7 +45,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen}
                 <div className="allCourse"><a href="/">Главная</a></div>
                 <div className="web-site"><a href="https://school.bm-chess.com/" target="_blank">Сайт школы</a></div>
                 <div className="subscribe" onClick={() => setPopOpen(true)}>Подписка</div>
-                    {window.location.pathname === '/' ? 
+                {window.location.pathname === '/' ? 
                     <div className="search ">
                         <img src="assets/images/search.svg" className="loop"/>
                         <input type="text" className="searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>

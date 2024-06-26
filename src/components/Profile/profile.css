@@ -22,7 +22,7 @@
 }
 
 .profile-upper-text {
-    margin-top: 51px;
+    margin-top: 35px;
     font-family: 'Open Sans';font-size: 30px;font-weight: 600;color: #AB2A3B;
 }
 
@@ -69,8 +69,7 @@
 }
 
 .profile-score img {
-    width: 20px;
-    margin-left: 5px;
+    width: 35px;
     margin-top: 2px;
 }
 

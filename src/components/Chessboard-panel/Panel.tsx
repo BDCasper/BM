@@ -225,7 +225,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                   <>
                                   <div className="zadachi-content">
                                     <div>
-                                    <div className="block-checkSign"><img alt="" className="solved" src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/coin_win.png" : "/assets/images/coin_null.png") : '' }/></div>
+                                    <div className="block-checkSign"><img alt="" className="solved" src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/asyk-win.svg" : "/assets/images/asyk-wait.svg") : '' }/></div>
                                     </div>
                                     {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                     <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
@@ -253,7 +253,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                 : 
                                   <>
                                     <div className="zadachi-content">
-                                      <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "solved black") : ''} src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/coin_win.png" : "/assets/images/coin_null.png") : '' }/></div>
+                                      <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "solved black") : ''} src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/asyk-win.svg" : "/assets/images/asyk-wait.svg") : '' }/></div>
                                       {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                       <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                       <div className="zadachi-text" >

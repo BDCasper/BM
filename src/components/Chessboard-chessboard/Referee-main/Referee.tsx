@@ -227,6 +227,33 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         return validMove;
     }
 
+
+    // const handleFlip = async() => {
+    //     for(let i = 0; i < 8; i++){
+    //         let blackMove = board.pieces[i].position;
+    //         let whiteMove = board.pieces[24+i].position;
+    //         if(board.pieces[i].skin === TeamType.OUR) board.pieces[i].skin = TeamType.OPPONENT
+    //         else board.pieces[i].skin = TeamType.OUR
+    //         if(board.pieces[24+i].skin === TeamType.OUR) board.pieces[24+i].skin = TeamType.OPPONENT
+    //         else board.pieces[24+i].skin = TeamType.OUR
+    //         board.pieces[i].position.y = 7-whiteMove.y;
+    //         board.pieces[24+i].position.y = 7-blackMove.y;
+    //     }
+    //     for(let i = 8; i < 16; i++){
+    //         let blackMove = board.pieces[i].position;
+    //         let whiteMove = board.pieces[8+i].position;
+    //         if(board.pieces[i].skin === TeamType.OUR) board.pieces[i].skin = TeamType.OPPONENT
+    //         else board.pieces[i].skin = TeamType.OUR
+    //         if(board.pieces[8+i].skin === TeamType.OUR) board.pieces[8+i].skin = TeamType.OPPONENT
+    //         else board.pieces[8+i].skin = TeamType.OUR
+    //         if(Math.abs(blackMove.y - whiteMove.y) !== 1){
+    //             board.pieces[i].position.y = 7-whiteMove.y;
+    //             board.pieces[8+i].position.y = 7-blackMove.y;
+    //         }
+    //     }
+    //     setBoard(board);
+    // }
+
     function changeMove(way:number) {
         if(everyMove && everyMove.length !== 0){
             if(way === 1 && movePtr + 1 < everyMove.length){

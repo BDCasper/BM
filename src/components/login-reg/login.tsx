@@ -4,7 +4,6 @@ import { useState } from "react";
 import { backend } from "../../App";
 import UserProps from "../../App"
 import { useNavigate } from "react-router-dom";
-import { requestDB } from "../../App";
 
 
 export default function Login() {
@@ -51,15 +50,7 @@ export default function Login() {
             if (response && response.status === 200)
             {
                 response.json().then((data) => {
-                    if(requestDB){
-                        const db = requestDB.result;
-                        const transaction = db.transaction("token", "readwrite");
-                        const store = transaction.objectStore("token")
-                        const res = store.getAll();
-                        res.onsuccess = () => {
-                            store.put({ key: 0, value: data.token})
-                        }
-                    }
+                    localStorage.setItem('token', JSON.stringify(data.token));
                     navigate("/");
                     window.location.reload();
                 })

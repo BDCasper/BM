@@ -151,14 +151,13 @@
     position: relative;
     height: 100%;
     width: 20px;
-    left: 1px;
-    top: 5px;
+    right: 7px;
+    top: 1px;
 }
 
 .solved {
     position: relative;
-    width: 22px;
-    height: 23px;
+    width: 40px;
 }
 
 .black {

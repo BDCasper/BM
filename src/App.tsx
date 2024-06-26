@@ -7,8 +7,8 @@ import Footer from "./components/FH/footer";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Reg from "./components/login-reg/reg";
 import Login from "./components/login-reg/login";
-import Podpiska from "./components/Podpiska/podpiska";
 import Profile from "./components/Profile/profile";
+import MediaQuery from "react-responsive";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export interface User {
@@ -23,16 +23,6 @@ export interface User {
   score?: number;
 }
 
-window.onload = () => {
-  if( !localStorage.getItem('firstLoad') )
-    {
-      localStorage['firstLoad'] = true;
-      window.location.reload();
-    }  
-    else
-      localStorage.removeItem('firstLoad');
-}
-
 function App() {
 
   const [user, setUser] = useState<User>({});
@@ -40,48 +30,35 @@ function App() {
   const [inp, setInp] = useState<string>('');
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
-  const [token, setToken] = useState<string>('');
+  const [token, setToken] = useState<string>(JSON.parse(localStorage.getItem('token') || ''));
 
   useEffect(() => {
     (
       async () => {
-        if(requestDB) {
-          const db = requestDB.result;
-          const transaction = db.transaction("token", "readwrite");
-          const store = transaction.objectStore("token")
-          const res = store.getAll();
-          res.onsuccess = () => {
-              setToken(res.result[0].value)
-          }
+        if(token !== ''){
+          await fetch(`${backend}/api/profile`, {
+              method: "GET",
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+              credentials: 'include',
+          }).then((response) => {
+            if (response && response.status === 200) {
+              response.json().then((data) => {
+                setUser(data.user);
+                setArrayOfSolved(new Set<number>(data.solved));
+              })
+            }
+          })
         }
       })();
-  }, [requestDB])
-
-
-  useEffect(() => {
-    (
-      async () => {
-        await fetch(`${backend}/api/profile`, {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-            credentials: 'include',
-        }).then((response) => {
-          if (response && response.status === 200) {
-            response.json().then((data) => {
-              setUser(data.user);
-              setArrayOfSolved(new Set<number>(data.solved));
-              console.log(data);
-            })
-          }
-        })
-      })();
   }, [token])
-
-  console.log(user)
 
   return (
     <div className="app">
         <SpeedInsights/>
+        <MediaQuery minWidth={1200}>
+          <img src="assets/images/ornament-left.jpg" alt="" className="ornament-left"/>
+          <img src="assets/images/ornament-right.jpg" alt="" className="ornament-right"/>
+        </MediaQuery>
         <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen}/>
         <BrowserRouter>
           <Routes>
@@ -95,19 +72,6 @@ function App() {
         <Footer />
     </div>
   );
-}
-
-const indexedDB = window.indexedDB;
-
-export const requestDB = indexedDB.open("DataBase", 1);
-
-requestDB.onerror = function (event){
-  console.log("Error in indexedDB: ", event);
-}
-
-requestDB.onupgradeneeded = function(event){
-  const db = requestDB.result;
-  const store = db.createObjectStore("token", {keyPath: 'key', autoIncrement: true});
 }
 
 export default App; 

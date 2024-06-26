@@ -43,7 +43,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, user, arrayOfSolved, gameWithBot, everyMove,movePtr} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -326,7 +326,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }
   }
 
-  let board = [];
+  let boardDraw = [];
   for (let j = 7; j >= 0; j--) {
     for (let i = 0; i < 8; i++) {
       const number = j + i + 2;
@@ -341,11 +341,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       let symbol = (j === 0) ? HORIZONTAL_AXIS[gameWithBot ? i : fenComponents.turn === 'w' ? i : 7 - i] : '';
       let highlightRightMove1 = (fenComponents.turn === 'b' && (i === rightMove[0].x && j === rightMove[0].y)) || (fenComponents.turn === 'w' && (i === rightMove[0].x && j === rightMove[0].y)) ? true : false;
       let highlightRightMove2 = (fenComponents.turn === 'b' && (i === rightMove[1].x && j === rightMove[1].y)) || (fenComponents.turn === 'w' && (i === rightMove[1].x && j === rightMove[1].y)) ? true : false;
-      board.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} highlightRightMove1={highlightRightMove1} highlightRightMove2={highlightRightMove2}/> );
+      boardDraw.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} highlightRightMove1={highlightRightMove1} highlightRightMove2={highlightRightMove2}/> );
     }
   }
-
-
 
   return (
     <div className="chessboardWrapper">
@@ -359,7 +357,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="chessboard-board">
-        <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) || review ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {board} </div>
+        <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) || review ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
       {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}

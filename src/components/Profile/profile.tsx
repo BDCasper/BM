@@ -8,7 +8,6 @@ import { User } from "../../App";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import ReactFlagsSelect from "react-flags-select";
-import { requestDB } from "../../App";
 
 interface Props {
     setUserLog: (use: boolean) => any;
@@ -44,7 +43,7 @@ export default function Profile({setUserLog, user, token}:Props) {
             setAvatar(cachedURL)
         }
     }
-
+    
     useEffect(() => {
         (
             async() => {
@@ -54,8 +53,6 @@ export default function Profile({setUserLog, user, token}:Props) {
     },[])
 
     const handleUserChange = async() => {
-
-        console.log(phone)
 
         if(buttonName === "Изменить")
         {
@@ -104,13 +101,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         }).then((response) => { 
             if (response && response.status === 200)
             {
-                const db = requestDB.result;
-                const transaction = db.transaction("token", "readwrite");
-                const store = transaction.objectStore("token")
-                const res = store.getAll();
-                res.onsuccess = () => {
-                    store.put({ key: 0, value: ''})
-                }
+                localStorage.setItem('token', '');
                 setUserLog(false);
                 navigate('/login');
                 window.location.reload();
@@ -132,7 +123,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                         <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
                         <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                     </div>
-                    <div className="profile-score">Количество очков: {user.score} <img src="/assets/images/coin_win.png" alt="" /></div>
+                    <div className="profile-score">Количество очков: {user.score} <img src="/assets/images/asyk-win.svg" alt="" /></div>
                         <div className="profile-username">
                             <div className="profile-name">Имя пользователя</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={userName} onChange={(e) => setUserName(e.target.value)}/>

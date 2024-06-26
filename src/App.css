@@ -2,7 +2,21 @@
     height:fit-content;
     width: 100vw;
     max-width: 100%;
-    background-color: #fbfafa;
+}
+
+.ornament-left {
+    position: fixed;
+    left: 0;
+    z-index: -10;
+    width: 500px;
+}
+
+.ornament-right {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: -10;
+    width: 500px;
 }
 
 
