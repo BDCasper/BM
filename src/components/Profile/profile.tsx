@@ -17,7 +17,7 @@ interface Props {
 
 export default function Profile({setUserLog, user, token}:Props) {
     const [name, setName] = useState<string>('');   
-    const [surname, setSurname] = useState<string>('');
+    // const [surname, setSurname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [checkPhone, setCheckPhone] = useState(false);
@@ -62,8 +62,32 @@ export default function Profile({setUserLog, user, token}:Props) {
 
         if(checkPhone && buttonName === "Сохранить")
         {
-            if(buttonName === "Сохранить") setButtonName("Изменить");
+            setButtonName("Изменить");
             setInpChange(!inpChange);
+            // await fetch(`${backend}/api/profile/save`, {
+            //     method: "POST",
+            //     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            //     credentials: 'include',
+            //     body: JSON.stringify({
+            //         name: name,
+            //         email: email,
+            //         phone: phone,
+            //         userName: userName,
+            //         birth: birth,
+            //         location: location
+            //     })
+            // }).then((response) => { 
+            //     if (response && response.status === 200)
+            //     {
+            //         response.json().then((data) => { 
+            //             console.log(data);
+            //         })
+            //     }
+            //     if(response.status === 400)
+            //     {
+            //     }
+            // })
+
         }
     }
 
@@ -84,7 +108,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         (
          async() => {
             setName(user.name ? user.name : name);
-            setSurname(user.surname ? user.surname : surname);
+            // setSurname(user.surname ? user.surname : surname);
             setEmail(user.email ? user.email : email);
             setPhone(user.phone ? user.phone : phone);
             setBirth(user.birth_date ? user.birth_date : birth);
@@ -133,10 +157,10 @@ export default function Profile({setUserLog, user, token}:Props) {
                             <div className="profile-name">Имя</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={name} onChange={(e) => setName(e.target.value)}/>
                         </div>
-                        <div className="profile-inputs-block">
+                        {/* <div className="profile-inputs-block">
                             <div className="profile-name">Фамилия</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={surname} onChange={(e) => setSurname(e.target.value)}/>
-                        </div>
+                        </div> */}
                         <div className="profile-inputs-block">
                             <div className="profile-name">E-mail</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={email} onChange={(e) => setEmail(e.target.value)}/>
