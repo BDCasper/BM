@@ -19,10 +19,18 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen}
 
     const [inputText, setInputText] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
+    const [path, setPath] = useState<string>('');
 
     const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
         if( e.key === 'Enter' ) setInp(inputText);
     };
+
+    useEffect(() => {
+        (
+        async() => {
+            setPath(window.location.pathname)
+        })();
+    },[window.location.pathname]);
 
     useEffect(() => {
         (
@@ -45,7 +53,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen}
                 <div className="allCourse"><a href="/">Главная</a></div>
                 <div className="web-site"><a href="https://school.bm-chess.com/" target="_blank">Сайт школы</a></div>
                 <div className="subscribe" onClick={() => setPopOpen(true)}>Подписка</div>
-                {window.location.pathname === '/' ? 
+                {path === '/' ? 
                     <div className="search ">
                         <img src="assets/images/search.svg" className="loop"/>
                         <input type="text" className="searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
