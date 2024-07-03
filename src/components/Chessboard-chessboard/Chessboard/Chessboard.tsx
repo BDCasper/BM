@@ -14,6 +14,7 @@ import useSound from 'use-sound';
 import { PieceType, TeamType } from "../Types";
 import { Board } from "../models/Board";
 import { User } from "../../../App";
+import {isMobile} from 'react-device-detect';
 
 interface Props {
   playMove: (piece: Piece, position: Position) => Promise<boolean>;
@@ -291,22 +292,19 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     await promoteNow(currentPiece.clone(), pos2)
   }
 
-  function grabPiece(e: React.MouseEvent | React.TouchEvent) {
+  function grabPiece(e: React.MouseEvent) {
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;
-
-    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
-    const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY;
     if (activePiece === null || element.classList.contains("chess-piece")) {
       if (element.classList.contains("chess-piece") && chessboard) {
-        const grabX = Math.floor((clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+        const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
         const grabY = Math.abs(
-          Math.ceil((clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
+          Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
         );
         setGrabPosition(new Position(grabX, grabY));
   
-        const x = clientX - GRID_SIZE / 2 + window.scrollX;
-        const y = 7 - clientY - GRID_SIZE / 2 + window.scrollY;
+        const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
+        const y = 7 - e.clientY - GRID_SIZE / 2 + window.scrollY;
         element.style.position = "static";
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
@@ -316,15 +314,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }
   }
 
-  function movePiece(e: React.MouseEvent | React.TouchEvent) {
+  function movePiece(e: React.MouseEvent) {
     const chessboard = chessboardRef.current;
-
-    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
-    const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY;
-
     if (activePiece && chessboard) {
-      const x = clientX - 30 + window.scrollX;
-      const y = clientY - 30 + window.scrollY;
+      const x = e.clientX - 30 + window.scrollX;
+      const y = e.clientY - 30 + window.scrollY;
       activePiece.style.position = "absolute";
 
       activePiece.style.left = `${x}px`;
@@ -333,16 +327,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }
   }
 
-  const dropPiece = async (e: React.MouseEvent | React.TouchEvent) => {
-    if (activePiece && chessboardRef.current) {
-      activePiece.style.zIndex = "1";
+  const dropPiece = async(e: React.MouseEvent) => {
+      if (activePiece && chessboardRef.current) {
+        activePiece.style.zIndex = "1";
 
-      const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX;
-      const clientY = 'clientY' in e ? e.clientY : e.changedTouches[0].clientY;
-
-        const x = Math.floor((clientX - chessboardRef.current.offsetLeft + window.scrollX) / GRID_SIZE);
+        const x = Math.floor((e.clientX - chessboardRef.current.offsetLeft + window.scrollX) / GRID_SIZE);
         const y = Math.abs(
-          Math.ceil((clientY - chessboardRef.current.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
+          Math.ceil((e.clientY - chessboardRef.current.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
         );
             
         const currentPiece = pieces.find((p) =>
@@ -369,54 +360,55 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
 
-  // async function clickPiece(e: React.MouseEvent) {
-  //   const element = e.target as HTMLElement;
-  //   const chessboard = chessboardRef.current;
-  //   if (activePiece === null || element.classList.contains("chess-piece")) {
-  //     if (element.classList.contains("chess-piece") && chessboard) {
-  //       const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-  //       const grabY = Math.abs(
-  //         Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
-  //       );
-  //       setGrabPosition(new Position(grabX, grabY));
+  async function clickPiece(e: React.MouseEvent) {
+    const element = e.target as HTMLElement;
+    const chessboard = chessboardRef.current;
+    if (activePiece === null || element.classList.contains("chess-piece")) {
+      if (element.classList.contains("chess-piece") && chessboard) {
+        const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+        const grabY = Math.abs(
+          Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
+        );
+        setGrabPosition(new Position(grabX, grabY));
   
-  //       const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
-  //       const y = 7 - e.clientY - GRID_SIZE / 2 + window.scrollY;
-  //       element.style.position = "static";
-  //       element.style.left = `${x}px`;
-  //       element.style.top = `${y}px`;
+        const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
+        const y = 7 - e.clientY - GRID_SIZE / 2 + window.scrollY;
+        element.style.position = "static";
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
   
-  //       setActivePiece(element);
-  //     }
-  //   } else{
-  //     if (activePiece && chessboard) {
-  //       activePiece.style.zIndex = "1";
+        setActivePiece(element);
+      }
+    } else{
+      if (activePiece && chessboard) {
+        activePiece.style.zIndex = "1";
 
-  //       const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-  //       const y = Math.abs(
-  //         Math.ceil((e.clientY - chessboard.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
-  //       );
+        const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+        const y = Math.abs(
+          Math.ceil((e.clientY - chessboard.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
+        );
             
-  //       const currentPiece = pieces.find((p) =>
-  //         p.samePosition(grabPosition)
-  //       );
+        const currentPiece = pieces.find((p) =>
+          p.samePosition(grabPosition)
+        );
 
-  //       if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
-  //           totalTurns++;
-  //           if(gameWithBot || review){
-  //             playWithBot(currentPiece.clone(), new Position(x,y))
-  //             if(fenComponents.turn === "w") fenComponents.turn = "b";
-  //             else fenComponents.turn = "w";
-  //           } 
-  //           else playMoveFunction(grabPosition, new Position(x,y), currentPiece);
+        if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
+            totalTurns++;
+            if(gameWithBot || review){
+              playWithBot(currentPiece.clone(), new Position(x,y))
+              if(fenComponents.turn === "w") fenComponents.turn = "b";
+              else fenComponents.turn = "w";
+            } 
+            else playMoveFunction(grabPosition, new Position(x,y), currentPiece);
             
-  //       }
+        }
 
-  //       setActivePiece(null);
-  //     }
+        setActivePiece(null);
+      }
 
-  //   }
-  // }
+    }
+  }
+
 
   let boardDraw = [];
   for (let j = 7; j >= 0; j--) {
@@ -449,13 +441,14 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="chessboard-board">
-        <div 
-        onMouseMove={(e) => movePiece(e)}
-        onMouseDown={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : grabPiece(e)}
-        onMouseUp={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : dropPiece(e)} 
-        onTouchStart={(e) => movePiece(e)}
-        onTouchMove={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : grabPiece(e)}
-        onTouchEnd={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : dropPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
+        {isMobile ? 
+          <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
+        :
+          <div 
+          onMouseMove={(e) => movePiece(e)}
+          onMouseDown={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : grabPiece(e)}
+          onMouseUp={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : dropPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
+        }
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
       {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
