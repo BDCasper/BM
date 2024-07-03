@@ -11,7 +11,6 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50px;
-    z-index: 1;
 }
 
 .tile .chess-piece:hover {

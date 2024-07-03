@@ -36,6 +36,7 @@ interface Props {
   everyMove: Board[];
   movePtr: number;
   handleAnimation: () => any;
+  setReviewMode: (check: boolean) => any;
 }
 
 let totalTurns = 0;
@@ -44,7 +45,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr, handleAnimation} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr, handleAnimation, setReviewMode} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -86,6 +87,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
   const win = async() => {
     setReview(true);
+    setReviewMode(true);
     if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
     winSound();
     let chk;
@@ -143,6 +145,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         setLives(3);
         setActivePiece(null);
         setReview(false);
+        setReviewMode(false);
         nullRightMoves();
       }
     )();
@@ -239,6 +242,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
+            fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
             nullRightMoves();
             setLives(3);
             if (data.botMove === "WIN") {
@@ -249,6 +253,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
                 setTimeout(() => {
                   botMove(botPosition);
+                  fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
                   moveSound();
                 }, 500);
                 if(data.win === "WIN") {
@@ -259,9 +264,14 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             }
           } else {
             wrongSound();
+            if(activePiece)
+            {
+              activePiece.style.position = "relative";
+              activePiece.style.removeProperty("top");
+              activePiece.style.removeProperty("left");
+            }
             if(rightMove[0].x === -1 && lives !== 0) setLives(lives - 1)
             totalTurns--;
-            
             if (data.solut) 
             {
               const rightPosition = [new Position(data.solut[0].x, data.solut[0].y), new Position(data.solut[1].x, data.solut[1].y)];
@@ -281,32 +291,58 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     await promoteNow(currentPiece.clone(), pos2)
   }
 
-  async function clickPiece(e: React.MouseEvent) {
+  function grabPiece(e: React.MouseEvent | React.TouchEvent) {
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;
+
+    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY;
     if (activePiece === null || element.classList.contains("chess-piece")) {
       if (element.classList.contains("chess-piece") && chessboard) {
-        const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+        const grabX = Math.floor((clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
         const grabY = Math.abs(
-          Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
+          Math.ceil((clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
         );
         setGrabPosition(new Position(grabX, grabY));
   
-        const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
-        const y = 7 - e.clientY - GRID_SIZE / 2 + window.scrollY;
+        const x = clientX - GRID_SIZE / 2 + window.scrollX;
+        const y = 7 - clientY - GRID_SIZE / 2 + window.scrollY;
         element.style.position = "static";
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
   
         setActivePiece(element);
       }
-    } else{
-      if (activePiece && chessboard) {
-        activePiece.style.zIndex = "1";
+    }
+  }
 
-        const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+  function movePiece(e: React.MouseEvent | React.TouchEvent) {
+    const chessboard = chessboardRef.current;
+
+    const clientX = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    const clientY = 'clientY' in e ? e.clientY : e.touches[0].clientY;
+
+    if (activePiece && chessboard) {
+      const x = clientX - 30 + window.scrollX;
+      const y = clientY - 30 + window.scrollY;
+      activePiece.style.position = "absolute";
+
+      activePiece.style.left = `${x}px`;
+
+      activePiece.style.top = `${y}px`;
+    }
+  }
+
+  const dropPiece = async (e: React.MouseEvent | React.TouchEvent) => {
+    if (activePiece && chessboardRef.current) {
+      activePiece.style.zIndex = "1";
+
+      const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX;
+      const clientY = 'clientY' in e ? e.clientY : e.changedTouches[0].clientY;
+
+        const x = Math.floor((clientX - chessboardRef.current.offsetLeft + window.scrollX) / GRID_SIZE);
         const y = Math.abs(
-          Math.ceil((e.clientY - chessboard.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
+          Math.ceil((clientY - chessboardRef.current.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
         );
             
         const currentPiece = pieces.find((p) =>
@@ -315,20 +351,72 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
         if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
             totalTurns++;
-            if(gameWithBot){
+            if(gameWithBot || review){
               playWithBot(currentPiece.clone(), new Position(x,y))
               if(fenComponents.turn === "w") fenComponents.turn = "b";
               else fenComponents.turn = "w";
-            } 
-            else playMoveFunction(grabPosition, new Position(x,y), currentPiece);
-            
+            }
+            else await playMoveFunction(grabPosition, new Position(x,y), currentPiece);
+        }else{
+          //RESETS THE PIECE POSITION
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
         }
 
         setActivePiece(null);
       }
-
-    }
   }
+
+
+  // async function clickPiece(e: React.MouseEvent) {
+  //   const element = e.target as HTMLElement;
+  //   const chessboard = chessboardRef.current;
+  //   if (activePiece === null || element.classList.contains("chess-piece")) {
+  //     if (element.classList.contains("chess-piece") && chessboard) {
+  //       const grabX = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+  //       const grabY = Math.abs(
+  //         Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
+  //       );
+  //       setGrabPosition(new Position(grabX, grabY));
+  
+  //       const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
+  //       const y = 7 - e.clientY - GRID_SIZE / 2 + window.scrollY;
+  //       element.style.position = "static";
+  //       element.style.left = `${x}px`;
+  //       element.style.top = `${y}px`;
+  
+  //       setActivePiece(element);
+  //     }
+  //   } else{
+  //     if (activePiece && chessboard) {
+  //       activePiece.style.zIndex = "1";
+
+  //       const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+  //       const y = Math.abs(
+  //         Math.ceil((e.clientY - chessboard.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
+  //       );
+            
+  //       const currentPiece = pieces.find((p) =>
+  //         p.samePosition(grabPosition)
+  //       );
+
+  //       if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
+  //           totalTurns++;
+  //           if(gameWithBot || review){
+  //             playWithBot(currentPiece.clone(), new Position(x,y))
+  //             if(fenComponents.turn === "w") fenComponents.turn = "b";
+  //             else fenComponents.turn = "w";
+  //           } 
+  //           else playMoveFunction(grabPosition, new Position(x,y), currentPiece);
+            
+  //       }
+
+  //       setActivePiece(null);
+  //     }
+
+  //   }
+  // }
 
   let boardDraw = [];
   for (let j = 7; j >= 0; j--) {
@@ -361,7 +449,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="chessboard-board">
-        <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) || review ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
+        <div 
+        onMouseMove={(e) => movePiece(e)}
+        onMouseDown={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : grabPiece(e)}
+        onMouseUp={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : dropPiece(e)} 
+        onTouchStart={(e) => movePiece(e)}
+        onTouchMove={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : grabPiece(e)}
+        onTouchEnd={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : dropPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
       </div>
       <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
       {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}

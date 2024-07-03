@@ -40,8 +40,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
     const [fen, setFen] = useState<Piece[]>([]);
     const [winSound] = useSound('win.wav', { volume: 0.2 });
-    const [everyMove, setEveryMover] = useState<Board[]>([]);
+    const [everyMove, setEveryMove] = useState<Board[]>([]);
     const [movePtr, setMovePtr] = useState<number>(0);
+    const [reviewMode, setReviewMode] = useState<boolean>(false);
 
     const DecodeFen: any = (fen: String)=>{
         const newboard: fenComponents = {
@@ -133,12 +134,18 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             async () => {
                 if(board.pieces.length !== 0)
                     {
-                        if(!everyMove.some((bord) => (bord === board)))
-                        everyMove.push(board);
+                        if(!everyMove.some((bord) => (bord === board)) && everyMove[everyMove.length - 1] !== board && movePtr < everyMove.length - 1) {
+                            for(let i = everyMove.length - 1; i >= 0; i--) {
+                                if(everyMove[i] !== everyMove[movePtr-1]) everyMove.pop();
+                                else break;
+                            }
+                        }
+                        if(!everyMove.some((bord) => (bord === board))) everyMove.push(board);
                     }
             }
         )();
       }, [board]);
+
 
     const playMove = async(playedPiece: Piece, destination: Position): Promise<boolean> => {
 
@@ -255,6 +262,14 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     //     setBoard(board);
     // }
 
+    useEffect(() => {
+        (
+            async() => {
+                setEveryMove([]);
+            }
+        )()
+    }, [activeIndex])
+
     function changeMove(way:number) {
         if(everyMove && everyMove.length !== 0){
             if(way === 1 && movePtr + 1 < everyMove.length){
@@ -293,18 +308,22 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         </div>
                     </div>
                 </div>
-                <div>
-                    <div className="arrows">
-                    <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
-                        <img className="arrow" src="/assets/images/leftArrow.svg" />
-                    </div>
-                    <div className="rightArrowWrap" onClick={() => {changeMove(1)}}>
-                        <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
-                    </div>
-                </div>
+                
             </>
-
             }
+
+            {gameWithBot || reviewMode &&
+                <div>
+                        <div className="arrows">
+                        <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
+                            <img className="arrow" src="/assets/images/leftArrow.svg" />
+                        </div>
+                        <div className="rightArrowWrap" onClick={() => {changeMove(1)}}>
+                            <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
+                        </div>
+                </div>
+            }
+
             <Chessboard playMove={playMove}
                 pieces={board.pieces} 
                 fenComponents={newboard} 
@@ -325,6 +344,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 everyMove={everyMove}
                 movePtr={movePtr}
                 handleAnimation={handleAnimation}
+                setReviewMode={setReviewMode}
                 />
         </div>
     )
