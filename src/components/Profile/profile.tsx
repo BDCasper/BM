@@ -21,7 +21,7 @@ export default function Profile({setUserLog, user, token}:Props) {
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [checkPhone, setCheckPhone] = useState(false);
-    const [userName, setUserName] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
     const [birth, setBirth] = useState<string>('');
     const [location, setLocation] = useState<string>('');
     const [avatar, setAvatar] = useState<string>('');
@@ -71,7 +71,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                     name: name,
                     email: email,
                     phone: phone,
-                    userName: userName,
+                    username: username,
                     birth: birth,
                     location: location
                 })
@@ -107,7 +107,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         (
          async() => {
             setName(user.name ? user.name : name);
-            // setSurname(user.surname ? user.surname : surname);
+            setUsername(user.username ? user.username : username);
             setEmail(user.email ? user.email : email);
             setPhone(user.phone ? user.phone : phone);
             setBirth(user.birth_date ? user.birth_date : birth);
@@ -149,7 +149,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                     <div className="profile-score">Количество очков: {user.score} <img src="/assets/images/asyk-win.svg" alt="" /></div>
                         <div className="profile-username">
                             <div className="profile-name">Имя пользователя</div>
-                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={userName} onChange={(e) => setUserName(e.target.value)}/>
+                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={username} onChange={(e) => setUsername(e.target.value)}/>
                         </div>
                     <div className="profile-inputs">
                         <div className="profile-inputs-block">
