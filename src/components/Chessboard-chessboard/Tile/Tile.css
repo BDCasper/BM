@@ -8,6 +8,7 @@
 .tile .chess-piece {
     width: 57.4px;
     height: 57.4px;
+    z-index: 2;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50px;
@@ -96,14 +97,14 @@
     z-index: 0;
     width: 57.3px;
     height: 57.3px;
-    background-color: #90a7b8;
+    background-color: rgb(143, 166, 183, 0.5);
 }
 
 .rightMoveBlack2 {
     z-index: 0;
     width: 57.3px;
     height: 57.3px;
-    background-color: #77a31c;
+    background-color: rgb(119, 163, 28, 0.5);
 }
 
 @media screen and (max-width: 1200px) {

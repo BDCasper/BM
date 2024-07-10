@@ -9,7 +9,7 @@ import useSound from 'use-sound';
 import MediaQuery from "react-responsive";
 import { User } from "../../App";
 import ThreeScene from "../winScene";
-import Chessboard from "../Chessboard-chessboard/Chessboard/Chessboard";
+import WinPopup from "../Chessboard-chessboard/winPopUp/winPopUp";
 
 interface Props {
   puzzle_id: number;
@@ -22,11 +22,6 @@ interface Props {
   difficulty: string;
   variants: string;
   closed: boolean;
-}
-
-interface Test {
-  qTitles: string[];
-  qVariants: string[];
 }
 
 interface PanelProps {
@@ -53,11 +48,22 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [gameWithBot, setGameWithBot] = useState<boolean|undefined>(location.state.gameWithBot);
   const [chooseQ, setChooseQ] = useState<number>(-1);
   const [startAnimation, setStartAnimation] = useState(false);
+  const [winPopUp, setWinPopUp] = useState<boolean>(false);
+
+  const handleProgress = async() => {
+    let cnt = 0;
+    if(arrayOfSolved && arrayOfObjects) {
+      arrayOfObjects.map((puz) => {
+          if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
+        }
+      )
+      setProgressWidthcnt(cnt);
+    }
+  }
 
   const handleAnimation = () => {
       setStartAnimation(true);
   };
-
 
   useEffect(() => {
     (
@@ -69,15 +75,21 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             // credentials: 'include'
           }).then((res) => {
             if (res && res.status === 200) {
-            res.json().then((data) => setArrayOfObjects(data));
+            res.json().then((data) => {
+              setArrayOfObjects(data)
+            });
             } else {
               console.log("No FEN :(")
             }
           })
         }
+        await handleProgress();
       }
     )();
   }, [location.state.id]);
+
+
+
 
   const handleAnswer = async() => {
     await fetch( `${backend}/api/checkmove`, {
@@ -97,6 +109,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id);
             setAnswered(true);
             winSound();
+            handleProgress();
             if(arrayOfObjects[activeIndex+1]) 
             {
               setActiveIndex(activeIndex+1);
@@ -128,14 +141,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
           setCurrentFen(arrayOfObjects[activeIndex].fen)
         }
         setAnswered(false);
-        let cnt = 0;
-        if(arrayOfSolved && arrayOfObjects) {
-          arrayOfObjects.map((puz) => {
-              if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
-            }
-          )
-        }
-        setProgressWidthcnt(cnt);
       }
       )();
     },[activeIndex]);
@@ -156,16 +161,11 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
       (
         async () => {
-          arrayOfObjects[0] ? setCurrentFen(arrayOfObjects[0].fen) : console.log();
-          setSolved(arrayOfObjects.length);
-          let cnt = 0;
-          if(arrayOfSolved && arrayOfObjects) {
-          arrayOfObjects.map((puz) => {
-              if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
-              }
-            )
+          if (arrayOfObjects[0]){
+            setCurrentFen(arrayOfObjects[0].fen);
+            await handleProgress();
           }
-          setProgressWidthcnt(cnt);
+          setSolved(arrayOfObjects.length);
       }
     )();
   },[arrayOfObjects])
@@ -178,10 +178,13 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
 
   return (
       <>
-      { startAnimation &&
+      { startAnimation === true &&
         <div className="chess-win-scene">
-          <ThreeScene startAnimation={startAnimation} />
+          <ThreeScene startAnimation={startAnimation} handleAnimation={setStartAnimation}/>
         </div>
+      }
+      {winPopUp === true &&
+        <WinPopup onClose={setWinPopUp} activeIndex={activeIndex} setActiveIndex={setActiveIndex} lengthOfArray={arrayOfObjects.length} />
       }
         {
           location.state.gameWithBot === undefined ?
@@ -209,7 +212,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     user={user}
                     arrayOfSolved={arrayOfSolved}
                     gameWithBot={gameWithBot}
-                    handleAnimation={handleAnimation}
+                    handleAnimation={setStartAnimation}
+                    setProgress={setProgressWidthcnt}
                     />
                   </div>
                 </div>
@@ -314,7 +318,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     user={user}
                     arrayOfSolved={arrayOfSolved}
                     gameWithBot={gameWithBot}
-                    handleAnimation={handleAnimation}
+                    handleAnimation={setStartAnimation}
+                    setProgress={setProgressWidthcnt}
                     />
           </div>
           

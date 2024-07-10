@@ -4,7 +4,7 @@ import Panel from './components/Chessboard-panel/Panel';
 import Main from "./components/Main/Main";
 import Header from "./components/FH/header";
 import Footer from "./components/FH/footer";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Reg from "./components/login-reg/reg";
 import Login from "./components/login-reg/login";
 import Profile from "./components/Profile/profile";
@@ -31,6 +31,7 @@ function App() {
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
   const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
+  const location = useLocation();
 
   useEffect(() => {
     (
@@ -59,16 +60,14 @@ function App() {
           <img src="assets/images/ornament-left.jpg" alt="" className="ornament-left"/>
           <img src="assets/images/ornament-right.jpg" alt="" className="ornament-right"/>
         </MediaQuery>
-        <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen}/>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/registration" element={<Reg/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/" element={<Main inp={inp} user={user}/>} />
-            {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
-            {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
-          </Routes>
-        </BrowserRouter>
+        <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen} allowSearch={location.pathname === '/'}/>
+        <Routes>
+          <Route path="/registration" element={<Reg/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/" element={<Main inp={inp} user={user}/>} />
+          {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
+          {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
+        </Routes>
         <Footer />
     </div>
   );

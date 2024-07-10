@@ -23,7 +23,8 @@ interface RefereeProps {
     user: User;
     arrayOfSolved: Set<number>;
     gameWithBot: boolean|undefined;
-    handleAnimation: () => any;
+    handleAnimation: (check: boolean) => any;
+    setProgress: (num: number) => any;
 }
 
 interface fenComponents {
@@ -33,7 +34,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithBot, handleAnimation}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithBot, handleAnimation, setProgress}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
@@ -272,6 +273,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
     function changeMove(way:number) {
         if(everyMove && everyMove.length !== 0){
+            newboard.turn === "w" ? newboard.turn = "b" : newboard.turn = "w"
             if(way === 1 && movePtr + 1 < everyMove.length){
                 if(movePtr === everyMove.length-1) 
                 {
@@ -313,19 +315,20 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             }
 
             {gameWithBot || reviewMode &&
-                <div>
-                        <div className="arrows">
-                        <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
-                            <img className="arrow" src="/assets/images/leftArrow.svg" />
-                        </div>
-                        <div className="rightArrowWrap" onClick={() => {changeMove(1)}}>
-                            <img className="arrow" src="/assets/images/rightArrow.svg" /></div>
-                        </div>
+                <div className="arrowsWrapper">
+                    <div className="arrows">
+                    <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
+                        <p className="arrow">назад</p>
+                    </div>
+                    <div className="rightArrowWrap" onClick={() => {changeMove(1)}}>
+                        <p className="arrow">вперёд</p>
+                    </div>
+                    </div>
                 </div>
             }
 
             <Chessboard playMove={playMove}
-                pieces={board.pieces} 
+                pieces={board?.pieces} 
                 fenComponents={newboard} 
                 setSolved={setSolved} 
                 solved={solved} 
@@ -345,6 +348,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 movePtr={movePtr}
                 handleAnimation={handleAnimation}
                 setReviewMode={setReviewMode}
+                setProgress={setProgress}
                 />
         </div>
     )

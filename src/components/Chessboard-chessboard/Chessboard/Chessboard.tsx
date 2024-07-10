@@ -15,6 +15,7 @@ import { PieceType, TeamType } from "../Types";
 import { Board } from "../models/Board";
 import { User } from "../../../App";
 import {isMobile} from 'react-device-detect';
+import WinPopup from "../winPopUp/winPopUp";
 
 interface Props {
   playMove: (piece: Piece, position: Position) => Promise<boolean>;
@@ -36,8 +37,9 @@ interface Props {
   gameWithBot: boolean|undefined;
   everyMove: Board[];
   movePtr: number;
-  handleAnimation: () => any;
+  handleAnimation: (check: boolean) => any;
   setReviewMode: (check: boolean) => any;
+  setProgress: (num: number) => any;
 }
 
 let totalTurns = 0;
@@ -46,7 +48,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr, handleAnimation, setReviewMode} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithBot, everyMove,movePtr, handleAnimation, setReviewMode, setProgress} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -63,6 +65,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [GRID_SIZE, setGridSize] = useState<number>(0);
   const [boardSize, setBoardSize] = useState<number>(0);
   const [review, setReview] = useState<boolean>(false);
+  const [winPopUp, setWinPopUp] = useState<boolean>(false);
   
   useEffect(() => {
     (
@@ -80,20 +83,36 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   },[])
 
   const botMove = async(botPosition:Position[]) => {
-    const botMove = pieces.find((p) => p.samePosition(botPosition[0]));
+    const botMove = pieces?.find((p) => p.samePosition(botPosition[0]));
     botMove?.possibleMoves?.push(botPosition[1]);
-    if(botMove) playMove(botMove.clone(), botPosition[1]);
+    if(botMove) {
+      playMove(botMove.clone(), botPosition[1]);
+      rightMove[0].x = botPosition[0].x;
+      rightMove[0].y = botPosition[0].y;
+      rightMove[1].x = botPosition[1].x;
+      rightMove[1].y = botPosition[1].y;
+    }
     return true;
   }
+
 
   const win = async() => {
     setReview(true);
     setReviewMode(true);
+    setWinPopUp(true);
     if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
     winSound();
     let chk;
     // let ind = 0;
     chk = false;
+    let cnt = 0;
+    if(arrayOfSolved && arrayOfObjects) {
+      arrayOfObjects.map((puz) => {
+          if(arrayOfSolved.has(puz.puzzle_id)) cnt++;
+        }
+      )
+      setProgress(cnt);
+    }
     for(let i = 0; i < lengthOfArray; i++)
     {
       chk = true;
@@ -103,7 +122,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       }
     }
     if(chk === true) {
-      handleAnimation();
+      handleAnimation(true);
     }
     // if (lengthOfArray - 1 === activeIndex) {
     //   if(chk) {
@@ -271,7 +290,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               activePiece.style.removeProperty("top");
               activePiece.style.removeProperty("left");
             }
-            if(rightMove[0].x === -1 && lives !== 0) setLives(lives - 1)
+            if(lives !== 0) setLives(lives - 1)
             totalTurns--;
             if (data.solut) 
             {
@@ -306,6 +325,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         const x = e.clientX - GRID_SIZE / 2 + window.scrollX;
         const y = 7 - e.clientY - GRID_SIZE / 2 + window.scrollY;
         element.style.position = "static";
+        element.style.zIndex = '1';
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
   
@@ -320,7 +340,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       const x = e.clientX - 30 + window.scrollX;
       const y = e.clientY - 30 + window.scrollY;
       activePiece.style.position = "absolute";
-
+      activePiece.style.zIndex = '2';
       activePiece.style.left = `${x}px`;
 
       activePiece.style.top = `${y}px`;
@@ -336,7 +356,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           Math.ceil((e.clientY - chessboardRef.current.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
         );
             
-        const currentPiece = pieces.find((p) =>
+        const currentPiece = pieces?.find((p) =>
           p.samePosition(grabPosition)
         );
 
@@ -388,7 +408,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           Math.ceil((e.clientY - chessboard.offsetTop - boardSize  + window.scrollY) / GRID_SIZE)
         );
             
-        const currentPiece = pieces.find((p) =>
+        const currentPiece = pieces?.find((p) =>
           p.samePosition(grabPosition)
         );
 
@@ -414,11 +434,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   for (let j = 7; j >= 0; j--) {
     for (let i = 0; i < 8; i++) {
       const number = j + i + 2;
-      const piece = pieces.find((p) =>
+      const piece = pieces?.find((p) =>
         p.samePosition(new Position(i, j))
       );
       let image = piece ? piece.image : undefined;
-      let currentPiece = activePiece != null ? pieces.find(p => p.samePosition(grabPosition)) : undefined;
+      let currentPiece = activePiece != null ? pieces?.find(p => p.samePosition(grabPosition)) : undefined;
       let highlight = currentPiece?.possibleMoves ? 
       currentPiece.possibleMoves.some(p => p.samePosition(new Position(i, j))) : false;
       let digit = (i === 0) ? VERTICAL_AXIS[gameWithBot ? j : fenComponents.turn === 'w' ? j : 7 - j] : '';
@@ -429,16 +449,20 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }
   }
 
+
   return (
     <div className="chessboardWrapper">
-        <div className="modal hidden" ref={modalRef}>
-            <div className="modal-body">
-                <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
-                <img onClick={() => promotePawn(PieceType.BISHOP)} src={`/assets/images/bishop_${promotionTeamType()}.png`} />
-                <img onClick={() => promotePawn(PieceType.KNIGHT)} src={`/assets/images/knight_${promotionTeamType()}.png`} />
-                <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
-            </div>
-        </div>
+      {winPopUp === true &&
+        <WinPopup onClose={setWinPopUp} activeIndex={activeIndex} setActiveIndex={setActiveIndex} lengthOfArray={lengthOfArray} />
+      }
+      <div className="modal hidden" ref={modalRef}>
+          <div className="modal-body">
+              <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
+              <img onClick={() => promotePawn(PieceType.BISHOP)} src={`/assets/images/bishop_${promotionTeamType()}.png`} />
+              <img onClick={() => promotePawn(PieceType.KNIGHT)} src={`/assets/images/knight_${promotionTeamType()}.png`} />
+              <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
+          </div>
+      </div>
       <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
       <div className="chessboard-board">
         {isMobile ? 

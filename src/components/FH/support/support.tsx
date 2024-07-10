@@ -67,26 +67,30 @@ const Support = ({setPopOpen, popOpen}:Props) => {
                 <div className="support-close" onClick={() => setPopOpen(false)}></div>
                     <div className="support-block">
                         <div className="support-ramka">
-                            <h1>Форма обратной связи</h1>
+                            <div className="support-ramka-title">Форма обратной связи</div>
                             <form className="support-form" onSubmit={handleSubmit}>
-                                <input placeholder="Имя" className="support-bar"type="text"
+                                <label htmlFor="input">Имя</label>
+                                <input className="support-bar"type="text"
                                   id="fullName"
                                   name="fullName"
                                   value={formData.fullName}
                                   onChange={handleChange}
                                   required />
+                                <label htmlFor="input">Эл. Почта</label>
                                 <input className={checkEmail ? "support-bar" : "support-bar support-incorrectBar"} type="email"
                                   id="email"
                                   name="email"
                                   value={formData.email}
                                   onChange={handleChange}
                                   required/>
+                                <label htmlFor="input">Номер телефона</label>
                                 <InputMask className={checkPhone ? "support-bar" : "support-bar support-incorrectBar"} mask="+7 (999) 999-99-99" placeholder="+7 (999) 999-99-99" id="phoneNumber"
                                   name="phoneNumber"
                                   value={formData.phoneNumber}
                                   onChange={handleChange}
                                   required/>
-                                <textarea className="support-textArea" placeholder="Сообщение" id="message"
+                                <label htmlFor="textarea">Сообщение</label>
+                                <textarea className="support-textArea" id="message"
                                   name="message"
                                   value={formData.message}
                                   onChange={handleChange}

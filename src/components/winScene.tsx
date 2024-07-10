@@ -1,32 +1,34 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 
 const TARGET_POSITION = new THREE.Vector3(15, 10, 0);
 
 const ICONS = [
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
-    '/assets/images/asyk-win.svg', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
+    '/assets/images/asyk-win.svg?', 
 ];
 
 interface ThreeSceneProps {
     startAnimation: boolean;
+    handleAnimation: (check: boolean) => any;
 }
 
-const ThreeScene: React.FC<ThreeSceneProps> = ({ startAnimation }) => {
+const ThreeScene: React.FC<ThreeSceneProps> = ({ startAnimation, handleAnimation }) => {
+    const [isVisible, setIsVisible] = useState(true);
     const mountRef = useRef<HTMLDivElement | null>(null);
     const startTimeRef = useRef<number>(0);
 
@@ -113,8 +115,19 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ startAnimation }) => {
     useEffect(() => {
         if (startAnimation) {
             startTimeRef.current = Date.now();
+
+            const timer = setTimeout(() => {
+                setIsVisible(false);
+                handleAnimation(false);
+            }, 4500); // Hide animation after 5 seconds
+
+            return () => clearTimeout(timer);
         }
     }, [startAnimation]);
+
+    if (!isVisible) {
+        return null;
+    }
 
     return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;
 };

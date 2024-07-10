@@ -185,6 +185,42 @@
     top:3px
 }
 
+.referee .arrowsWrapper {
+    height: 0px;
+}
+
+.referee .arrows {
+    position: relative;
+    left: 485px;
+    top: 60px;
+    height: 30px;
+    width: 140px;
+    border-width: 2px;
+}
+
+.referee .arrow {
+    width: 10px;
+}
+
+.referee .leftArrowWrap .arrow {
+    padding-left: 15px;
+}
+
+.referee .rightArrowWrap .arrow {
+    padding-right: 50px;
+}
+
+.referee .leftArrowWrap {
+    height: 30px;
+    width: 70px;
+    border-width: 2px;
+}
+
+.referee .rightArrowWrap {
+    height: 30px;
+    width: 70px;
+}
+
 @media screen and (max-width: 1200px) {
     #chessboard {
         margin-top: 20px;
