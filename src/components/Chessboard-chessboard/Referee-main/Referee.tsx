@@ -133,7 +133,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
       useEffect(() => {
         (
             async () => {
-                if(board.pieces.length !== 0)
+                if(board?.pieces?.length !== 0)
                     {
                         if(!everyMove.some((bord) => (bord === board)) && everyMove[everyMove.length - 1] !== board && movePtr < everyMove.length - 1) {
                             for(let i = everyMove.length - 1; i >= 0; i--) {
@@ -195,7 +195,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                     desiredPosition.x - initialPosition.x === 1) &&
                 desiredPosition.y - initialPosition.y === pawnDirection
             ) {
-                const piece = board.pieces.find(
+                const piece = board?.pieces?.find(
                     (p) =>
                         p.position.x === desiredPosition.x &&
                         p.position.y === desiredPosition.y - pawnDirection &&
