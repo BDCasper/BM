@@ -64,29 +64,28 @@ export default function Profile({setUserLog, user, token}:Props) {
         {
             setButtonName("Изменить");
             setInpChange(!inpChange);
-            await fetch(`${backend}/api/profile/save`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                credentials: 'include',
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    userName: userName,
-                    birth: birth,
-                    location: location
-                })
-            }).then((response) => { 
-                if (response && response.status === 200)
-                {
-                    response.json().then((data) => { 
-                        console.log(data);
-                    })
-                }
-                if(response.status === 400)
-                {
-                }
-            })
+            // await fetch(`${backend}/api/profile/save`, {
+            //     method: "POST",
+            //     headers: { 'Content-Type': 'application/json'},
+            //     body: JSON.stringify({
+            //         name: name,
+            //         email: email,
+            //         phone: phone,
+            //         userName: userName,
+            //         birth: birth,
+            //         location: location
+            //     })
+            // }).then((response) => { 
+            //     if (response && response.status === 200)
+            //     {
+            //         response.json().then((data) => { 
+            //             console.log(data);
+            //         })
+            //     }
+            //     if(response.status === 400)
+            //     {
+            //     }
+            // })
 
         }
     }
