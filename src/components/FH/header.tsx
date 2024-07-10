@@ -4,6 +4,8 @@ import Main from "../Main/Main";
 import MediaQuery from "react-responsive";
 import { User } from "../../App";
 import Podpiska from "../Podpiska/podpiska";
+import i18n from "../../i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     checkUserLog: boolean;
@@ -20,6 +22,16 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
 
     const [inputText, setInputText] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
+
+    const {t} = useTranslation();
+
+    const changeLanguage = (lng: string) => {
+      i18n.changeLanguage(lng);
+    };
+  
+    const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      changeLanguage(event.target.value);
+    };
 
     const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
         if( e.key === 'Enter' ) setInp(inputText);
@@ -43,26 +55,26 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
             {popOpen && popup}
             <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
             <MediaQuery minWidth={1200}>
-                <div className="allCourse"><a href="/">Главная</a></div>
-                <div className="web-site"><a href="https://school.bm-chess.com/" target="_blank">Сайт школы</a></div>
-                <div className="subscribe" onClick={() => setPopOpen(true)}>Подписка</div>
+                <div className="allCourse"><a href="/">{t('Главная')}</a></div>
+                <div className="web-site"><a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a></div>
+                <div className="subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
                 {allowSearch === true ? 
                     <div className="search ">
                         <img src="assets/images/search.svg" className="loop"/>
                         <input type="text" className="searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
-                        <button className="poisk" onClick={() => setInp(inputText)}>Поиск</button>
+                        <button className="poisk" onClick={() => setInp(inputText)}>{t('Поиск')}</button>
                     </div> 
                 :
                     <div className="search sHidden">
                         <img src="assets/images/search.svg" className="loop"/>
                         <input type="text" className="searchBar"/>
-                        <button name="button" className="poisk">Поиск</button>
+                        <button name="button" className="poisk">{t('Поиск')}</button>
                     </div>
                 }
                 {!token?.includes('.') ? (
                     <>
-                        <div className="reg"><a href="/registration">Регистрация</a></div>
-                        <div className="login"><a href="/login">Вход</a></div>
+                        <div className="reg"><a href="/registration">{t('Регистрация')}</a></div>
+                        <div className="login"><a href="/login">{t('Вход')}</a></div>
                     </>
                 ) : (
                         <>
@@ -70,10 +82,22 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                             <a href="/profile" className="header-profile"><img src="assets/images/header-profile.svg"/></a>
                         </>
                 )}
-                <div className="lang">RU</div>
+                <div className="lang"> 
+                    <select onChange={handleLanguageChange} defaultValue={i18n.language}>
+                        <option value="ru">Русский</option>
+                        <option value="kk">Қазақ</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
             </MediaQuery>
             <MediaQuery maxWidth={1200}>
-                <div className="lang">RU</div>
+                <div className="lang">
+                    <select onChange={handleLanguageChange} defaultValue={i18n.language}>
+                        <option value="ru">Русский</option>
+                        <option value="kk">Қазақ</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
                 {token?.includes('.') && <div className="username">{user.email}</div>}
                 <div className='menu-container'>
                     <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
@@ -82,27 +106,27 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                     <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`} >
                         <ul>
                             <li className = 'dropdownItem'>
-                                <a href="/">Все курсы</a>
+                                <a href="/">{t('Главная')}</a>
                             </li>
                             <li className = 'dropdownItem'>
-                                <a href="/subscription">Подписка</a>
+                                <a href="/subscription">{t('Подписка')}</a>
                             </li>
                             <li className = 'dropdownItem'>
-                                <a href="https://school.bm-chess.com/" target="_blank">Сайт школы</a>
+                                <a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a>
                             </li>
 
                             {!token?.includes('.') ? (
                                 <>
                                 <li className = 'dropdownItem'>
-                                    <a href="/login">Вход</a>
+                                    <a href="/login">{t('Вход')}</a>
                                 </li>
                                 <li className = 'dropdownItem'>
-                                    <a href="/registration">Регистрация</a>
+                                    <a href="/registration">{t('Регистрация')}</a>
                                 </li>
                                 </>
                             ) : (
                                 <li className = 'dropdownItem'>
-                                    <a href="/profile">Профиль</a>
+                                    <a href="/profile">{t('Профиль')}</a>
                                 </li>
                             )}
                         </ul>

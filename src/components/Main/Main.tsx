@@ -4,6 +4,7 @@ import "./Main.css"
 import { useNavigate } from "react-router-dom";
 import { User } from "../../App";
 import MediaQuery from "react-responsive";
+import { useTranslation } from "react-i18next";
 
 const arrOfFigures = ["Пешка", "Слон", "Ладья", "Ферзь", "Король", "Конь", "Слон"];
 
@@ -25,6 +26,8 @@ export default function Main({inp, user}:MainProps) {
     const navigate = useNavigate();
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
+
+    const {t} = useTranslation();
 
     function getNoun(num: number, one: string, two: string, five: string) {
       let n = Math.abs(num);
@@ -68,27 +71,27 @@ export default function Main({inp, user}:MainProps) {
         <div className="lists-wrapper">
           <div className="course-list">
             <div className={filterTopic === '' ? "all-courses setOn" : "all-courses"} onClick={() => setFilter('')}>
-                <div className="podpiska-text">Все курсы</div>
+                <div className="podpiska-text">{t('Все курсы')}</div>
                 <img className="podpiskaImg" src={filterTopic === '' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
             <div className="podpiska">
               <div className={filterTopic === 'easy' ? "podpiska1 setOn" : "podpiska1"} onClick={() => setFilter('easy')}>
-              <div className="podpiska-text">Начинающий</div>
+              <div className="podpiska-text">{t('Начинающий')}</div>
               <img className="podpiskaImg" src={filterTopic === 'easy' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
               <div className={filterTopic === 'medium' ? "podpiska2 setOn" : "podpiska2"} onClick={() => setFilter('medium')}>
-              <div className="podpiska-text">Продолжающий</div>
+              <div className="podpiska-text">{t('Продолжающий')}</div>
               <img className="podpiskaImg" src={filterTopic === 'medium' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
               <div className={filterTopic === 'hard' ? "podpiska3 setOn" : "podpiska3"} onClick={() => setFilter('hard')}>
-              <div className="podpiska-text">Продвинутый</div>
+              <div className="podpiska-text">{t('Продвинутый')}</div>
               <img className="podpiskaImg" src={filterTopic === 'hard' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
             </div>
           </div>
           <div className="game-list">
             <div className="game-type" onClick={() => navigate("/topic", {state:{gameWithBot: true}})}>
-                <div className="podpiska-text">Играть вдвоём</div>
+                <div className="podpiska-text">{t('Играть вдвоём')}</div>
                 <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
               </div>
           </div>
@@ -97,7 +100,7 @@ export default function Main({inp, user}:MainProps) {
           <div className="main-panel-content">  
           {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (
             <div key={dif}>
-              <p className="levelName">{dif === 'easy' ? "Для начинающих" : dif === 'medium' ? "Для продолжающих" : dif === 'hard' ? "Для продвинутых" : ''}</p>
+              <p className="levelName">{dif === 'easy' ? t('Для начинающих') : dif === 'medium' ? t('Для продолжающих') : dif === 'hard' ? t('Для продвинутых') : ''}</p>
               <div className="pro-level">
                 {inp !== '' ? 
                   <>
@@ -108,7 +111,7 @@ export default function Main({inp, user}:MainProps) {
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
-                                <div className="theme-name">{topic.topic}</div>
+                                <div className="theme-name">{t(topic.topic)}</div>
                                 <ul className="theme-info">
                                     <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
                                     <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
@@ -127,7 +130,7 @@ export default function Main({inp, user}:MainProps) {
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
                             <div className="theme-text">
-                                <div className="theme-name">{topic.topic}</div>
+                                <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">
                                   <ul>
                                     <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 

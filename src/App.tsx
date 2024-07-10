@@ -14,7 +14,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 export interface User {
   user_id?: number;
   name?: string; 
-  surname?: string;  
+  username?: string;  
   email?: string; 
   phone?: string; 
   birth_date?: string; 
@@ -75,7 +75,7 @@ function App() {
 
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
-//export const backend = "http://195.49.215.186:10000";
+export const backend = "http://195.49.215.186:10000";
 //export const backend = "https://bm-back.onrender.com";
-export const backend = "https://api.bm-chess.com";
+//export const backend = "https://api.bm-chess.com";
 

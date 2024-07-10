@@ -10,6 +10,8 @@ import MediaQuery from "react-responsive";
 import { User } from "../../App";
 import ThreeScene from "../winScene";
 import WinPopup from "../Chessboard-chessboard/winPopUp/winPopUp";
+import { useTranslation } from "react-i18next";
+
 
 interface Props {
   puzzle_id: number;
@@ -49,6 +51,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [chooseQ, setChooseQ] = useState<number>(-1);
   const [startAnimation, setStartAnimation] = useState(false);
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
+  const {t} = useTranslation();
+
 
   const handleProgress = async() => {
     let cnt = 0;
@@ -193,7 +197,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             {popOpen && popup}
             <div className="progressBar">
               <div className="progress-line" style={{width: `${(arrayOfSolved && arrayOfObjects) ? 100*progressWidthcnt/arrayOfObjects.length : 0}%`}}></div>
-              <div className="progress-percentage">{(arrayOfSolved && arrayOfObjects && arrayOfObjects.length !== 0) ? Math.ceil(100*progressWidthcnt/arrayOfObjects.length) : 0}% выполнено</div>
+              <div className="progress-percentage">{(arrayOfSolved && arrayOfObjects && arrayOfObjects.length !== 0) ? Math.ceil(100*progressWidthcnt/arrayOfObjects.length) : 0}% {t('выполнено')}</div>
             </div>
             <div className="panel-content">
               <div className="panel-spisok">
@@ -250,8 +254,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                     {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                     <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                     <div className="zadachi-text" >
-                                      <div className="id" >Задание №{index+1}</div>
-                                      <div className="title" >{puzzle.title}</div>
+                                      <div className="id" >{t('Задание')} №{index+1}</div>
+                                      <div className="title" >{t(puzzle.title)}</div>
                                     </div>
                                   </div>
                                   {!puzzle.closed && index === activeIndex && 
@@ -262,11 +266,11 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                             setAnswer(variant)
                                             }}>
                                             <td><input type="radio" className="zadachi-test-r" checked={chooseQ === ind} onChange={() => setAnswer(variant)} name="inp"/></td>
-                                            <td className="zadachi-test-t">{variant}</td>
+                                            <td className="zadachi-test-t">{t(variant)}</td>
                                           </tr>
                                       ))}
-                                      {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">Неправильный ответ</div>}
-                                      <button className="zadachi-test-b" onClick={handleAnswer}>Отправить</button>
+                                      {!isCorrect && answer && answered && <div className="zadachi-wrongAnswer">{t('Неправильный ответ')}</div>}
+                                      <button className="zadachi-test-b" onClick={handleAnswer}>{t('Отправить')}</button>
                                     </div>
                                   }
                                   </>
@@ -277,8 +281,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                       {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                       <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                       <div className="zadachi-text" >
-                                        <div className="id" >Задание №{index+1}</div>
-                                        <div className="title" >{puzzle.subtopic}</div>
+                                        <div className="id" >{t('Задание')} №{index+1}</div>
+                                        <div className="title" >{t(puzzle.subtopic)}</div>
                                       </div>
                                     </div>
                                   </>

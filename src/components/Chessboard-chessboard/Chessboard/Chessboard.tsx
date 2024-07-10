@@ -16,6 +16,8 @@ import { Board } from "../models/Board";
 import { User } from "../../../App";
 import {isMobile} from 'react-device-detect';
 import WinPopup from "../winPopUp/winPopUp";
+import { useTranslation } from "react-i18next";
+
 
 interface Props {
   playMove: (piece: Piece, position: Position) => Promise<boolean>;
@@ -66,6 +68,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [boardSize, setBoardSize] = useState<number>(0);
   const [review, setReview] = useState<boolean>(false);
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
+  const {t} = useTranslation();
   
   useEffect(() => {
     (
@@ -463,7 +466,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
           </div>
       </div>
-      <div className="task-name">{arrayOfObjects[activeIndex]?.subtopic}</div>
+      <div className="task-name">{t(arrayOfObjects[activeIndex]?.subtopic)}</div>
       <div className="chessboard-board">
         {isMobile ? 
           <div onClick={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
@@ -474,8 +477,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           onMouseUp={(e) => isTest === true || (gameWithBot && movePtr !== everyMove.length-1) ? null : dropPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
         }
       </div>
-      <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>Ход {fenComponents.turn ? (fenComponents.turn === "w" ? "Белых" : "Черных") : "..."}</div>
-      {isTest === false && gameWithBot===undefined && <div className="lives">Осталось жизней: <span>{lives}</span></div>}
+      <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>
+      {isTest === false && gameWithBot===undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
     </div>
   );
 }

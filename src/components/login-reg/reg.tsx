@@ -3,6 +3,8 @@ import "./reg.css"
 import { backend } from "../../App";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 
 export default function Reg() {
     const [email, setEmail] = useState("");
@@ -17,6 +19,8 @@ export default function Reg() {
     const eRegex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
     const navigate = useNavigate();
+    const {t} = useTranslation();
+
 
     const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
         if( e.key === 'Enter' ) register();
@@ -72,25 +76,25 @@ export default function Reg() {
         <div className="reg-page">
             <div className="reg-ramka">
                 <img src="/assets/images/logo.svg" className="reg-logo" alt=""/>
-                <div className="reg-text">Добро пожаловать в шахматную школу</div>
-                <div className="reg-text">"Будущие миллионеры"</div>
+                <div className="reg-text">{t('Добро пожаловать в шахматную школу')}</div>
+                <div className="reg-text">{t('"Будущие миллионеры"')}</div>
                 <div className="reg-inputs">
                     <div className="email">
-                        <div className={emailEmpty || !emailCorrect || !emailFree ? "reg-input-text incorrect" : "reg-input-text"}>E-mail</div>
+                        <div className={emailEmpty || !emailCorrect || !emailFree ? "reg-input-text incorrect" : "reg-input-text"}>{t('E-mail')}</div>
                         <input type="text" className={emailEmpty || !emailCorrect || !emailFree ? "regBar incorrectBar" : "regBar"} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="password">
-                        <div className={ passwordEmpty || !passwordCorrect ? "reg-input-text incorrect" : "reg-input-text"}>Придумайте пароль</div>
+                        <div className={ passwordEmpty || !passwordCorrect ? "reg-input-text incorrect" : "reg-input-text"}>{t('Придумайте пароль')}</div>
                         <input type="password" className={ passwordEmpty || !passwordCorrect ? "regBar incorrectBar" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <div className="reg-username">
-                        <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>Имя пользователя</div>
+                        <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>{t('Имя пользователя')}</div>
                         <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setUserName(e.target.value)}/>
                     </div>
-                    <button className="reg-button" onClick={register}>Зарегистрироваться</button>
-                    {(!emailFree) && <div className="reg-email-incorrect">Данный эл. адресс уже зарегестрирован</div>}
-                    <div className="reg-to-log">Уже есть аккаунт? <a href="/login">Войти</a></div>
-                    <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo" alt=""/><p>Войти через Google</p></div>
+                    <button className="reg-button" onClick={register}>{t('Зарегистрироваться')}</button>
+                    {(!emailFree) && <div className="reg-email-incorrect">{t('Данный эл. адресс уже зарегестрирован')}</div>}
+                    <div className="reg-to-log">{t('Уже есть аккаунт?')} <a href="/login">{t('Войти')}</a></div>
+                    <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo" alt=""/><p>{t('Войти через Google')}</p></div>
                 </div>
             </div>
         </div>

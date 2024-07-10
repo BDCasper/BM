@@ -151,7 +151,7 @@
 }
 
 .levelName {
-    width: 240px;
+    width: fit-content;
     font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: 550;color: #AB2A3B;
 }
 
