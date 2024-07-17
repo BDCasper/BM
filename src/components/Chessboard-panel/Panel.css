@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     min-width: 800px;
     width: 800px;
     min-height: 650px;
@@ -33,6 +34,19 @@
     padding-top: 20px;
     padding-bottom: 20px;
     float: left;
+}
+
+.panel button {
+    align-self: flex-end;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel img {
+    width: 20px;
+    height: 20px;
 }
 
 .test {

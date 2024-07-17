@@ -90,10 +90,14 @@ export default function Main({inp, user}:MainProps) {
             </div>
           </div>
           <div className="game-list">
-            <div className="game-type" onClick={() => navigate("/topic", {state:{gameWithBot: true}})}>
+            <div className="game-type" onClick={() => navigate("/topic", {state:{gameWithBot: true, basicFenCode: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}})}>
                 <div className="podpiska-text">{t('Играть вдвоём')}</div>
                 <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
-              </div>
+            </div>
+            <div className="game-type" onClick={() => navigate("/editor")}>
+                <div className="podpiska-text">{t('Редактор доски')}</div>
+                <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+            </div>
           </div>
         </div>
         <div className="main-panel">

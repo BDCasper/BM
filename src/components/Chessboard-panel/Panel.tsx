@@ -1,4 +1,4 @@
-import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Referee from "../Chessboard-chessboard/Referee-main/Referee";
 import "./Panel.css"
 import { backend } from "../../App";
@@ -52,7 +52,9 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [startAnimation, setStartAnimation] = useState(false);
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
   const {t} = useTranslation();
+  const scrollToBoard = useRef<null | HTMLDivElement>(null);
 
+  const executeScroll = () => scrollToBoard.current?.scrollIntoView();
 
   const handleProgress = async() => {
     let cnt = 0;
@@ -201,7 +203,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             </div>
             <div className="panel-content">
               <div className="panel-spisok">
-                <div className="panel">    
+                <div className="panel" ref={scrollToBoard}>
+                  <button onClick={executeScroll}><img src="assets/images/resize.png" alt="" /></button>    
                   <div className="referee">
                     <Referee fenCode={fenCode} 
                     setSolved={setSolved} 
@@ -309,7 +312,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
           </>
           :
           <div className="gameWithBot">
-              <Referee fenCode={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"} 
+              <Referee fenCode={location.state.basicFenCode} 
                     setSolved={setSolved} 
                     solved={solved} 
                     activeIndex={activeIndex} 

@@ -78,7 +78,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                     </>
                 ) : (
                         <>
-                            <div className="username">{user.email}</div>
+                            <div className="username">{user.username ? user.username : user.email}</div>
                             <a href="/profile" className="header-profile"><img src="assets/images/header-profile.svg"/></a>
                         </>
                 )}

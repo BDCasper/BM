@@ -9,6 +9,7 @@ import Reg from "./components/login-reg/reg";
 import Login from "./components/login-reg/login";
 import Profile from "./components/Profile/profile";
 import MediaQuery from "react-responsive";
+import ChessboardEdit from "./components/Chessboard-edit/ChessboardEdit";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export interface User {
@@ -53,6 +54,7 @@ function App() {
       })();
   }, [token])
 
+
   return (
     <div className="app">
         <SpeedInsights/>
@@ -67,6 +69,7 @@ function App() {
           <Route path="/" element={<Main inp={inp} user={user}/>} />
           {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
           {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
+          <Route path="/editor" element={<ChessboardEdit/>}/>
         </Routes>
         <Footer />
     </div>

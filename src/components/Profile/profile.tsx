@@ -17,7 +17,6 @@ interface Props {
 
 export default function Profile({setUserLog, user, token}:Props) {
     const [name, setName] = useState<string>('');   
-    // const [surname, setSurname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [checkPhone, setCheckPhone] = useState(false);
@@ -31,6 +30,8 @@ export default function Profile({setUserLog, user, token}:Props) {
     const navigate = useNavigate();
     const [selected, setSelected] = useState("");
     const fileUploadRef = useRef<HTMLInputElement>(null);
+
+    
 
     const handleAvatarUpload = async() => {
         fileUploadRef.current?.click();
@@ -47,7 +48,7 @@ export default function Profile({setUserLog, user, token}:Props) {
     useEffect(() => {
         (
             async() => {
-                if(token === null) navigate('/login');
+                if(token === null || token === '') navigate('/login');
             }
         )()
     },[])
@@ -58,6 +59,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         {
             setButtonName("Сохранить");
             setInpChange(!inpChange);
+            return;
         }
 
         if(checkPhone && buttonName === "Сохранить")
@@ -90,6 +92,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         }
     }
 
+
     useEffect(() => {
         (
             async() => {
@@ -116,6 +119,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         )();
       }, [user])
 
+
     const logout = async() => {
 
         await fetch(`${backend}/api/logout`, {
@@ -138,7 +142,7 @@ export default function Profile({setUserLog, user, token}:Props) {
 
     return(
         <div className="profile">
-            {token !== null &&
+            {token !== null && token !== '' &&
                 <div className="profile-ramka">
                     <div className="profile-upper-text">Личный профиль</div>
                     <div className="profile-image-block">                
@@ -146,7 +150,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                         <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
                         <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                     </div>
-                    <div className="profile-score">Количество очков: {user.score} <img src="/assets/images/asyk-win.svg" alt="" /></div>
+                    <div className="profile-score">Количество очков: {user.score ? user.score : 0} <img src="/assets/images/asyk-win.svg" alt="" /></div>
                         <div className="profile-username">
                             <div className="profile-name">Имя пользователя</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={username} onChange={(e) => setUsername(e.target.value)}/>
@@ -156,10 +160,6 @@ export default function Profile({setUserLog, user, token}:Props) {
                             <div className="profile-name">Имя</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={name} onChange={(e) => setName(e.target.value)}/>
                         </div>
-                        {/* <div className="profile-inputs-block">
-                            <div className="profile-name">Фамилия</div>
-                            <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={surname} onChange={(e) => setSurname(e.target.value)}/>
-                        </div> */}
                         <div className="profile-inputs-block">
                             <div className="profile-name">E-mail</div>
                             <input type="text" className={inpChange ? "profile-input" : "profile-input input-disabled"} value={email} onChange={(e) => setEmail(e.target.value)}/>

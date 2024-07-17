@@ -1,0 +1,32 @@
+.chessboardEdit {
+    width: 100vw;   
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.chessboardEdit-boardPanel {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.chessboardEdit-border {
+    margin-top: 30px;
+    width: 498px;
+    height: 497.7px;
+    background-color: #57340b;
+}
+
+.chessboardEdit-board {
+    margin-top: 20px;
+    margin-left: 20px;
+    display: grid;
+    grid-template-columns: repeat(8, 57.2px);
+    grid-template-rows: repeat(8, 57.2px);
+    width: 458px;
+    height: 457.7px;
+    background-color: rgb(255, 255, 255);
+}
