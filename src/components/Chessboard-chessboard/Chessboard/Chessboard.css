@@ -16,6 +16,24 @@
     height: fit-content;
 }
 
+.arrow-canvas-gameWithFriend {
+    position: absolute;
+    top: 0;
+    margin-top: 120px;
+    margin-left: 20px;
+    z-index: 1; /* Ensure it is above the chessboard */
+    pointer-events: none; /* Allow pointer events to pass through */
+}
+
+.arrow-canvas-tasks {
+    position: absolute;
+    top: 0;
+    margin-top: 350px;
+    margin-left: 20px;
+    z-index: 1; /* Ensure it is above the chessboard */
+    pointer-events: none; /* Allow pointer events to pass through */
+}
+
 .chessboard-board {
     width: 498px;
     height: 497.7px;

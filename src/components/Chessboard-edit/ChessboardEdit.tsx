@@ -5,10 +5,10 @@ import { VERTICAL_AXIS, HORIZONTAL_AXIS } from "../Chessboard-chessboard/Constan
 import Tile from "../Chessboard-chessboard/Tile/Tile";
 import { Piece, Position } from "../Chessboard-chessboard/models";
 import { Board } from "../Chessboard-chessboard/models/Board";
-import { DecodeFen } from "../FEN-Decoder/fenDecoder";
+import { DecodeFen } from "../FEN tools/fenDecoder";
 import { fenComponents } from "../fenComponents";
 import { PieceType, TeamType } from "../Chessboard-chessboard/Types";
-import { EncodeFen } from "../FEN-Encoder/fen-encoder";
+import { EncodeFen } from "../FEN tools/fen-encoder";
 
 const figures = ['rook', 'knight', 'bishop', 'queen', 'king', 'pawn'];
 
@@ -52,8 +52,14 @@ export default function ChessboardEdit(){
     }
 
     function handleStartGame(){
-        if(!board.pieces.find((p) => p.type === PieceType.KING && p.team === TeamType.OUR) || !board.pieces.find((p) => p.type === PieceType.KING && p.team === TeamType.OPPONENT)) {
-            alert("Добавьте королеву");
+        let cnt = 0;
+        for(let i = 0; i < board.pieces.length; i++){
+            if(board.pieces[i].type === PieceType.KING){
+                cnt++;
+            }
+        }
+        if(!board.pieces.find((p) => p.type === PieceType.KING && p.team === TeamType.OUR) || !board.pieces.find((p) => p.type === PieceType.KING && p.team === TeamType.OPPONENT) || cnt !== 2) {
+            alert("Невозможно начать партию");
             return;
         }
 

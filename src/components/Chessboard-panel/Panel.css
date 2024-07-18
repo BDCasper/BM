@@ -36,7 +36,7 @@
     float: left;
 }
 
-.panel button {
+.panel-size-button {
     align-self: flex-end;
     margin-right: 20px;
     display: flex;
@@ -44,7 +44,7 @@
     align-items: center;
 }
 
-.panel img {
+.panel-size-button img {
     width: 20px;
     height: 20px;
 }

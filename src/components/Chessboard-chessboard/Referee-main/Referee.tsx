@@ -8,7 +8,9 @@ import Chessboard from "../Chessboard/Chessboard";
 import TaskProps from "../../Chessboard-panel/Panel"
 import { User } from "../../../App";
 import useSound from "use-sound";
-import { DecodeFen } from "../../FEN-Decoder/fenDecoder";
+import { DecodeFen } from "../../FEN tools/fenDecoder";
+import { EncodeFen } from "../../FEN tools/fen-encoder";
+import { ReverseFen } from "../../FEN tools/fen-reverser";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -23,7 +25,7 @@ interface RefereeProps {
     setPopOpen: (pop: boolean) => any;
     user: User;
     arrayOfSolved: Set<number>;
-    gameWithBot: boolean|undefined;
+    gameWithFriend: boolean|undefined;
     handleAnimation: (check: boolean) => any;
     setProgress: (num: number) => any;
 }
@@ -35,7 +37,7 @@ interface fenComponents {
     enPassantSquare: string | null;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithBot, handleAnimation, setProgress}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithFriend, handleAnimation, setProgress}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
@@ -111,7 +113,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
-                if(gameWithBot) winSound();
+                if(gameWithFriend) winSound();
             }
             return clonedBoard;
         })
@@ -175,31 +177,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     }
 
 
-    // const handleFlip = async() => {
-    //     for(let i = 0; i < 8; i++){
-    //         let blackMove = board.pieces[i].position;
-    //         let whiteMove = board.pieces[24+i].position;
-    //         if(board.pieces[i].skin === TeamType.OUR) board.pieces[i].skin = TeamType.OPPONENT
-    //         else board.pieces[i].skin = TeamType.OUR
-    //         if(board.pieces[24+i].skin === TeamType.OUR) board.pieces[24+i].skin = TeamType.OPPONENT
-    //         else board.pieces[24+i].skin = TeamType.OUR
-    //         board.pieces[i].position.y = 7-whiteMove.y;
-    //         board.pieces[24+i].position.y = 7-blackMove.y;
-    //     }
-    //     for(let i = 8; i < 16; i++){
-    //         let blackMove = board.pieces[i].position;
-    //         let whiteMove = board.pieces[8+i].position;
-    //         if(board.pieces[i].skin === TeamType.OUR) board.pieces[i].skin = TeamType.OPPONENT
-    //         else board.pieces[i].skin = TeamType.OUR
-    //         if(board.pieces[8+i].skin === TeamType.OUR) board.pieces[8+i].skin = TeamType.OPPONENT
-    //         else board.pieces[8+i].skin = TeamType.OUR
-    //         if(Math.abs(blackMove.y - whiteMove.y) !== 1){
-    //             board.pieces[i].position.y = 7-whiteMove.y;
-    //             board.pieces[8+i].position.y = 7-blackMove.y;
-    //         }
-    //     }
-    //     setBoard(board);
-    // }
+    const handleFlip = async() => {
+        
+    }
 
     useEffect(() => {
         (
@@ -238,7 +218,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
     return (
         <div className="referee">
-            {gameWithBot &&
+            {gameWithFriend &&
             <>
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
                     <div className="modal-body-checkmate">
@@ -252,7 +232,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             </>
             }
 
-            {gameWithBot || reviewMode &&
+            {gameWithFriend || reviewMode &&
                 <div className="arrowsWrapper">
                     <div className="arrows">
                     <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
@@ -281,12 +261,13 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 board={board}
                 user={user}
                 arrayOfSolved={arrayOfSolved}
-                gameWithBot={gameWithBot}
+                gameWithFriend={gameWithFriend}
                 everyMove={everyMove}
                 movePtr={movePtr}
                 handleAnimation={handleAnimation}
                 setReviewMode={setReviewMode}
                 setProgress={setProgress}
+                gameWithBot={gameWithFriend}
                 />
         </div>
     )

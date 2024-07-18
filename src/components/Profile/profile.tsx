@@ -53,6 +53,7 @@ export default function Profile({setUserLog, user, token}:Props) {
         )()
     },[])
 
+
     const handleUserChange = async() => {
 
         if(buttonName === "Изменить")
@@ -64,8 +65,7 @@ export default function Profile({setUserLog, user, token}:Props) {
 
         if(checkPhone && buttonName === "Сохранить")
         {
-            setButtonName("Изменить");
-            setInpChange(!inpChange);
+            console.log(username)
             await fetch(`${backend}/api/profile/save`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json'},
@@ -88,7 +88,8 @@ export default function Profile({setUserLog, user, token}:Props) {
                 {
                 }
             })
-
+            setButtonName("Изменить");
+            setInpChange(!inpChange);
         }
     }
 

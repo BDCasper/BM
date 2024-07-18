@@ -24,9 +24,8 @@ export default function Footer() {
                     <div className="footer-text-top">
                         <div className="footer-text-font"><a href="/">{t('Главная')}</a></div>
                         <div className="footer-text-font" onClick={() => setPopOpen(true)}>{t('Служба поддержки')}</div>
-                        <div className="footer-text-font">{t('Контакты')}</div>
+                        <div className="footer-text-font">{t('Политика пользования')}</div>
                     </div>
-                    <div className="footer-text-bottom">{t('Политика пользования')}</div>
                 </div>
             </div>
             <div className="rights">

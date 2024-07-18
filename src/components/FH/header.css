@@ -16,7 +16,7 @@
     -webkit-user-drag: none;
 }
 
-.allCourse {
+.header-allCourse {
     width: fit-content;
     height: 22px;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #000000;
@@ -24,14 +24,14 @@
     -webkit-user-drag: none;
 }
 
-.web-site {
+.header-web-site {
     width: fit-content;
     height: 22px;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     margin-right: 2%;
 }
 
-.subscribe {
+.header-subscribe {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,7 +45,7 @@
     cursor: pointer;
 }
 
-.search {
+.header-search {
     display: inline-flex;
     align-items: center;
     border-radius: 30px;
@@ -60,7 +60,7 @@
     visibility: hidden;
 }
 
-.loop {
+.header-loop {
     position: relative;
     left: 15px;
     width: 16px;
@@ -68,7 +68,7 @@
     -webkit-user-drag: none;
 }
 
-.searchBar {
+.header-searchBar {
     position: relative;
     padding-left: 20px;
     width: 100%;
@@ -78,12 +78,12 @@
     -webkit-user-drag: none;
 }
 
-.searchBar:focus {
+.header-searchBar:focus {
     outline: none !important;
     border: none;
 }
 
-.poisk {
+.header-poisk {
     background-color: transparent;
     border: none;
     margin-right: 25px;
@@ -93,39 +93,46 @@
     -webkit-user-drag: none;
 }
 
-.poisk:hover {
+.header-poisk:hover {
     cursor: pointer;
     text-decoration: underline;
 }
 
-.reg {
+.header-rating {
+    width: fit-content;
+    height: 22px;
+    font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #000000;
+    -webkit-user-drag: none;
+}
+
+.header-reg {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     -webkit-user-drag: none;
 }
 
-.login {
+.header-login {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     -webkit-user-drag: none;
     margin-left: 2%;
 }
 
-.username {
+.header-username {
     margin-left: 5%;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
 }
 
 .header-profile {
-    margin-left: 20px;
+    margin-left: 10px;
     -webkit-user-drag: none;
 }
 
-.lang {
+.header-lang {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     -webkit-user-drag: none;
     margin-left: 3%;
 }
 
-.lang select {
+.header-lang select {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     border: none;
 }
@@ -139,7 +146,7 @@ a {
     color: #AB2A3B;
 }
 
-.subscribe a {
+.header-subscribe a {
     -webkit-user-drag: none;
     color: #FFFFFF;
 }
@@ -154,19 +161,19 @@ a {
         -webkit-user-drag: none;
     }
 
-    .lang {
+    .header-lang {
         position: absolute;
         right: 80px;
         font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
         -webkit-user-drag: none;
     }
 
-    .username {
+    .header-username {
         margin-left: 0;
         font-family: 'Open Sans';font-size: 14px;font-weight: 550;color: #AB2A3B;
     }
 
-    .dropdown-menu a {
+    .header-dropdown-menu a {
         font-family: 'Open Sans';font-size: 14px;font-weight: 300;color: #000000;
     }
     
@@ -179,7 +186,7 @@ a {
         background-color: #fff;
     }
     
-    .dropdown-menu{
+    .header-dropdown-menu{
         position: absolute;
         top: 90px;
         right: 20px;
@@ -191,14 +198,14 @@ a {
         z-index: 10;
     }
     
-    .dropdown-menu.active{
+    .header-dropdown-menu.active{
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
         transition: var(--speed) ease;
     }
     
-    .dropdown-menu.inactive{
+    .header-dropdown-menu.inactive{
         opacity: 0;
         visibility: hidden;
         transform: translateY(-20px);
@@ -210,7 +217,7 @@ a {
         margin-top: 0;
     }
 
-    .dropdown-menu ul li{
+    .header-dropdown-menu ul li{
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         width: 160px;
         height: 30px;
@@ -219,15 +226,15 @@ a {
         padding-left: 16px;
     }
 
-    .dropdown-menu ul li:last-child{
+    .header-dropdown-menu ul li:last-child{
         border-bottom: none;
     }
     
-    .dropdownItem{
+    .header-dropdownItem{
         display: flex;
     }
     
-    .dropdownItem a{
+    .header-dropdownItem a{
         transition: var(--speed);
     }
 

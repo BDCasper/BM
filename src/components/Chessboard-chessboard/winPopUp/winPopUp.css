@@ -46,7 +46,8 @@
 
 .winPopup-ramka img{
     margin-top: 10px;
-    width: 130px;
+    width: 130px !important;
+    height: 130px !important;
 }
 
 .winPopup-ramka-title {

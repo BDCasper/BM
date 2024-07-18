@@ -55,34 +55,35 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
             {popOpen && popup}
             <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
             <MediaQuery minWidth={1200}>
-                <div className="allCourse"><a href="/">{t('Главная')}</a></div>
-                <div className="web-site"><a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a></div>
-                <div className="subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
+                <div className="header-allCourse"><a href="/">{t('Главная')}</a></div>
+                <div className="header-web-site"><a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a></div>
+                <div className="header-subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
                 {allowSearch === true ? 
-                    <div className="search ">
-                        <img src="assets/images/search.svg" className="loop"/>
-                        <input type="text" className="searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
-                        <button className="poisk" onClick={() => setInp(inputText)}>{t('Поиск')}</button>
+                    <div className="header-search ">
+                        <img src="assets/images/search.svg" className="header-loop"/>
+                        <input type="text" className="header-searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
+                        <button className="header-poisk" onClick={() => setInp(inputText)}>{t('Поиск')}</button>
                     </div> 
                 :
-                    <div className="search sHidden">
-                        <img src="assets/images/search.svg" className="loop"/>
-                        <input type="text" className="searchBar"/>
-                        <button name="button" className="poisk">{t('Поиск')}</button>
+                    <div className="header-search sHidden">
+                        <img src="assets/images/search.svg" className="header-loop"/>
+                        <input type="text" className="header-searchBar"/>
+                        <button name="button" className="header-poisk">{t('Поиск')}</button>
                     </div>
                 }
                 {!token?.includes('.') ? (
                     <>
-                        <div className="reg"><a href="/registration">{t('Регистрация')}</a></div>
-                        <div className="login"><a href="/login">{t('Вход')}</a></div>
+                        <div className="header-reg"><a href="/registration">{t('Регистрация')}</a></div>
+                        <div className="header-login"><a href="/login">{t('Вход')}</a></div>
                     </>
                 ) : (
                         <>
-                            <div className="username">{user.username ? user.username : user.email}</div>
+                            <div className="header-rating"><a href="/rating">{t('Рейтинг')}</a></div>
+                            <div className="header-username">{user.username ? user.username : user.email}</div>
                             <a href="/profile" className="header-profile"><img src="assets/images/header-profile.svg"/></a>
                         </>
                 )}
-                <div className="lang"> 
+                <div className="header-lang"> 
                     <select onChange={handleLanguageChange} defaultValue={i18n.language}>
                         <option value="ru">Русский</option>
                         <option value="kk">Қазақ</option>
@@ -91,41 +92,41 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                 </div>
             </MediaQuery>
             <MediaQuery maxWidth={1200}>
-                <div className="lang">
+                <div className="header-lang">
                     <select onChange={handleLanguageChange} defaultValue={i18n.language}>
                         <option value="ru">Русский</option>
                         <option value="kk">Қазақ</option>
                         <option value="en">English</option>
                     </select>
                 </div>
-                {token?.includes('.') && <div className="username">{user.email}</div>}
+                {token?.includes('.') && <div className="header-username">{user.email}</div>}
                 <div className='menu-container'>
                     <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
                         <img src={`assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
                     </div>
-                    <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`} >
+                    <div className={`header-dropdown-menu ${open ? 'active' : 'inactive'}`} >
                         <ul>
-                            <li className = 'dropdownItem'>
+                            <li className = 'header-dropdownItem'>
                                 <a href="/">{t('Главная')}</a>
                             </li>
-                            <li className = 'dropdownItem'>
+                            <li className = 'header-dropdownItem'>
                                 <a href="/subscription">{t('Подписка')}</a>
                             </li>
-                            <li className = 'dropdownItem'>
+                            <li className = 'header-dropdownItem'>
                                 <a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a>
                             </li>
 
                             {!token?.includes('.') ? (
                                 <>
-                                <li className = 'dropdownItem'>
+                                <li className = 'header-dropdownItem'>
                                     <a href="/login">{t('Вход')}</a>
                                 </li>
-                                <li className = 'dropdownItem'>
+                                <li className = 'header-dropdownItem'>
                                     <a href="/registration">{t('Регистрация')}</a>
                                 </li>
                                 </>
                             ) : (
-                                <li className = 'dropdownItem'>
+                                <li className = 'header-dropdownItem'>
                                     <a href="/profile">{t('Профиль')}</a>
                                 </li>
                             )}

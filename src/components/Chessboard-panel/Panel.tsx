@@ -47,7 +47,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const navigate = useNavigate();
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('wrong.mp3');
-  const [gameWithBot, setGameWithBot] = useState<boolean|undefined>(location.state.gameWithBot);
+  const [gameWithFriend, setGameWithFriend] = useState<boolean|undefined>(location.state.gameWithFriend);
   const [chooseQ, setChooseQ] = useState<number>(-1);
   const [startAnimation, setStartAnimation] = useState(false);
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
@@ -74,7 +74,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
     (
       async () => {
-        if(location.state.gameWithBot === undefined){
+        if(location.state.gameWithFriend === undefined){
           if(location.state.id === undefined) redirect('/'); 
           await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
             headers: { 'Content-Type': 'apppcation/json' },
@@ -193,7 +193,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
         <WinPopup onClose={setWinPopUp} activeIndex={activeIndex} setActiveIndex={setActiveIndex} lengthOfArray={arrayOfObjects.length} />
       }
         {
-          location.state.gameWithBot === undefined ?
+          location.state.gameWithFriend === undefined ?
           <>
           <div className="chess-page">
             {popOpen && popup}
@@ -204,7 +204,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             <div className="panel-content">
               <div className="panel-spisok">
                 <div className="panel" ref={scrollToBoard}>
-                  <button onClick={executeScroll}><img src="assets/images/resize.png" alt="" /></button>    
+                  <button onClick={executeScroll} className="panel-size-button"><img src="assets/images/resize.png" alt="" /></button>    
                   <div className="referee">
                     <Referee fenCode={fenCode} 
                     setSolved={setSolved} 
@@ -218,7 +218,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     setPopOpen={setPopOpen}
                     user={user}
                     arrayOfSolved={arrayOfSolved}
-                    gameWithBot={gameWithBot}
+                    gameWithFriend={gameWithFriend}
                     handleAnimation={setStartAnimation}
                     setProgress={setProgressWidthcnt}
                     />
@@ -311,7 +311,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             </div>
           </>
           :
-          <div className="gameWithBot">
+          <div className="gameWithFriend">
               <Referee fenCode={location.state.basicFenCode} 
                     setSolved={setSolved} 
                     solved={solved} 
@@ -324,7 +324,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     setPopOpen={setPopOpen}
                     user={user}
                     arrayOfSolved={arrayOfSolved}
-                    gameWithBot={gameWithBot}
+                    gameWithFriend={gameWithFriend}
                     handleAnimation={setStartAnimation}
                     setProgress={setProgressWidthcnt}
                     />
