@@ -72,7 +72,7 @@ export default function ChessboardEdit(){
 
         const finalFen = EncodeFen(finalBoard);
 
-        navigate("/topic", {state:{gameWithBot: true, basicFenCode: finalFen}})
+        navigate("/topic", {state:{gameWithFriend: true, basicFenCode: finalFen}})
 
     }
 
