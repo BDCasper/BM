@@ -269,7 +269,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
             {
                 gameWithFriend &&
-                <button onClick={handleFlip}>Перевернуть доску</button>
+                <button className="chessBoard-flipBoard" onClick={handleFlip}>Перевернуть доску</button>
             }
 
             {gameWithFriend || reviewMode &&
