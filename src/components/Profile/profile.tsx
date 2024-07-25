@@ -122,21 +122,19 @@ export default function Profile({setUserLog, user, token}:Props) {
 
 
     const logout = async() => {
-
+        localStorage.setItem('token', '');
+        setUserLog(false);
+        navigate('/login');
+        window.location.reload();
         await fetch(`${backend}/api/logout`, {
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
         }).then((response) => { 
             if (response && response.status === 200)
             {
-                localStorage.setItem('token', '');
-                setUserLog(false);
-                navigate('/login');
-                window.location.reload();
             }
             if(response.status === 400)
             {
-                alert("Ploha")
             }
         })
     }

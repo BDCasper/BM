@@ -99,10 +99,17 @@
 }
 
 .header-rating {
-    width: fit-content;
-    height: 22px;
-    font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 35px;
+    background-color: #AB2A3B;
+    font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #FFFFFF!important;
+    border-radius: 30px;
+    margin-right: 3%;
     -webkit-user-drag: none;
+    cursor: pointer;
 }
 
 .header-reg {
@@ -147,6 +154,11 @@ a {
 }
 
 .header-subscribe a {
+    -webkit-user-drag: none;
+    color: #FFFFFF;
+}
+
+.header-rating a {
     -webkit-user-drag: none;
     color: #FFFFFF;
 }

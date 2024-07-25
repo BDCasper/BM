@@ -1,4 +1,4 @@
-export function ReverseFen(fen: string): string {
+export const ReverseFen = async(fen: string) => {
     const parts = fen.split(" ");
     const board = parts[0];
     const sideToMove = parts[1];
@@ -6,6 +6,7 @@ export function ReverseFen(fen: string): string {
     const enPassant = parts[3];
     const halfmoveClock = parts[4];
     const fullmoveNumber = parts[5];
+
 
     // Flip the board
     const rows = board.split("/");
@@ -19,7 +20,7 @@ export function ReverseFen(fen: string): string {
     });
 
     // Swap side to move
-    const flippedSideToMove = sideToMove === 'w' ? 'b' : 'w';
+    const flippedSideToMove = sideToMove;
 
     // Update castling rights
     const flipCastling = (castling: string): string => {

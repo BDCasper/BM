@@ -318,11 +318,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     await promoteNow(currentPiece.clone(), pos2)
   }
   
-  const playWithComputer = async() => {
-    
-  }
-
   function grabPiece(e: React.MouseEvent) {
+    if (e.nativeEvent.button === 2) return;
     clearArrows();
     const element = e.target as HTMLElement;
     const chessboard = chessboardRef.current;
@@ -346,6 +343,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   function movePiece(e: React.MouseEvent) {
+    if (e.nativeEvent.button === 2) return;
     const chessboard = chessboardRef.current;
     if (activePiece && chessboard) {
       const x = e.clientX - 30 + window.scrollX;
@@ -359,6 +357,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const dropPiece = async(e: React.MouseEvent) => {
+      if (e.nativeEvent.button === 2) return;
       if (activePiece && chessboardRef.current) {
         activePiece.style.zIndex = "1";
 
@@ -371,7 +370,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           p.samePosition(grabPosition)
         );
 
-        console.log(currentPiece)
 
         if (currentPiece && currentPiece?.possibleMoves?.some(p => p.samePosition(new Position(x, y)))) {
             totalTurns++;
@@ -575,14 +573,14 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       <div className="chessboard-board">
         {isMobile ? 
         <>
-          <div onClick={(e) => isTest === true || (gameWithFriend && movePtr !== everyMove.length-1) ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
+          <div onClick={(e) => isTest === true ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
         </>
         :
         <>
           <div 
           onMouseMove={(e) => movePiece(e)}
-          onMouseDown={(e) => isTest === true || (gameWithFriend && movePtr !== everyMove.length-1) ? null : grabPiece(e)}
-          onMouseUp={(e) => isTest === true || (gameWithFriend && movePtr !== everyMove.length-1) ? null : dropPiece(e)}
+          onMouseDown={(e) => isTest === true? null : grabPiece(e)}
+          onMouseUp={(e) => isTest === true? null : dropPiece(e)}
           onContextMenu={(e) => e.preventDefault()}
           onClick={() => clearArrows()}
           onMouseDownCapture={onRightMouseDown}

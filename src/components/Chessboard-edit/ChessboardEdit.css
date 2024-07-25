@@ -2,19 +2,71 @@
     width: 100vw;   
     max-width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    flex-direction: row;
+}
+
+.chessboardEdit-boardWrapper {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.chessboardEdit-panelWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+    margin-left: 55px;
+}
+
+.chessboardEdit-panelWrapper button {
+    align-self: center;
+    margin-top: 10px;
+    width: 250px;
+    height: 52px;
+    border-radius: 10px;
+    background-color: #AB2A3B;
+    border: none;
+    font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #FFFFFF;
+    transition: all 300ms ease;
+}
+
+.chessboardEdit-panelWrapper button:hover {
+    background-color: #FFDF2C;
+    transition: all 300ms ease;
+    cursor: pointer;
 }
 
 .chessboardEdit-boardPanel {
-    margin-top: 30px;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
 }
 
+.chessboardEdit-turn-title {
+    margin-top: 20px;
+    font-family: 'Open Sans';font-size: 20px;font-weight: 400;color: #000000;
+}
+
+.chessboardEdit-turn {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.chessboardEdit-turn div:hover {
+    background-color: #ab2a3b4c;
+}
+
+
+.chessboardEdit-turn-active {
+    background-color: #AB2A3B !important;
+}
+
 .chessboardEdit-border {
-    margin-top: 30px;
+    margin-top: 20px;
     width: 498px;
     height: 497.7px;
     background-color: #57340b;

@@ -10,7 +10,9 @@ import { User } from "../../../App";
 import useSound from "use-sound";
 import { DecodeFen } from "../../FEN tools/fenDecoder";
 import { EncodeFen } from "../../FEN tools/fen-encoder";
+import { fenComponents } from "../../fenComponents";
 import { ReverseFen } from "../../FEN tools/fen-reverser";
+import { useNavigate } from "react-router-dom";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -30,13 +32,6 @@ interface RefereeProps {
     setProgress: (num: number) => any;
 }
 
-interface fenComponents {
-    squares: Piece[];
-    turn: string;
-    castling: string;
-    enPassantSquare: string | null;
-}
-
 const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithFriend, handleAnimation, setProgress}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
@@ -47,6 +42,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [everyMove, setEveryMove] = useState<Board[]>([]);
     const [movePtr, setMovePtr] = useState<number>(0);
     const [reviewMode, setReviewMode] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (
@@ -81,12 +77,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                                 else break;
                             }
                         }
-                        if(!everyMove.some((bord) => (bord === board))) everyMove.push(board);
+                        if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '') everyMove.push(board);
                     }
             }
         )();
       }, [board]);
-
 
     const playMove = async(playedPiece: Piece, destination: Position): Promise<boolean> => {
 
@@ -177,8 +172,48 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     }
 
 
+    const flipBoard = (board: Board): Board => {
+        // Calculate all possible moves on the original board
+        board.calculateAllMoves();
+    
+        // Create flipped pieces with flipped positions and possible moves
+        const flippedPieces: Piece[] = board.pieces.map(piece => {
+            const flippedPosition = new Position(7 - piece.position.x, 7 - piece.position.y);
+            
+            // Flip possible moves
+            const flippedPossibleMoves = piece.possibleMoves?.map(move => new Position(7 - move.x, 7 - move.y));
+    
+            // Create a new flipped piece
+            const flippedPiece = new Piece(
+                flippedPosition,
+                piece.type,
+                piece.team === TeamType.OUR ? TeamType.OPPONENT : TeamType.OUR,
+                piece.hasMoved,
+                piece.skin
+            );
+    
+            flippedPiece.image = piece.image;
+            flippedPiece.possibleMoves = flippedPossibleMoves;
+    
+            // Handle en passant for pawns
+            if (piece.type === PieceType.PAWN) {
+                (flippedPiece as Pawn).enPassant = (piece as Pawn).enPassant;
+            }
+    
+            return flippedPiece;
+        });
+    
+        // Create a new Board instance with the flipped pieces and same turn count
+        const flippedBoard = new Board(flippedPieces, board.totalTurns+1);
+        // Recalculate all possible moves on the flipped board
+        flippedBoard.calculateAllMoves();
+    
+        return flippedBoard;
+    };
+
     const handleFlip = async() => {
-        
+        const newBoard = flipBoard(board)
+        setBoard(newBoard);
     }
 
     useEffect(() => {
@@ -230,6 +265,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 </div>
                 
             </>
+            }
+
+            {
+                gameWithFriend &&
+                <button onClick={handleFlip}>Перевернуть доску</button>
             }
 
             {gameWithFriend || reviewMode &&

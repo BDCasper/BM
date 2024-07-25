@@ -12,8 +12,8 @@ export default function Login() {
     
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [emailEmpty, setEmailEmpty] = useState<boolean>(true);
-    const [passwordEmpty, setPasswordEmpty] = useState<boolean>(true);
+    const [emailEmpty, setEmailEmpty] = useState<boolean>(false);
+    const [passwordEmpty, setPasswordEmpty] = useState<boolean>(false);
     const [accExist, setAccExist] = useState<boolean>(true);
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -34,11 +34,11 @@ export default function Login() {
     const login = async(e: FormEvent) => {
         e.preventDefault();
         setAccExist(true)
-        setEmailEmpty(true);
-        setPasswordEmpty(true);
+        setEmailEmpty(false);
+        setPasswordEmpty(false);
         if(email.length === 0 || password.length === 0) {
-            if(email.length === 0) setEmailEmpty(false);
-            if(password.length === 0) setPasswordEmpty(false);
+            if(email.length === 0) setEmailEmpty(true);
+            if(password.length === 0) setPasswordEmpty(true);
             return;
         }
 
@@ -64,16 +64,45 @@ export default function Login() {
             }
         })
 
-        await fetch( `${backend}/api/refresh`, {
-            headers: { 'Content-Type': 'apppcation/json' },
-            //credentials: 'include'
-        }).then((res) => {
-            if (res && res.status === 200) {
-                alert('darova')
-            } 
-        })
+        // await fetch( `${backend}/api/refresh`, {
+        //     headers: { 'Content-Type': 'apppcation/json' },
+        //     //credentials: 'include'
+        // }).then((res) => {
+        //     if (res && res.status === 200) {
+        //         alert('darova')
+        //     } 
+        // })
     }
 
+    const handleRecovery = async(e: FormEvent) => {
+        e.preventDefault();
+        setAccExist(true)
+        setEmailEmpty(false);
+        setPasswordEmpty(false);
+        if(email.length === 0) 
+        {
+            setEmailEmpty(true)
+            return;
+        }
+        await fetch(`${backend}/api/request-reset-password`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+                email: email
+            })
+        }).then((response) => { 
+            if (response && response.status === 200)
+            {
+                response.json().then((data) => {
+                    navigate("/recovery", {state: {code: data.token}});
+                })
+            }
+            else {
+                alert(response.status)
+            }
+        })
+    }
 
     return(
         <div className="log-page">
@@ -83,15 +112,17 @@ export default function Login() {
                 <div className="log-text">{t('"Будущие миллионеры"')}</div>
                 <div className="log-inputs">
                     <div className="log-email">
-                        <div className={emailEmpty ? "log-input-text" : "log-input-text log-empty"}>{t('E-mail')}</div>
-                        <input type="text" className={emailEmpty ? "logBar" : "logBar log-incorrectBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <div className={!emailEmpty ? "log-input-text" : "log-input-text log-empty"}>{t('E-mail')}</div>
+                        <input type="text" className={!emailEmpty ? "logBar" : "logBar log-incorrectBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        {(emailEmpty) && <div className="log-email-incorrect">{t('Введите эл. адресс')}</div>}
                     </div>
                     <div className="log-password">
-                        <div className={passwordEmpty ? "log-input-text" : "log-input-text log-empty"}>{t('Пароль')}</div>
-                        <input type="password" className={passwordEmpty ? "logBar" : "logBar log-incorrectBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
+                        <div className={!passwordEmpty ? "log-input-text" : "log-input-text log-empty"}>{t('Пароль')}</div>
+                        <input type="password" className={!passwordEmpty ? "logBar" : "logBar log-incorrectBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
+                        {(passwordEmpty) && <div className="log-email-incorrect">{t('Введите пароль')}</div>}
                     </div>
                     <button className="log-button" onClick={login}>{t('Войти')}</button>
-                    <div className="log-password-recover"><a href="">{t('Забыли пароль?')}</a></div>
+                    <div className="log-password-recover"><a onClick={handleRecovery}>{t('Забыли пароль?')}</a></div>
                     {(!accExist) && <div className="log-email-incorrect">{t('Неправильно введены эл. адресс или пароль')}</div>}
                     <div className="log-to-reg-text">{t('Нет аккаунта?')} <a href="/registration">{t('Зарегистрироваться')}</a></div>
                     <div className="log-to-reg"></div>
