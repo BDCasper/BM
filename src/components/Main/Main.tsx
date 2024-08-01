@@ -19,11 +19,13 @@ interface Props {
 interface MainProps {
   inp: string;
   user: User;
+  arrayOfSolved: Set<number>;
 }
 
-export default function Main({inp, user}:MainProps) {
+export default function Main({inp, user, arrayOfSolved}:MainProps) {
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
+    const [topicPercent, setTopicPercent] = useState<number[]>([]);
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
 
@@ -114,6 +116,7 @@ export default function Main({inp, user}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
+                          {/* <div className="theme-content-percent">hello world</div> */}
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <ul className="theme-info">
@@ -133,6 +136,7 @@ export default function Main({inp, user}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
                         <div className="theme-content">
+                          {/* <div className="theme-content-percent">{topic.solved}</div> */}
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">

@@ -105,7 +105,7 @@
 }
 
 .modal > .modal-body > .checkmate-body > span {
-    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #ffffff;
+    font-size: 30px;font-weight: normal;color: #ffffff;
 }
 
 .modal > .modal-body > .checkmate-body > button {
@@ -162,7 +162,7 @@
 }
 
 .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > span {
-    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #ffffff;
+    font-size: 30px;font-weight: normal;color: #ffffff;
 }
 
 .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > button {
@@ -179,7 +179,7 @@
 }
 
 .turn {
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+    font-size: 20px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
     margin-top: 20px;
@@ -188,7 +188,7 @@
 
 .lives {
 
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+    font-size: 20px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
     margin-top: 11px;
@@ -197,14 +197,14 @@
 
 .task-name {
     margin-bottom: 20px;
-    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: bold;color: #AB2A3B;
+    font-size: 30px;font-weight: bold;color: #AB2A3B;
     align-self: center;
     text-align: center;
 }
 
 /* .task-description {
     margin-bottom: 47px;
-    font-family: 'Open Sans', sans-serif;font-size: 30px;font-weight: normal;color: #282323;
+    font-size: 30px;font-weight: normal;color: #282323;
     align-self: center;
     text-align: center;
 } */
@@ -369,7 +369,7 @@
     }
     
     .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > span {
-        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #ffffff;
+        font-size: 20px;font-weight: normal;color: #ffffff;
     }
     
     .modal-checkmate > .modal-body-checkmate > .checkmate-body-checkmate > button {
@@ -389,7 +389,7 @@
     }
 
     .turn {
-        font-family: 'Open Sans', sans-serif;font-size: 15px;font-weight: normal;color: #282323;
+        font-size: 15px;font-weight: normal;color: #282323;
         align-self: center;
         text-align: center;
         margin-top: 10px;
@@ -398,7 +398,7 @@
     
     .lives {
     
-        font-family: 'Open Sans', sans-serif;font-size: 15px;font-weight: normal;color: #282323;
+        font-size: 15px;font-weight: normal;color: #282323;
         align-self: center;
         text-align: center;
         margin-top: 11px;
@@ -408,14 +408,14 @@
     
     .task-name {
         margin-bottom: 0;
-        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: bold;color: #AB2A3B;
+        font-size: 20px;font-weight: bold;color: #AB2A3B;
         align-self: center;
         text-align: center;
     }
     
     .task-description {
         margin-bottom: 20px;
-        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+        font-size: 20px;font-weight: normal;color: #282323;
         align-self: center;
         text-align: center;
     }

@@ -11,4 +11,5 @@ export enum PieceType {
 export enum TeamType {
     OPPONENT = 'b',
     OUR = 'w',
+    NONE = 'd'
 }

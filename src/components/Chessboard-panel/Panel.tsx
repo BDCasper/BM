@@ -95,8 +95,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   }, [location.state.id]);
 
 
-
-
   const handleAnswer = async() => {
     await fetch( `${backend}/api/checkmove`, {
       method: "POST",

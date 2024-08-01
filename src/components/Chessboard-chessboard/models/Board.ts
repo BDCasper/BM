@@ -45,7 +45,24 @@ export class Board {
         if (this.pieces.filter(p => p.team === this.currentTeam)
             .some(p => p.possibleMoves !== undefined && p.possibleMoves.length > 0)) return;
 
-        this.winningTeam = (this.currentTeam === TeamType.OUR) ? TeamType.OPPONENT : TeamType.OUR;
+        if (this.isKingInCheck(this.currentTeam)) {
+            this.winningTeam = this.currentTeam === TeamType.OUR ? TeamType.OPPONENT : TeamType.OUR;
+        } else {
+            this.winningTeam = TeamType.NONE; // Indicating a draw (stalemate)
+        }
+    }
+
+    isKingInCheck(team: TeamType): boolean {
+        const king = this.pieces.find((p) => p.isKing && p.team === team);
+        if (!king) return false;
+    
+        for (const enemy of this.pieces.filter((p) => p.team !== team)) {
+          const enemyMoves = this.getValidMoves(enemy, this.pieces);
+          if (enemyMoves.some((move) => move.samePosition(king.position))) {
+            return true;
+          }
+        }
+        return false;
     }
 
     checkCurrentTeamMoves() {

@@ -72,7 +72,7 @@
 }
 
 .topic {
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: bold;color: #AB2A3B;
+    font-size: 20px;font-weight: bold;color: #AB2A3B;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -142,12 +142,12 @@
 }
 
 .id {
-    font-family: 'Open Sans', sans-serif;font-size: 14px;font-weight: lighter;color: #c7c7c7;
+    font-size: 14px;font-weight: lighter;color: #c7c7c7;
     margin-top: 7px;
 }
 
 .title {
-    font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: lighter;color: #282323;
+    font-size: 18px;font-weight: lighter;color: #282323;
     height: fit-content;
     margin-top: 2px;
     padding-bottom: 10px;
@@ -246,7 +246,7 @@ input[type="radio"] {
 }
 
 .zadachi-test-t {
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #000000;
+    font-size: 20px;font-weight: normal;color: #000000;
 
 }
 
@@ -285,7 +285,7 @@ input[type="radio"] {
 
 .progress-percentage {
     margin-top: 20px;
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: lighter;color: #AB2A3B;
+    font-size: 20px;font-weight: lighter;color: #AB2A3B;
 }
 
 .progress-line {
@@ -412,7 +412,7 @@ input[type="radio"] {
     }
     
     .topic {
-        font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: bold;color: #AB2A3B;
+        font-size: 20px;font-weight: bold;color: #AB2A3B;
         text-align: center;
         display: flex;
         justify-content: center;
@@ -476,12 +476,12 @@ input[type="radio"] {
     }
     
     .id {
-        font-family: 'Open Sans', sans-serif;font-size: 14px;font-weight: lighter;color: #c7c7c7;
+        font-size: 14px;font-weight: lighter;color: #c7c7c7;
         margin-top: 7px;
     }
     
     .title {
-        font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: lighter;color: #282323;
+        font-size: 18px;font-weight: lighter;color: #282323;
         padding-bottom: 15px;
         margin-top: 5px;
     }
@@ -547,7 +547,7 @@ input[type="radio"] {
     }
     
     .zadachi-test-t {
-        font-family: 'Open Sans', sans-serif;font-size: 18px;font-weight: normal;color: #000000;
+        font-size: 18px;font-weight: normal;color: #000000;
     }
     
     .zadachi-test-b {
@@ -585,7 +585,7 @@ input[type="radio"] {
     
     .progress-percentage {
         margin-top: 10px;
-        font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;color: #AB2A3B;
+        font-size: 16px;font-weight: lighter;color: #AB2A3B;
     }
     
     .progress-line {

@@ -101,24 +101,56 @@ export default function ChessboardEdit(){
       function movePiece(e: React.MouseEvent) {
         const chessboard = chessboardRef.current;
         if (activePiece && chessboard) {
-          const x = e.clientX - 30 + window.scrollX;
-          const y = e.clientY - 30 + window.scrollY;
-          activePiece.style.position = "absolute";
-          activePiece.style.zIndex = '2';
-          activePiece.style.left = `${x}px`;
-          activePiece.style.top = `${y}px`;
+            const minX = chessboard.offsetLeft - 130;
+            const minY = chessboard.offsetTop - 620;
+            const maxX = chessboard.offsetLeft + chessboard.clientWidth + 80;
+            const maxY = chessboard.offsetTop + chessboard.clientHeight - 40;
+            const x = e.clientX - 30 + window.scrollX;
+            const y = e.clientY - 30 + window.scrollY;
+            activePiece.style.position = "absolute";
+            activePiece.style.zIndex = '2';
+            activePiece.style.left = `${x}px`;
+            activePiece.style.top = `${y}px`;
+        
+            if (x < minX) {
+                activePiece.style.position = "relative";
+                activePiece.style.removeProperty("top");
+                activePiece.style.removeProperty("left");
+                setActivePiece(null);
+            }
+
+            if (x > maxX) {
+                activePiece.style.position = "relative";
+                activePiece.style.removeProperty("top");
+                activePiece.style.removeProperty("left");
+                setActivePiece(null);
+            }
+
+            if (y < minY) {
+                activePiece.style.position = "relative";
+                activePiece.style.removeProperty("top");
+                activePiece.style.removeProperty("left");
+                setActivePiece(null);
+            }
+
+            if (y > maxY) {
+                activePiece.style.position = "relative";
+                activePiece.style.removeProperty("top");
+                activePiece.style.removeProperty("left");
+                setActivePiece(null);
+            }
         }
       }
     
       const dropPiece = async(e: React.MouseEvent) => {
           if (activePiece && chessboardRef.current) {
             activePiece.style.zIndex = "1";
-    
             const x = Math.floor((e.clientX - chessboardRef.current.offsetLeft + window.scrollX) / GRID_SIZE) + 1;
             const y = Math.abs(
               Math.ceil((e.clientY - chessboardRef.current.offsetTop - boardSize  + window.scrollY  - GRID_SIZE/2) / GRID_SIZE)
             ) - 9;
             console.log(grabPosition)
+            console.log(x,y)
 
             if(grabPosition.y === 9) {
                 let word = activePiece.style.backgroundImage.split('/')[5].split('_')[0];

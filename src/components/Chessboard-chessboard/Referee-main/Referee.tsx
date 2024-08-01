@@ -99,13 +99,14 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             playedPiece.team
         );  
         setMovePtr(movePtr + 1);
+        
         setBoard((previousBoard) => {
             const clonedBoard = previousBoard.clone();
             clonedBoard.totalTurns += 1;
             playedMoveIsValid = clonedBoard.playMove(enPassantMove,
                 validMove, playedPiece,
                 destination);
-                
+            
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
                 if(gameWithFriend) winSound();
@@ -115,6 +116,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
         return playedMoveIsValid;
     }
+
+    console.log(board)
 
     function isEnPassantMove(
         initialPosition: Position,
@@ -258,8 +261,18 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
                     <div className="modal-body-checkmate">
                         <div className="checkmate-body-checkmate">
-                            <span>Победа {board.winningTeam === TeamType.OUR ? "белых" : "чёрных"}!</span>
-                            <button onClick={restartGame}>Играть снова</button>
+                            {
+                                board.winningTeam === TeamType.NONE ?
+                                <>
+                                    <span>Ничья!</span>
+                                    <button onClick={restartGame}>Играть снова</button>
+                                </>
+                                :
+                                <>
+                                    <span>Победа {board.winningTeam === TeamType.OUR ? "белых" : "чёрных"}!</span>
+                                    <button onClick={restartGame}>Играть снова</button>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>

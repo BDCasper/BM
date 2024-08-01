@@ -152,7 +152,7 @@
 
 .levelName {
     width: fit-content;
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: 550;color: #AB2A3B;
+    font-size: 20px;font-weight: 550;color: #AB2A3B;
 }
 
 .pro-level {
@@ -186,6 +186,11 @@
     height: fit-content;
 }
 
+.theme-content-percent {
+    position: absolute;
+    font-size: 15px;font-weight: normal;color: #282323;
+}
+
 .theme-text {
     display: flex;
     flex-direction: column;
@@ -217,18 +222,18 @@
 
 .theme-name {
     margin-top: 40px;
-    font-family: 'Open Sans', sans-serif;font-size: 20px;font-weight: normal;color: #282323;
+    font-size: 20px;font-weight: normal;color: #282323;
     height: fit-content;
 }
 
 .theme-info {
     display: flex;
     justify-content: center;
-    font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
+    font-size: 16px;font-weight: lighter;
 }
 
 .theme-puzzles {
-    font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
+    font-size: 16px;font-weight: lighter;
 }
 
 .theme-info span{
@@ -378,29 +383,29 @@
     
     @media screen and (max-width:700px) {
         .theme-name {
-            font-family: 'Open Sans', sans-serif;font-size: 13px;font-weight: normal;color: #282323;
+            font-size: 13px;font-weight: normal;color: #282323;
         }
         
         .theme-info {
-            font-family: 'Open Sans', sans-serif;font-size: 12px;font-weight: lighter;
+            font-size: 12px;font-weight: lighter;
         }
         
         .theme-puzzles {
-            font-family: 'Open Sans', sans-serif;font-size: 12px;font-weight: lighter;
+            font-size: 12px;font-weight: lighter;
         }
     }
 
     @media screen and (min-width: 700px) {
         .theme-name {
-            font-family: 'Open Sans', sans-serif;font-size: 17px;font-weight: normal;color: #282323;
+            font-size: 17px;font-weight: normal;color: #282323;
         }
         
         .theme-info {
-            font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
+            font-size: 16px;font-weight: lighter;
         }
         
         .theme-puzzles {
-            font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: lighter;
+            font-size: 16px;font-weight: lighter;
         }
     }
 
@@ -438,7 +443,7 @@
     .levelName {
         width: 100%;
         text-align: center;
-        font-family: 'Open Sans', sans-serif;font-size: 16px;font-weight: 550;color: #AB2A3B;
+        font-size: 16px;font-weight: 550;color: #AB2A3B;
     }
     
     .pro-level {

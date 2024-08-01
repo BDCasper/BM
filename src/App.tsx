@@ -56,6 +56,8 @@ function App() {
       })();
   }, [token])
 
+  console.log(arrayOfSolved)
+
 
   return (
     <div className="app">
@@ -69,7 +71,7 @@ function App() {
           <Route path="/registration" element={<Reg/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/recovery" element={<ResetPassword/>}/>
-          <Route path="/" element={<Main inp={inp} user={user}/>} />
+          <Route path="/" element={<Main inp={inp} user={user} arrayOfSolved={arrayOfSolved}/>} />
           {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
           {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
           <Route path="/editor" element={<ChessboardEdit/>}/>

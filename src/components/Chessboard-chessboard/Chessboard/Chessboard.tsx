@@ -346,13 +346,44 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     if (e.nativeEvent.button === 2) return;
     const chessboard = chessboardRef.current;
     if (activePiece && chessboard) {
+      const minX = chessboard.offsetLeft - 130;
+      const minY = chessboard.offsetTop - 80;
+      const maxX = chessboard.offsetLeft + chessboard.clientWidth + 80;
+      const maxY = chessboard.offsetTop + chessboard.clientHeight + 40;
       const x = e.clientX - 30 + window.scrollX;
       const y = e.clientY - 30 + window.scrollY;
       activePiece.style.position = "absolute";
       activePiece.style.zIndex = '2';
       activePiece.style.left = `${x}px`;
-
       activePiece.style.top = `${y}px`;
+  
+      if (x < minX) {
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
+          setActivePiece(null);
+      }
+
+      if (x > maxX) {
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
+          setActivePiece(null);
+      }
+
+      if (y < minY) {
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
+          setActivePiece(null);
+      }
+
+      if (y > maxY) {
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
+          setActivePiece(null);
+      }
     }
   }
 
