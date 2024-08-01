@@ -71,7 +71,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                         <button name="button" className="header-poisk">{t('Поиск')}</button>
                     </div>
                 }
-                {!token?.includes('.') ? (
+                {token === '' ? (
                     <>
                         <div className="header-reg"><a href="/registration">{t('Регистрация')}</a></div>
                         <div className="header-login"><a href="/login">{t('Вход')}</a></div>
