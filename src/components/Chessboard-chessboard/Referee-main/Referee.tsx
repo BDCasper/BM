@@ -117,7 +117,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         return playedMoveIsValid;
     }
 
-    console.log(board)
 
     function isEnPassantMove(
         initialPosition: Position,

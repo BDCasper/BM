@@ -299,6 +299,7 @@ input[type="radio"] {
     display: flex;
     justify-content: center;
     margin-right: 320px;
+    margin-top: 10px;
     width: 170px;
     height: 52px;
     border: 1px solid #DD8A8A;

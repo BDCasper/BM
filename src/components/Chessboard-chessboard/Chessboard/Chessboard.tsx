@@ -586,7 +586,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }
   }
 
-
   return (
     <div className="chessboardWrapper">
       {winPopUp === true &&
@@ -600,7 +599,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               <img onClick={() => promotePawn(PieceType.QUEEN)} src={`/assets/images/queen_${promotionTeamType()}.png`} />
           </div>
       </div>
+      
       <div className="task-name">{t(arrayOfObjects[activeIndex]?.subtopic)}</div>
+      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
       <div className="chessboard-board">
         {isMobile ? 
         <>
@@ -620,7 +621,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </>
         }
       </div>
-      <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>
+      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
       {isTest === false && gameWithFriend===undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
     </div>
   );

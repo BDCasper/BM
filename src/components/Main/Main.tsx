@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { User } from "../../App";
 import MediaQuery from "react-responsive";
 import { useTranslation } from "react-i18next";
+import Data from "../BasicData";
 
 const arrOfFigures = ["Пешка", "Слон", "Ладья", "Ферзь", "Король", "Конь", "Слон"];
 
@@ -68,6 +69,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       }, []);
 
 
+
     return(
       <div className="main-page">
         <div className="lists-wrapper">
@@ -110,6 +112,29 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
               <div className="pro-level">
                 {inp !== '' ? 
                   <>
+                  {Data.map((topic, ind) => (
+                    <>
+                      {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
+                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                            <div className="themeImg"><img src="/assets/images/courseImg.svg" className="themeImgSize"/></div>
+                            <div className="theme-content">
+                              {/* <div className="theme-content-percent">hello world</div> */}
+                              <div className="theme-text">
+                                <div className="theme-name">{t(topic.topic)}</div>
+                                <div className="theme-info">
+                                  <ul>
+                                    <li className="theme-lessons"><span>1 урок</span></li> 
+                                  </ul>
+                                  <ul>
+                                    <li className="theme-puzzles"><span>1 задача</span></li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                    </>
+                  ))}
                   {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic, ind) => (
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
@@ -132,6 +157,25 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                   </> 
                 :
                   <>
+                  {Data.map((topic, ind) => (
+                    <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                      <div className="themeImg"><img src="/assets/images/courseImg.svg" className="themeImgSize"/></div>
+                      <div className="theme-content">
+                        {/* <div className="theme-content-percent">{topic.solved}</div> */}
+                          <div className="theme-text">
+                              <div className="theme-name">{t(topic.topic)}</div>
+                              <div className="theme-info">
+                                <ul>
+                                  <li className="theme-lessons"><span>1 урок</span></li> 
+                                </ul>
+                                <ul>
+                                  <li className="theme-puzzles"><span>1 задача</span></li>
+                                </ul>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  ))}
                   {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>

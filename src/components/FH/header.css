@@ -25,6 +25,7 @@
 }
 
 .header-web-site {
+    min-width: 100px;
     width: fit-content;
     height: 22px;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
@@ -124,7 +125,7 @@
 }
 
 .header-username {
-    margin-left: 5%;
+    margin-left: 4%;
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
 }
 

@@ -202,6 +202,13 @@
     text-align: center;
 }
 
+.task-title {
+    margin-bottom: 10px;
+    font-size: 20px;font-weight: bold;color: #000000;
+    align-self: center;
+    text-align: center;
+}
+
 /* .task-description {
     margin-bottom: 47px;
     font-size: 30px;font-weight: normal;color: #282323;
