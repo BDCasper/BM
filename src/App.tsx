@@ -24,6 +24,8 @@ export interface User {
   location?: string; 
   subscribed?: string;
   score?: number;
+  score_month? : number;
+  score_week? : number;
 }
 
 function App() {
@@ -48,6 +50,7 @@ function App() {
             if (response && response.status === 200) {
               response.json().then((data) => {
                 setUser(data.user);
+                localStorage.setItem('user_id', data.user.user_id)
                 setArrayOfSolved(new Set<number>(data.solved));
               })
             }
@@ -55,8 +58,6 @@ function App() {
         }
       })();
   }, [token])
-
-  console.log(arrayOfSolved)
 
 
   return (
@@ -84,7 +85,7 @@ function App() {
 
 export default App; 
 //export const backend = "http://195.49.215.186:10000";
-//export const backend = "http://195.49.215.186:10000";
+// export const backend = "http://195.49.215.186:10000";
 //export const backend = "https://bm-back.onrender.com";
- export const backend = "https://api.bm-chess.com";
+export const backend = "https://api.bm-chess.com";
 

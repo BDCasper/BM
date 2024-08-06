@@ -601,7 +601,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       </div>
       
       <div className="task-name">{t(arrayOfObjects[activeIndex]?.subtopic)}</div>
-      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
       <div className="chessboard-board">
         {isMobile ? 
         <>
@@ -617,11 +616,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           onClick={() => clearArrows()}
           onMouseDownCapture={onRightMouseDown}
           onMouseUpCapture={onRightMouseUp} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
-          <canvas ref={canvasRef} className={gameWithFriend ? "arrow-canvas-gameWithFriend" : "arrow-canvas-tasks"} width={boardSize} height={boardSize}></canvas>
+          <canvas ref={canvasRef} className={gameWithFriend ? "arrow-canvas-gameWithFriend" : (arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 ? "arrow-canvas-basicTask" : "arrow-canvas-tasks")} width={boardSize} height={boardSize}></canvas>
         </>
         }
       </div>
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
+      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
       {isTest === false && gameWithFriend===undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
     </div>
   );

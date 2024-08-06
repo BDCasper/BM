@@ -7,7 +7,9 @@ import { User } from "../../App";
 interface RatingUser {
     username: string,
     location: string,
-    score: number
+    score: number,
+    score_month: number,
+    score_week: number,
 }
 
 interface Props {
@@ -33,10 +35,9 @@ export default function Rating({user} : Props){
         (
           async () => {
             if(token !== ''){
-              await fetch(`${backend}/api/rating?location=KZ&?id=${user.user_id}`, {
+              await fetch(`${backend}/api/rating?id=${localStorage.getItem('user_id')}&period=${'all'}`, {
                   method: "GET",
                   headers: { 'Content-Type': 'application/json'},
-                  credentials: 'include',
               }).then((response) => {
                 if (response && response.status === 200) {
                   response.json().then((data) => {
@@ -49,14 +50,28 @@ export default function Rating({user} : Props){
           })();
       }, [])
 
-      console.log(userRating)
+        const sendInterval = async (intervalcheck: string) => {
+            setInterval(intervalcheck)
+            await fetch(`${backend}/api/rating?id=${localStorage.getItem('user_id')}&period=${intervalcheck}`, {
+                method: "GET",
+                headers: { 'Content-Type': 'application/json'},
+            }).then((response) => {
+            if (response && response.status === 200) {
+                response.json().then((data) => {
+                setTopList(data.top);
+                setUserRating(data.user);
+                })
+            }
+            })
+        }
+
 
     return(
         <div className="rating">
             <div className="rating-time-wrapper">
-                <div className={interval === 'week' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => setInterval('week')}>Неделя</div>
-                <div className={interval === 'month' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => setInterval('month')}>Месяц</div>
-                <div className={interval === 'all' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => setInterval('all')}>Всё время</div>
+                <div className={interval === 'week' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('week')}>Неделя</div>
+                <div className={interval === 'month' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('month')}>Месяц</div>
+                <div className={interval === 'all' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('all')}>Всё время</div>
             </div>
             <div className="rating-toplist-wrapper">
                 <table>
@@ -74,14 +89,14 @@ export default function Rating({user} : Props){
                                 <td>{index+1}</td>
                                 <td>{usr.username}</td>
                                 <td>{usr.location}</td>
-                                <td>{usr.score}</td>
+                                <td>{interval === 'week' ? usr.score_week : interval === 'all' ? usr.score : usr.score_month}</td>
                             </tr>
                         )}
                         <tr>
                             <td>{userRating}</td>
                             <td>{user.username}</td>
                             <td>{user.location}</td>
-                            <td>{user.score}</td>
+                            <td>{interval === 'week' ? user.score_week : interval === 'all' ? user.score : user.score_month}</td>
                         </tr>
                     </tbody>
                 </table>

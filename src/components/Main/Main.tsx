@@ -29,6 +29,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
     const [topicPercent, setTopicPercent] = useState<number[]>([]);
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
+    const [solvedMap, setSolvedMap] = useState<Map<string,number>>(new Map<string, number>);
 
     const {t} = useTranslation();
 
@@ -48,16 +49,18 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       return five;
     }
 
+
     useEffect(() => {
         (
           async () => {
-            await fetch( `${backend}/api/topics`, {
+            await fetch( `${backend}/api/topics?id=${localStorage.getItem('user_id')}`, {
               headers: { 'Content-Type': 'apppcation/json' },
               // credentials: 'include'
             }).then((res) => {
               if (res && res.status === 200) {
               res.json().then((data) => {
-                setTopicList(data);
+                setTopicList(data.topics);
+                setSolvedMap(new Map(Object.entries(data.solved)))
                 topicList.sort();
               });
               } else {
@@ -116,9 +119,8 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                     <>
                       {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
                         <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
-                            <div className="themeImg"><img src="/assets/images/courseImg.svg" className="themeImgSize"/></div>
+                            <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
                             <div className="theme-content">
-                              {/* <div className="theme-content-percent">hello world</div> */}
                               <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">
@@ -139,7 +141,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
+                        <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
                           {/* <div className="theme-content-percent">hello world</div> */}
                             <div className="theme-text">
@@ -157,11 +159,10 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                   </> 
                 :
                   <>
-                  {Data.map((topic, ind) => (
+                  {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
-                      <div className="themeImg"><img src="/assets/images/courseImg.svg" className="themeImgSize"/></div>
+                      <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
                       <div className="theme-content">
-                        {/* <div className="theme-content-percent">{topic.solved}</div> */}
                           <div className="theme-text">
                               <div className="theme-name">{t(topic.topic)}</div>
                               <div className="theme-info">
@@ -178,9 +179,9 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                   ))}
                   {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src={!arrOfFigures.includes(topic.topic) ? `/kids_photo/img${ind+1 <= 18 ? ind+1 : ind > 18 ? ind%18 : 1}.JPG` : "/assets/images/courseImg.svg"} className="themeImgSize"/></div>
+                        <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
-                          {/* <div className="theme-content-percent">{topic.solved}</div> */}
+                          <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">

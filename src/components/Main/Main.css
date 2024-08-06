@@ -184,10 +184,13 @@
     width: 250px;   
     min-height: 156px;
     height: fit-content;
+    z-index: 2;
 }
 
 .theme-content-percent {
     position: absolute;
+    margin-left: 5px;
+    margin-top: 5px;
     font-size: 15px;font-weight: normal;color: #282323;
 }
 
@@ -198,13 +201,14 @@
 }
 
 .themeImg {
+    z-index: 1;
     position: relative;
     display: flex;
     justify-content: center;
     top: 37px;
-    width: 103px;
-    height: 103px;
-    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 30px;
     overflow: hidden;
 }
 

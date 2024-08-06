@@ -25,6 +25,15 @@
     pointer-events: none; /* Allow pointer events to pass through */
 }
 
+.arrow-canvas-basicTask {
+    position: absolute;
+    top: 0;
+    margin-top: 285px;
+    margin-left: 20px;
+    z-index: 1; /* Ensure it is above the chessboard */
+    pointer-events: none; /* Allow pointer events to pass through */
+}
+
 .arrow-canvas-tasks {
     position: absolute;
     top: 0;
