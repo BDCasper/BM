@@ -75,7 +75,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
-            if(solvedMap.size > 0 && firstReload === false) 
+            if(localStorage.getItem('user_id') !== null && solvedMap.size > 0 && firstReload === false) 
             window.location.reload();
             setFirstReload(true);
           }
