@@ -73,9 +73,9 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
-            if(localStorage.getItem('user_id') !== null && localStorage.getItem('reload') === null) 
+            if(localStorage.getItem('user_id') !== null && sessionStorage.getItem('reload') === null) 
             window.location.reload();
-            localStorage.setItem('reload', '1');
+            sessionStorage.setItem('reload', '1');
           }
         )()
       },[solvedMap])
