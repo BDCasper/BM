@@ -30,6 +30,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
     const [solvedMap, setSolvedMap] = useState<Map<string,number>>(new Map<string, number>);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const {t} = useTranslation();
 
@@ -62,6 +63,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                 setTopicList(data.topics);
                 setSolvedMap(new Map(Object.entries(data.solved)))
                 topicList.sort();
+                setLoading(false);
               });
               } else {
                 console.log("No DATA:(")
@@ -71,7 +73,11 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
         )();
       }, []);
 
-
+    if(loading){
+      return(
+        <div>Loading...</div>
+      )
+    }
 
     return(
       <div className="main-page">
