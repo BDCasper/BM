@@ -70,23 +70,6 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
         )();
       }, []);
 
-      useEffect(() => {
-        (
-          async() => {
-            if(localStorage.getItem('user_id'))
-            {
-              const reloadCount = localStorage.getItem('reloadCount');
-              if(reloadCount && reloadCount === '1' && Number.isNaN(Math.round(Number(solvedMap.get('Шах')) * 100 / 5)) === false) {
-                localStorage.setItem('reloadCount', '2');
-                window.location.reload();
-              } else {
-                localStorage.setItem('reloadCount', '1');
-              }
-            }
-          }
-        )()
-      },[solvedMap])
-
 
     return(
       <div className="main-page">
