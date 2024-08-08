@@ -80,6 +80,8 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
         )()
       },[solvedMap])
 
+      console.log(Math.round(Number(solvedMap.get('Шах'))*100/5) )
+
     return(
       <div className="main-page">
         <div className="lists-wrapper">
