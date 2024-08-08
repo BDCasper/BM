@@ -81,7 +81,6 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                 window.location.reload();
               } else {
                 sessionStorage.setItem('reloadCount', '1');
-                window.location.reload();
               }
             }
           }
