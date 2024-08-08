@@ -73,12 +73,6 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
         )();
       }, []);
 
-    if(loading){
-      return(
-        <div>Loading...</div>
-      )
-    }
-
     return(
       <div className="main-page">
         <div className="lists-wrapper">
@@ -115,98 +109,105 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
         </div>
         <div className="main-panel">
           <div className="main-panel-content">  
-          {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (
-            <div key={dif}>
-              <p className="levelName">{dif === 'easy' ? t('Для начинающих') : dif === 'medium' ? t('Для продолжающих') : dif === 'hard' ? t('Для продвинутых') : ''}</p>
-              <div className="pro-level">
-                {inp !== '' ? 
-                  <>
-                  {Data.map((topic, ind) => (
-                    <>
-                      {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
-                            <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
-                            <div className="theme-content">
-                              <div className="theme-text">
-                                <div className="theme-name">{t(topic.topic)}</div>
-                                <div className="theme-info">
-                                  <ul>
-                                    <li className="theme-lessons"><span>1 урок</span></li> 
-                                  </ul>
-                                  <ul>
-                                    <li className="theme-puzzles"><span>1 задача</span></li>
-                                  </ul>
+          {
+            loading ? 
+            <div>Loading...</div>
+            :
+            <>
+              {arrOfDif.filter((dif) => dif.includes(filterTopic)).map((dif) => (
+                <div key={dif}>
+                  <p className="levelName">{dif === 'easy' ? t('Для начинающих') : dif === 'medium' ? t('Для продолжающих') : dif === 'hard' ? t('Для продвинутых') : ''}</p>
+                  <div className="pro-level">
+                    {inp !== '' ? 
+                      <>
+                      {Data.map((topic, ind) => (
+                        <>
+                          {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
+                            <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                                <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
+                                <div className="theme-content">
+                                  <div className="theme-text">
+                                    <div className="theme-name">{t(topic.topic)}</div>
+                                    <div className="theme-info">
+                                      <ul>
+                                        <li className="theme-lessons"><span>1 урок</span></li> 
+                                      </ul>
+                                      <ul>
+                                        <li className="theme-puzzles"><span>1 задача</span></li>
+                                      </ul>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
+                            }
+                        </>
+                      ))}
+                      {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic, ind) => (
+                        <>
+                        {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
+                        <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
+                            <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
+                            <div className="theme-content">
+                              {localStorage.getItem('user_id') && <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>}
+                                <div className="theme-text">
+                                    <div className="theme-name">{t(topic.topic)}</div>
+                                    <ul className="theme-info">
+                                        <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
+                                        <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
+                                    </ul>
+                                </div>
                             </div>
                           </div>
                         }
-                    </>
-                  ))}
-                  {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic, ind) => (
-                    <>
-                    {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
-                        <div className="theme-content">
-                          {localStorage.getItem('user_id') && <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>}
-                            <div className="theme-text">
-                                <div className="theme-name">{t(topic.topic)}</div>
-                                <ul className="theme-info">
-                                    <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
-                                    <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                      </div>
-                    }
-                    </>
-                  ))}
-                  </> 
-                :
-                  <>
-                  {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
-                    <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
-                      <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
-                      <div className="theme-content">
-                          <div className="theme-text">
-                              <div className="theme-name">{t(topic.topic)}</div>
-                              <div className="theme-info">
-                                <ul>
-                                  <li className="theme-lessons"><span>1 урок</span></li> 
-                                </ul>
-                                <ul>
-                                  <li className="theme-puzzles"><span>1 задача</span></li>
-                                </ul>
+                        </>
+                      ))}
+                      </> 
+                    :
+                      <>
+                      {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
+                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                          <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
+                          <div className="theme-content">
+                              <div className="theme-text">
+                                  <div className="theme-name">{t(topic.topic)}</div>
+                                  <div className="theme-info">
+                                    <ul>
+                                      <li className="theme-lessons"><span>1 урок</span></li> 
+                                    </ul>
+                                    <ul>
+                                      <li className="theme-puzzles"><span>1 задача</span></li>
+                                    </ul>
+                                  </div>
                               </div>
                           </div>
-                      </div>
-                    </div>
-                  ))}
-                  {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
-                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
-                        <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
-                        <div className="theme-content">
-                          {localStorage.getItem('user_id') && <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>}
-                            <div className="theme-text">
-                                <div className="theme-name">{t(topic.topic)}</div>
-                                <div className="theme-info">
-                                  <ul>
-                                    <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
-                                  </ul>
-                                  <ul>
-                                    <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
-                                  </ul>
+                        </div>
+                      ))}
+                      {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
+                        <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
+                            <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
+                            <div className="theme-content">
+                              {localStorage.getItem('user_id') && <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>}
+                                <div className="theme-text">
+                                    <div className="theme-name">{t(topic.topic)}</div>
+                                    <div className="theme-info">
+                                      <ul>
+                                        <li className="theme-lessons"><span>{topic.lessons} {getNoun(topic.lessons, "урок", "урока", "уроков")}</span></li> 
+                                      </ul>
+                                      <ul>
+                                        <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
+                                      </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                  ))}
-                  </>
-                }
-              </div>
-            </div>
-          ))}
+                      ))}
+                      </>
+                    }
+                  </div>
+                </div>
+              ))}
+            </>
+          }
           </div>
         </div>
       </div>
