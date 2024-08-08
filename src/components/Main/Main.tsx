@@ -75,12 +75,12 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
           async() => {
             if(localStorage.getItem('user_id'))
             {
-              const reloadCount = sessionStorage.getItem('reloadCount');
+              const reloadCount = localStorage.getItem('reloadCount');
               if(reloadCount && reloadCount === '1' && Number.isNaN(Math.round(Number(solvedMap.get('Шах')) * 100 / 5)) === false) {
-                sessionStorage.setItem('reloadCount', '2');
+                localStorage.setItem('reloadCount', '2');
                 window.location.reload();
               } else {
-                sessionStorage.setItem('reloadCount', '1');
+                localStorage.setItem('reloadCount', '1');
               }
             }
           }
