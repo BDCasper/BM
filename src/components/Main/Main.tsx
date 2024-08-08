@@ -74,6 +74,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
+            if(solvedMap.size > 0)
             window.location.reload();
           }
         )()
