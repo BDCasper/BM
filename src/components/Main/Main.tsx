@@ -62,7 +62,6 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                 setTopicList(data.topics);
                 setSolvedMap(new Map(Object.entries(data.solved)))
                 topicList.sort();
-                window.location.reload();
               });
               } else {
                 console.log("No DATA:(")
@@ -71,6 +70,14 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
           }
         )();
       }, []);
+
+      useEffect(() => {
+        (
+          async() => {
+            window.location.reload();
+          }
+        )()
+      },[solvedMap])
 
     return(
       <div className="main-page">
