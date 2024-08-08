@@ -73,9 +73,14 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
-            if(Number.isNaN(Math.round(Number(solvedMap.get('Шах')) * 100 / 5)) === false && sessionStorage.getItem('reload') === null) 
-            window.location.reload();
-            sessionStorage.setItem('reload', '1');
+            const reloadCount = sessionStorage.getItem('reloadCount');
+            if(reloadCount && reloadCount === '1' && Number.isNaN(Math.round(Number(solvedMap.get('Шах')) * 100 / 5)) === false) {
+              sessionStorage.setItem('reloadCount', '2');
+              window.location.reload();
+            } else {
+              sessionStorage.setItem('reloadCount', '1');
+              window.location.reload();
+            }
           }
         )()
       },[solvedMap])
