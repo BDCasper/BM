@@ -26,8 +26,6 @@ interface MainProps {
 export default function Main({inp, user, arrayOfSolved}:MainProps) {
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
-    const [topicPercent, setTopicPercent] = useState<number[]>([]);
-    const [firstReload, setFirstReload] = useState<boolean>(false);
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
     const [solvedMap, setSolvedMap] = useState<Map<string,number>>(new Map<string, number>);
@@ -75,9 +73,9 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
-            if(localStorage.getItem('user_id') !== null && solvedMap.get('Шах') === null && firstReload === false) 
+            if(localStorage.getItem('user_id') !== null && localStorage.getItem('reload') === null) 
             window.location.reload();
-            setFirstReload(true);
+            localStorage.setItem('reload', '1');
           }
         )()
       },[solvedMap])
