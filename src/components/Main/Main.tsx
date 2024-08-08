@@ -27,6 +27,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
     const [topicPercent, setTopicPercent] = useState<number[]>([]);
+    const [firstReload, setFirstReload] = useState<boolean>(false);
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
     const [solvedMap, setSolvedMap] = useState<Map<string,number>>(new Map<string, number>);
@@ -74,8 +75,9 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
-            if(solvedMap.size > 0)
+            if(solvedMap.size > 0 && firstReload === false) 
             window.location.reload();
+            setFirstReload(true);
           }
         )()
       },[solvedMap])
