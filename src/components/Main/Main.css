@@ -481,11 +481,11 @@
     
     .themeImg {
         position: relative;
-        top: 26px;
-        width: 55px;
-        height: 55px;
-        border-radius: 50%;
-        overflow: visible;
+        z-index: 1;
+        width: 70px;
+        height: 70px;
+        border-radius: 30px;
+        overflow: hidden;
     }
     
     .themeImgSize {
