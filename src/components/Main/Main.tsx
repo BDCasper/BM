@@ -73,13 +73,16 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
       useEffect(() => {
         (
           async() => {
-            const reloadCount = sessionStorage.getItem('reloadCount');
-            if(reloadCount && reloadCount === '1' && Number.isNaN(Math.round(Number(solvedMap.get('Шах')) * 100 / 5)) === false) {
-              sessionStorage.setItem('reloadCount', '2');
-              window.location.reload();
-            } else {
-              sessionStorage.setItem('reloadCount', '1');
-              window.location.reload();
+            if(localStorage.getItem('user_id'))
+            {
+              const reloadCount = sessionStorage.getItem('reloadCount');
+              if(reloadCount && reloadCount === '1' && Number.isNaN(Math.round(Number(solvedMap.get('Шах')) * 100 / 5)) === false) {
+                sessionStorage.setItem('reloadCount', '2');
+                window.location.reload();
+              } else {
+                sessionStorage.setItem('reloadCount', '1');
+                window.location.reload();
+              }
             }
           }
         )()
