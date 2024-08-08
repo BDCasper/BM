@@ -143,7 +143,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
-                          {/* <div className="theme-content-percent">hello world</div> */}
+                          {localStorage.getItem('user_id') && <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>}
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <ul className="theme-info">
@@ -181,7 +181,7 @@ export default function Main({inp, user, arrayOfSolved}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind < 200 ? ind + 8 : ind-199}.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
-                          <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>
+                          {localStorage.getItem('user_id') && <div className="theme-content-percent">{solvedMap && solvedMap.get(topic.topic) ? Math.round(Number(solvedMap.get(topic.topic))*100/topic.puzzles) : 0}%</div>}
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">
