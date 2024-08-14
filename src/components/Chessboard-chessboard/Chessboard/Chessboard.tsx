@@ -72,7 +72,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const {t} = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [arrowStart, setArrowStart] = useState<Position | null>(null);
-  const [isDrawingArrow, setIsDrawingArrow] = useState<boolean>(false);
+  const [initialMousePosition, setInitialMousePosition] = useState<Position | null>(null);
   
   useEffect(() => {
     (
@@ -494,8 +494,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     const toX = endX * GRID_SIZE + GRID_SIZE / 2;
     const toY = canvas.height - (endY * GRID_SIZE + GRID_SIZE / 2);
   
-    console.log(`Drawing arrow from (${fromX}, ${fromY}) to (${toX}, ${toY})`);
-  
+    ctx.globalAlpha = 0.5;
+    
     // Calculate arrow properties
     const headlen = 10;
     const dx = toX - fromX;
@@ -513,6 +513,38 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     ctx.lineWidth = 3;
     ctx.stroke();
   };
+
+  const drawCircle = (x: number, y: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      console.error("Canvas element not found");
+      return;
+    }
+  
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      console.error("2D context not available on canvas");
+      return;
+    }
+  
+    // Calculate coordinates for the center of the circle
+    const centerX = x * GRID_SIZE + GRID_SIZE / 2;
+    const centerY = canvas.height - (y * GRID_SIZE + GRID_SIZE / 2);
+    const radius = (GRID_SIZE / 2) - 1; // Radius is now 2px smaller than the cell
+  
+    // Set transparency
+    ctx.globalAlpha = 0.5; // Adjust the transparency level here
+  
+    // Draw the circle that is 2px smaller than the cell
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    ctx.strokeStyle = "red"; // Use the same red color as the arrow
+    ctx.lineWidth = 3; // Match the stroke width of the arrow
+    ctx.stroke();
+  
+    // Reset transparency for future drawings
+    ctx.globalAlpha = 1.0;
+  };  
 
   const clearArrows = () => {
     const canvas = canvasRef.current;
@@ -532,39 +564,44 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
   const onRightMouseDown = (e: React.MouseEvent) => {
     if (e.button !== 2) return;
-
+  
     const chessboard = chessboardRef.current;
     if (!chessboard) return;
-
+  
     const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
     const y = Math.abs(
       Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
     );
-
-    console.log(x, y);
-
+  
     setArrowStart(new Position(x, y));
-  };
+    setInitialMousePosition(new Position(x,y));
+  };  
 
   const onRightMouseUp = (e: React.MouseEvent) => {
     if (e.button !== 2) return;
-
+  
     const chessboard = chessboardRef.current;
     if (!chessboard) return;
-
+  
+    const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
+    const y = Math.abs(
+      Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
+    );
+  
     if (!arrowStart) {
       clearArrows();
       return;
     }
-
-    const x = Math.floor((e.clientX - chessboard.offsetLeft + window.scrollX) / GRID_SIZE);
-    const y = Math.abs(
-      Math.ceil((e.clientY + window.scrollY - chessboard.offsetTop - boardSize) / GRID_SIZE)
-    );
-    console.log(x, y);
-
-    drawArrow(arrowStart.x, arrowStart.y, x, y);
+  
+    // Check if the mouse position has changed; if not, draw a circle
+    if (arrowStart.x === x && arrowStart.y === y) {
+      drawCircle(x, y);
+    } else {
+      drawArrow(arrowStart.x, arrowStart.y, x, y);
+    }
+  
     setArrowStart(null);
+    setInitialMousePosition(null);
   };
 
   let boardDraw = [];
