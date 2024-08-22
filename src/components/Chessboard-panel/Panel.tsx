@@ -34,6 +34,7 @@ interface PanelProps {
 }
 
 export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelProps) {
+  const navigate = useNavigate();
 
   const [fenCode, setCurrentFen] = useState<string>("");
   const [solved, setSolved] = useState<number>(0);
@@ -44,10 +45,9 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [isCorrect, setIsCorrect] = useState<boolean>();
   const [progressWidthcnt, setProgressWidthcnt] = useState<number>(0);
   const location = useLocation();
-  const navigate = useNavigate();
   const [winSound] = useSound('win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('wrong.mp3');
-  const [gameWithFriend, setGameWithFriend] = useState<boolean|undefined>(location.state.gameWithFriend);
+  const [gameWithFriend, setGameWithFriend] = useState<boolean|undefined>(true);
   const [chooseQ, setChooseQ] = useState<number>(-1);
   const [startAnimation, setStartAnimation] = useState(false);
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
@@ -74,20 +74,24 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
     (
       async () => {
-        if(location.state.gameWithFriend === undefined && location.state.id !== -1){
-          if(location.state.id === undefined) redirect('/'); 
-          await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
-            headers: { 'Content-Type': 'apppcation/json' },
-            // credentials: 'include'
-          }).then((res) => {
-            if (res && res.status === 200) {
-            res.json().then((data) => {
-              setArrayOfObjects(data)
-            });
-            } else {
-              console.log("No FEN :(")
-            }
-          })
+        if(user){
+          if(location.state.gameWithFriend === undefined && location.state.id !== -1){
+            if(location.state.id === undefined) redirect('/'); 
+            await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
+              headers: { 'Content-Type': 'apppcation/json' },
+              // credentials: 'include'
+            }).then((res) => {
+              if (res && res.status === 200) {
+              res.json().then((data) => {
+                setArrayOfObjects(data)
+              });
+              } else {
+                console.log("No FEN :(")
+              }
+            })
+          }
+        } else {
+          navigate('/');
         }
         await handleProgress();
       }
@@ -209,12 +213,12 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                       setActiveIndex={setActiveIndex} 
                       lengthOfArray={location.state.data.length} 
                       arrayOfObjects={[location.state.data]}
-                      isTest={true}
+                      mode={location.state.data.mode}
                       closed={true}
                       setPopOpen={setPopOpen}
                       user={user}
                       arrayOfSolved={arrayOfSolved}
-                      gameWithFriend={gameWithFriend}
+                      gameWithFriend={undefined}
                       handleAnimation={setStartAnimation}
                       setProgress={setProgressWidthcnt}
                       />
@@ -241,12 +245,12 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                         setActiveIndex={setActiveIndex} 
                         lengthOfArray={arrayOfObjects.length} 
                         arrayOfObjects={arrayOfObjects}
-                        isTest={arrayOfObjects[activeIndex] ? (arrayOfObjects[activeIndex].mode === 'test' ? true : false) : false}
+                        mode={arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].mode}
                         closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
                         setPopOpen={setPopOpen}
                         user={user}
                         arrayOfSolved={arrayOfSolved}
-                        gameWithFriend={gameWithFriend}
+                        gameWithFriend={location.state.gameWithFriend}
                         handleAnimation={setStartAnimation}
                         setProgress={setProgressWidthcnt}
                         />
@@ -349,12 +353,12 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     setActiveIndex={setActiveIndex} 
                     lengthOfArray={arrayOfObjects.length} 
                     arrayOfObjects={arrayOfObjects}
-                    isTest={arrayOfObjects[activeIndex] ? (arrayOfObjects[activeIndex].mode === 'test' ? true : false) : false}
+                    mode={arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].mode}
                     closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
                     setPopOpen={setPopOpen}
                     user={user}
                     arrayOfSolved={arrayOfSolved}
-                    gameWithFriend={gameWithFriend}
+                    gameWithFriend={location.state.gameWithFriend}
                     handleAnimation={setStartAnimation}
                     setProgress={setProgressWidthcnt}
                     />

@@ -29,7 +29,7 @@ interface Props {
   setActiveIndex: (index:number) => any;
   lengthOfArray: number;
   arrayOfObjects: TaskProps[];
-  isTest: boolean;
+  mode: string;
   closed: boolean;
   setPopOpen: (pop: boolean) => any;
   setBoard: (previousBoard: any) => any;
@@ -51,7 +51,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithFriend, everyMove,movePtr, handleAnimation, setReviewMode, setProgress, gameWithBot} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, mode, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithFriend, everyMove,movePtr, handleAnimation, setReviewMode, setProgress, gameWithBot} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -269,7 +269,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
-            fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
+            if(mode !== 'labirint') fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
             nullRightMoves();
             setLives(3);
             if (data.botMove === "WIN") {
@@ -277,17 +277,19 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 win();
               }, 1000);
             } else {
+              if(mode !== 'labirint') {
                 const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
                 setTimeout(() => {
                   botMove(botPosition);
                   fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
                   moveSound();
                 }, 500);
-                if(data.win === "WIN") {
-                  setTimeout(() => {
-                    win();
-                  }, 1000);
-                }
+              }
+              if(data.win === "WIN") {
+                setTimeout(() => {
+                  win();
+                }, 1000);
+              }
             }
           } else {
             wrongSound();
@@ -346,10 +348,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     if (e.nativeEvent.button === 2) return;
     const chessboard = chessboardRef.current;
     if (activePiece && chessboard) {
-      const minX = chessboard.offsetLeft - 130;
-      const minY = chessboard.offsetTop - 80;
-      const maxX = chessboard.offsetLeft + chessboard.clientWidth + 80;
-      const maxY = chessboard.offsetTop + chessboard.clientHeight + 40;
       const x = e.clientX - 30 + window.scrollX;
       const y = e.clientY - 30 + window.scrollY;
       activePiece.style.position = "absolute";
@@ -357,33 +355,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       activePiece.style.left = `${x}px`;
       activePiece.style.top = `${y}px`;
   
-      if (x < minX) {
-          activePiece.style.position = "relative";
-          activePiece.style.removeProperty("top");
-          activePiece.style.removeProperty("left");
-          setActivePiece(null);
-      }
-
-      if (x > maxX) {
-          activePiece.style.position = "relative";
-          activePiece.style.removeProperty("top");
-          activePiece.style.removeProperty("left");
-          setActivePiece(null);
-      }
-
-      if (y < minY) {
-          activePiece.style.position = "relative";
-          activePiece.style.removeProperty("top");
-          activePiece.style.removeProperty("left");
-          setActivePiece(null);
-      }
-
-      if (y > maxY) {
-          activePiece.style.position = "relative";
-          activePiece.style.removeProperty("top");
-          activePiece.style.removeProperty("left");
-          setActivePiece(null);
-      }
     }
   }
 
@@ -408,6 +379,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               playWithBot(currentPiece.clone(), new Position(x,y))
               if(fenComponents.turn === "w") fenComponents.turn = "b";
               else fenComponents.turn = "w";
+            } else if (mode === 'basic'){
+              playWithBot(currentPiece.clone(), new Position(x,y))
             }
             else await playMoveFunction(grabPosition, new Position(x,y), currentPiece);
         }else{
@@ -641,25 +614,25 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       <div className="chessboard-board">
         {isMobile ? 
         <>
-          <div onClick={(e) => isTest === true ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
+          <div onClick={(e) => mode === 'test' ? null : clickPiece(e)} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
         </>
         :
         <>
           <div 
           onMouseMove={(e) => movePiece(e)}
-          onMouseDown={(e) => isTest === true? null : grabPiece(e)}
-          onMouseUp={(e) => isTest === true? null : dropPiece(e)}
+          onMouseDown={(e) => mode === 'test' ? null : grabPiece(e)}
+          onMouseUp={(e) => mode === 'test' ? null : dropPiece(e)}
           onContextMenu={(e) => e.preventDefault()}
           onClick={() => clearArrows()}
           onMouseDownCapture={onRightMouseDown}
           onMouseUpCapture={onRightMouseUp} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
-          <canvas ref={canvasRef} className={gameWithFriend ? "arrow-canvas-gameWithFriend" : (arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 ? "arrow-canvas-basicTask" : "arrow-canvas-tasks")} width={boardSize} height={boardSize}></canvas>
+          <canvas ref={canvasRef} className={gameWithFriend ? "arrow-canvas-gameWithFriend" : (arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 ? "arrow-canvas-basicTask" : mode === 'test' ? "arrow-canvas-test" : "arrow-canvas-tasks")} width={boardSize} height={boardSize}></canvas>
         </>
         }
       </div>
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
-      {isTest === false && gameWithFriend===undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
+      {mode !== 'test' && gameWithFriend === undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
     </div>
   );
 }

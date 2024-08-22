@@ -26,6 +26,7 @@ export interface User {
   score?: number;
   score_month? : number;
   score_week? : number;
+  pfp? : string;
 }
 
 function App() {
@@ -72,7 +73,7 @@ function App() {
           <Route path="/registration" element={<Reg/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/recovery" element={<ResetPassword/>}/>
-          <Route path="/" element={<Main inp={inp} user={user} arrayOfSolved={arrayOfSolved}/>} />
+          <Route path="/" element={<Main inp={inp} user={user}/>} />
           {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
           {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
           <Route path="/editor" element={<ChessboardEdit/>}/>
@@ -84,8 +85,6 @@ function App() {
 }
 
 export default App; 
-//export const backend = "http://195.49.215.186:10000";
-//  export const backend = "http://195.49.215.186:10000";
-//export const backend = "https://bm-back.onrender.com";
-export const backend = "https://api.bm-chess.com";
+export const backend = "http://195.49.215.186:10000";
+// export const backend = "https://api.bm-chess.com";
 

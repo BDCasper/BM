@@ -71,7 +71,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                         <button name="button" className="header-poisk">{t('Поиск')}</button>
                     </div>
                 }
-                {token === '' ? (
+                {!user.user_id ? (
                     <>
                         <div className="header-reg"><a href="/registration">{t('Регистрация')}</a></div>
                         <div className="header-login"><a href="/login">{t('Вход')}</a></div>
@@ -80,7 +80,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                         <>
                             <div className="header-rating"><a href="/rating">{t('Рейтинг')}</a></div>
                             <div className="header-username">{user.username ? user.username : user.email}</div>
-                            <a href="/profile" className="header-profile"><img src="assets/images/header-profile.svg"/></a>
+                            <a href="/profile" className="header-profile"><img className="header-profile-image" src={user && user.pfp ? user.pfp : "assets/images/header-profile.svg"}/></a>
                         </>
                 )}
                 <div className="header-lang"> 
@@ -99,7 +99,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                         <option value="en">English</option>
                     </select>
                 </div>
-                {token?.includes('.') && <div className="header-username">{user.email}</div>}
+                {user.user_id && <div className="header-username">{user.email}</div>}
                 <div className='menu-container'>
                     <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
                         <img src={`assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
@@ -116,7 +116,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                                 <a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a>
                             </li>
 
-                            {!token?.includes('.') ? (
+                            {!user.user_id ? (
                                 <>
                                 <li className = 'header-dropdownItem'>
                                     <a href="/login">{t('Вход')}</a>

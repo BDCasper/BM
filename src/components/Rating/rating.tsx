@@ -35,7 +35,7 @@ export default function Rating({user} : Props){
         (
           async () => {
             if(token !== ''){
-              await fetch(`${backend}/api/rating?id=${localStorage.getItem('user_id')}&period=${'all'}`, {
+              await fetch(`${backend}/api/rating?id=${user.user_id}&period=${'all'}`, {
                   method: "GET",
                   headers: { 'Content-Type': 'application/json'},
               }).then((response) => {
@@ -47,23 +47,23 @@ export default function Rating({user} : Props){
                 }
               })
             }
-          })();
-      }, [])
+        })();
+    }, [])
 
-        const sendInterval = async (intervalcheck: string) => {
-            setInterval(intervalcheck)
-            await fetch(`${backend}/api/rating?id=${localStorage.getItem('user_id')}&period=${intervalcheck}`, {
-                method: "GET",
-                headers: { 'Content-Type': 'application/json'},
-            }).then((response) => {
-            if (response && response.status === 200) {
-                response.json().then((data) => {
-                setTopList(data.top);
-                setUserRating(data.user);
-                })
-            }
+    const sendInterval = async (intervalcheck: string) => {
+        setInterval(intervalcheck)
+        await fetch(`${backend}/api/rating?id=${user.user_id}&period=${intervalcheck}`, {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json'},
+        }).then((response) => {
+        if (response && response.status === 200) {
+            response.json().then((data) => {
+            setTopList(data.top);
+            setUserRating(data.user);
             })
         }
+        })
+    }
 
 
     return(

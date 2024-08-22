@@ -13,6 +13,9 @@ import { EncodeFen } from "../../FEN tools/fen-encoder";
 import { fenComponents } from "../../fenComponents";
 import { ReverseFen } from "../../FEN tools/fen-reverser";
 import { useNavigate } from "react-router-dom";
+import { backend } from "../../../App";
+import MoveDisplay from "../../moveDisplay/MoveDisplay";
+import ChessClock from "../Chess clock/chessClock";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -22,7 +25,7 @@ interface RefereeProps {
     setActiveIndex: (index: number) => any;
     lengthOfArray: number;
     arrayOfObjects: TaskProps[];
-    isTest: boolean;
+    mode: string;
     closed: boolean;
     setPopOpen: (pop: boolean) => any;
     user: User;
@@ -32,7 +35,7 @@ interface RefereeProps {
     setProgress: (num: number) => any;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, isTest, closed, setPopOpen, user, arrayOfSolved, gameWithFriend, handleAnimation, setProgress}) => {
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, mode, closed, setPopOpen, user, arrayOfSolved, gameWithFriend, handleAnimation, setProgress}) => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
@@ -42,6 +45,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [everyMove, setEveryMove] = useState<Board[]>([]);
     const [movePtr, setMovePtr] = useState<number>(0);
     const [reviewMode, setReviewMode] = useState<boolean>(false);
+    const [bestMove, setBestMove] = useState('');
+    const [bestMove2, setBestMove2] = useState('');
+    const [isFlipped, setIsFlipped] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -70,15 +76,41 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         (
             async () => {
                 if(board?.pieces?.length !== 0)
-                    {
-                        if(!everyMove.some((bord) => (bord === board)) && everyMove[everyMove.length - 1] !== board && movePtr < everyMove.length - 1) {
-                            for(let i = everyMove.length - 1; i >= 0; i--) {
-                                if(everyMove[i] !== everyMove[movePtr-1]) everyMove.pop();
-                                else break;
-                            }
+                {
+                    if(!everyMove.some((bord) => (bord === board)) && everyMove[everyMove.length - 1] !== board && movePtr < everyMove.length - 1) {
+                        for(let i = everyMove.length - 1; i >= 0; i--) {
+                            if(everyMove[i] !== everyMove[movePtr-1]) everyMove.pop();
+                            else break;
                         }
-                        if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '') everyMove.push(board);
                     }
+                    if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '') everyMove.push(board);
+                }
+                if(gameWithFriend && fenCode && board.totalTurns > 1) {
+                    const finalBoard: fenComponents = {
+                        squares: board.pieces,
+                        turn: board.currentTeam,
+                        castling: '-',
+                        enPassantSquare: null,
+                    };
+                    const encoder = await EncodeFen(finalBoard)
+                    await fetch( `${backend}/api/bestmove`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fen: encoder
+                        })
+                        // credentials: 'include'
+                      }).then((res) => {
+                        if (res && res.status === 200) {
+                            res.json().then((data) => {
+                                setBestMove(data.bestmove)
+                                setBestMove2(data.ponder)
+                            });
+                        } else {
+                          console.log(res.status)
+                        }
+                    })
+                }
             }
         )();
       }, [board]);
@@ -102,7 +134,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         
         setBoard((previousBoard) => {
             const clonedBoard = previousBoard.clone();
-            clonedBoard.totalTurns += 1;
+            if(mode === 'labirint' || mode === 'basic') clonedBoard.totalTurns += 2;
+            else clonedBoard.totalTurns += 1;
             playedMoveIsValid = clonedBoard.playMove(enPassantMove,
                 validMove, playedPiece,
                 destination);
@@ -214,6 +247,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     };
 
     const handleFlip = async() => {
+        setIsFlipped(!isFlipped);
         const newBoard = flipBoard(board)
         setBoard(newBoard);
     }
@@ -296,31 +330,37 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                     </div>
                 </div>
             }
+            <div className={gameWithFriend ? 'chessboard-gameWithFriend' : ''}>
+                {gameWithFriend && <ChessClock initialTime={300} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped}/>}
+                <Chessboard playMove={playMove}
+                    pieces={board?.pieces} 
+                    fenComponents={newboard} 
+                    setSolved={setSolved} 
+                    solved={solved} 
+                    activeIndex={activeIndex} 
+                    setActiveIndex={setActiveIndex} 
+                    lengthOfArray={lengthOfArray} 
+                    arrayOfObjects={arrayOfObjects}
+                    mode={mode}
+                    closed={closed}
+                    setPopOpen={setPopOpen}
+                    setBoard={setBoard}
+                    board={board}
+                    user={user}
+                    arrayOfSolved={arrayOfSolved}
+                    gameWithFriend={gameWithFriend}
+                    everyMove={everyMove}
+                    movePtr={movePtr}
+                    handleAnimation={handleAnimation}
+                    setReviewMode={setReviewMode}
+                    setProgress={setProgress}
+                    gameWithBot={gameWithFriend}
+                    />
+                {gameWithFriend && <MoveDisplay bestMove={bestMove} secondBestMove={bestMove2} />}
 
-            <Chessboard playMove={playMove}
-                pieces={board?.pieces} 
-                fenComponents={newboard} 
-                setSolved={setSolved} 
-                solved={solved} 
-                activeIndex={activeIndex} 
-                setActiveIndex={setActiveIndex} 
-                lengthOfArray={lengthOfArray} 
-                arrayOfObjects={arrayOfObjects}
-                isTest={isTest}
-                closed={closed}
-                setPopOpen={setPopOpen}
-                setBoard={setBoard}
-                board={board}
-                user={user}
-                arrayOfSolved={arrayOfSolved}
-                gameWithFriend={gameWithFriend}
-                everyMove={everyMove}
-                movePtr={movePtr}
-                handleAnimation={handleAnimation}
-                setReviewMode={setReviewMode}
-                setProgress={setProgress}
-                gameWithBot={gameWithFriend}
-                />
+
+            </div>
+
         </div>
     )
 }

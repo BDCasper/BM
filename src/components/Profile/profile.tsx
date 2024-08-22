@@ -38,8 +38,25 @@ export default function Profile({setUserLog, user, token}:Props) {
     }
 
     const uploadProfileImage = async() => {
-        if(fileUploadRef.current && fileUploadRef.current.files) {
+        if(fileUploadRef.current && fileUploadRef.current.files && email.length > 0) {
             let uploadFile = fileUploadRef.current.files[0];
+            const formData = new FormData();
+            formData.set('image', uploadFile);
+            formData.set('email', email);
+            await fetch(`${backend}/api/profile/upload-image`, {
+                method: "POST",
+                body: formData
+            }).then((response) => { 
+                if (response && response.status === 200)
+                {
+                    response.json().then((data) => { 
+                        console.log(data);
+                    })
+                }
+                else {
+                    console.log(response.status)
+                }
+            })
             let cachedURL = URL.createObjectURL(uploadFile);
             setAvatar(cachedURL)
         }
@@ -146,7 +163,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                 <div className="profile-ramka">
                     <div className="profile-upper-text">Личный профиль</div>
                     <div className="profile-image-block">                
-                        <div className="profile-image-wrapper" style={{backgroundImage: `url(assets/images/profile-avatar.svg)`}}><img alt="" src={avatar} className="profile-image"/></div>
+                        <div className="profile-image-wrapper" style={{backgroundImage: `url(assets/images/profile-avatar.svg)`}}><img alt="" src={user && user.pfp ? user.pfp : avatar} className="profile-image"/></div>
                         <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
                         <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                     </div>

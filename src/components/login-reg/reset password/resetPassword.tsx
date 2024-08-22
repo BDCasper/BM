@@ -24,7 +24,6 @@ export default function ResetPassword() {
         })();
     }, [code, newPassword])
 
-    console.log(location.state.code)
 
     const handleReset = async(e: FormEvent) => {
         e.preventDefault();

@@ -134,6 +134,13 @@
     -webkit-user-drag: none;
 }
 
+.header-profile-image {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #AB2A3B;
+    border-radius: 50%;
+}
+
 .header-lang {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     -webkit-user-drag: none;

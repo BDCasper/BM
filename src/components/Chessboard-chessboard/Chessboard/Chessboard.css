@@ -16,6 +16,12 @@
     height: fit-content;
 }
 
+.chessboard-gameWithFriend {
+    display: flex;
+    flex-direction: row;
+    margin-left: 100px;
+}
+
 .arrow-canvas-gameWithFriend {
     position: absolute;
     top: 0;
@@ -28,7 +34,7 @@
 .arrow-canvas-basicTask {
     position: absolute;
     top: 0;
-    margin-top: 285px;
+    margin-top: 288px;
     margin-left: 20px;
     z-index: 1; /* Ensure it is above the chessboard */
     pointer-events: none; /* Allow pointer events to pass through */
@@ -37,7 +43,16 @@
 .arrow-canvas-tasks {
     position: absolute;
     top: 0;
-    margin-top: 350px;
+    margin-top: 357.5px;
+    margin-left: 20px;
+    z-index: 1; /* Ensure it is above the chessboard */
+    pointer-events: none; /* Allow pointer events to pass through */
+}
+
+.arrow-canvas-test {
+    position: absolute;
+    top: 0;
+    margin-top: 361.5px;
     margin-left: 20px;
     z-index: 1; /* Ensure it is above the chessboard */
     pointer-events: none; /* Allow pointer events to pass through */
