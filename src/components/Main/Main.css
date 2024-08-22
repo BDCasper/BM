@@ -212,6 +212,10 @@
     overflow: hidden;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .themeImgSize {
     width: 100%;
 }

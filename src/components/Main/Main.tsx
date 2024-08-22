@@ -69,6 +69,8 @@ export default function Main({inp, user}:MainProps) {
         )();
       }, []);
 
+      console.log(topicList)
+
 
     return(
       <div className="main-page">
@@ -140,7 +142,7 @@ export default function Main({inp, user}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ topic.number < 200 && topic.number > 7 ? topic.number : topic.number % 200 }.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
-                          {user.user_id && <div className="theme-content-percent" key={count}>{topic.solved}/{topic.puzzles}</div>}
+                          <div className={user.user_id ? "theme-content-percent" : "theme-content-percent hidden"}>{Math.round(topic.solved*100/topic.puzzles)}%</div>
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <ul className="theme-info">
@@ -178,7 +180,7 @@ export default function Main({inp, user}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ topic.number < 200 && topic.number > 7 ? topic.number : topic.number % 200 }.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
-                          {user.user_id && <div className="theme-content-percent" >{topic.solved}/{topic.puzzles}</div>}
+                          <div className={user.user_id ? "theme-content-percent" : "theme-content-percent hidden"}>{Math.round(topic.solved*100/topic.puzzles)}%</div>
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">
