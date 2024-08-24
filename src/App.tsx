@@ -4,7 +4,7 @@ import Panel from './components/Chessboard-panel/Panel';
 import Main from "./components/Main/Main";
 import Header from "./components/FH/header";
 import Footer from "./components/FH/footer";
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import Reg from "./components/login-reg/reg";
 import Login from "./components/login-reg/login";
 import Profile from "./components/Profile/profile";

@@ -25,6 +25,7 @@ interface MainProps {
 }
 
 export default function Main({inp, user}:MainProps) {
+    let token = localStorage.getItem('token');
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();
     const [filterTopic, setFilter] = useState<string>('');
@@ -67,7 +68,7 @@ export default function Main({inp, user}:MainProps) {
             })
           }
         )();
-      }, []);
+    }, [token]);
 
       console.log(topicList)
 
