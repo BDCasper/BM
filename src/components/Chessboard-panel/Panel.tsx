@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import Referee from "../Chessboard-chessboard/Referee-main/Referee";
 import "./Panel.css"
 import { backend } from "../../App";
-import {redirect, useLocation} from 'react-router-dom';
+import {redirect, useLocation, useParams} from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import Podpiska from "../Podpiska/podpiska";
 import useSound from 'use-sound';
@@ -11,6 +11,7 @@ import { User } from "../../App";
 import ThreeScene from "../winScene";
 import WinPopup from "../Chessboard-chessboard/winPopUp/winPopUp";
 import { useTranslation } from "react-i18next";
+import Data from "../BasicData";
 
 
 interface Props {
@@ -53,6 +54,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
   const {t} = useTranslation();
   const scrollToBoard = useRef<null | HTMLDivElement>(null);
+  const params = useParams();
+  const [idNum, setIdNum] = useState<number>(Number(params.id && params.id[5]))
 
   const executeScroll = () => scrollToBoard.current?.scrollIntoView();
 
@@ -75,9 +78,9 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     (
       async () => {
         if(user){
-          if(location.state.gameWithFriend === undefined && location.state.id !== -1){
-            if(location.state.id === undefined) redirect('/'); 
-            await fetch( `${backend}/api/topic?id=${location.state.id ? location.state.id : 1}`, {
+          if(location.state === null && params.id && !params.id.includes('basic')){
+            if(params.id === undefined) navigate('/'); 
+            await fetch( `${backend}/api/topic?id=${params.id ? params.id : 1}`, {
               headers: { 'Content-Type': 'apppcation/json' },
               // credentials: 'include'
             }).then((res) => {
@@ -87,16 +90,18 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
               });
               } else {
                 console.log("No FEN :(")
+                navigate('/')
+                console.log(res.status)
               }
             })
           }
         } else {
-          navigate('/');
+          navigate('/login');
         }
         await handleProgress();
       }
     )();
-  }, [location.state.id]);
+  }, [params.id]);
 
 
   const handleAnswer = async() => {
@@ -176,7 +181,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
           setSolved(arrayOfObjects.length);
       }
     )();
-  },[arrayOfObjects])
+  },[arrayOfObjects, arrayOfSolved])
 
   const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
@@ -184,6 +189,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
       </div>
   )
 
+  console.log(progressWidthcnt)
 
   return (
       <>
@@ -196,17 +202,17 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
         <WinPopup onClose={setWinPopUp} activeIndex={activeIndex} setActiveIndex={setActiveIndex} lengthOfArray={arrayOfObjects.length} />
       }
         {
-          location.state.gameWithFriend === undefined ?
+          (location.state && location.state.gameWithFriend === undefined) || location.state === null ?
           <>
           <div className="chess-page">
             {
-              location.state.id === -1 ? 
+              params.id && params.id.includes('basic') ? 
               <div className="panel-content">
                 <div className="panel-spisok">
                   <div className="panel" ref={scrollToBoard}>
-                    <button onClick={executeScroll} className="panel-size-button"><img src="assets/images/resize.png" alt="" /></button>    
+                    <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
                     <div className="referee">
-                      <Referee fenCode={location.state.data.fen} 
+                      <Referee fenCode={Data[idNum-1].fen} 
                       setSolved={setSolved} 
                       solved={solved} 
                       activeIndex={activeIndex} 
@@ -236,7 +242,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                 <div className="panel-content">
                   <div className="panel-spisok">
                     <div className="panel" ref={scrollToBoard}>
-                      <button onClick={executeScroll} className="panel-size-button"><img src="assets/images/resize.png" alt="" /></button>    
+                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
                       <div className="referee">
                         <Referee fenCode={fenCode} 
                         setSolved={setSolved} 
@@ -250,7 +256,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                         setPopOpen={setPopOpen}
                         user={user}
                         arrayOfSolved={arrayOfSolved}
-                        gameWithFriend={location.state.gameWithFriend}
+                        gameWithFriend={undefined}
                         handleAnimation={setStartAnimation}
                         setProgress={setProgressWidthcnt}
                         />
@@ -269,7 +275,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                       </div>
                     </MediaQuery>
                     <div className="spisok">
-                      {location.state.topic && <div className="topic"><p>{location.state.topic}</p></div>}
+                      {arrayOfObjects[0] && <div className="topic"><p>{arrayOfObjects[0].topic}</p></div>}
                         <div className="spisokList">
                           {arrayOfObjects.map((puzzle, index) => (
                                 <div className={puzzle.closed === false ? (index === activeIndex ? "zadachi active" :"zadachi") : "zadachi zadachi-closed"} key={puzzle.puzzle_id} onClick={() => {
@@ -346,7 +352,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
           </>
           :
           <div className="gameWithFriend">
-              <Referee fenCode={location.state.basicFenCode} 
+              <Referee fenCode={location.state && location.state.basicFenCode} 
                     setSolved={setSolved} 
                     solved={solved} 
                     activeIndex={activeIndex} 
@@ -358,7 +364,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                     setPopOpen={setPopOpen}
                     user={user}
                     arrayOfSolved={arrayOfSolved}
-                    gameWithFriend={location.state.gameWithFriend}
+                    gameWithFriend={location.state && location.state.gameWithFriend}
                     handleAnimation={setStartAnimation}
                     setProgress={setProgressWidthcnt}
                     />

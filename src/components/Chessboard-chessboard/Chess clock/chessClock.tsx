@@ -6,11 +6,12 @@ interface ChessClockProps {
   teamTurn: "white" | "black"; // a variable that changes based on the player's turn
   checkStart: boolean;
   isFlipped: boolean;
+  setWinner: (win: string) => any;
 }
 
-const ChessClock: React.FC<ChessClockProps> = ({ initialTime, teamTurn, checkStart, isFlipped }) => {
-  const [whiteTime, setWhiteTime] = useState(initialTime);
-  const [blackTime, setBlackTime] = useState(initialTime);
+const ChessClock: React.FC<ChessClockProps> = ({ initialTime, teamTurn, checkStart, isFlipped, setWinner }) => {
+  const [whiteTime, setWhiteTime] = useState(initialTime*60);
+  const [blackTime, setBlackTime] = useState(initialTime*60);
   const [isRunning, setIsRunning] = useState(false);
 
   // Effect to start the clock automatically after the first move
@@ -41,6 +42,23 @@ const ChessClock: React.FC<ChessClockProps> = ({ initialTime, teamTurn, checkSta
     setBlackTime(initialTime);
     setIsRunning(false);
   };
+
+  useEffect(() => {
+    (
+      async() => {
+        if(whiteTime === 0 || blackTime === 0){
+          if(whiteTime === 0){
+            setWinner('b')
+            return;
+          }
+          if(blackTime === 0){
+            setWinner('w')
+            return;
+          }
+        }
+      }
+    )()
+  },[whiteTime, blackTime])
 
 
   return (
@@ -80,7 +98,7 @@ const ChessClock: React.FC<ChessClockProps> = ({ initialTime, teamTurn, checkSta
 
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
+  const seconds = time % 60;  
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 

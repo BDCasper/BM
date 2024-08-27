@@ -8,7 +8,9 @@ import { Board } from "../Chessboard-chessboard/models/Board";
 import { DecodeFen } from "../FEN tools/fenDecoder";
 import { fenComponents } from "../fenComponents";
 import { PieceType, TeamType } from "../Chessboard-chessboard/Types";
-import { EncodeFen } from "../FEN tools/fen-encoder";
+import EncodeFen from "../FEN tools/fen-encoder";
+import MoveDisplay from "../moveDisplay/MoveDisplay";
+import { backend } from "../../App";
 
 const figures = ['rook', 'knight', 'bishop', 'queen', 'king', 'pawn'];
 
@@ -22,6 +24,8 @@ export default function ChessboardEdit(){
     const [GRID_SIZE, setGridSize] = useState<number>(57.2);
     const [boardSize, setBoardSize] = useState<number>(458.4);
     const [review, setReview] = useState<boolean>(false);
+    const [bestMove, setBestMove] = useState('');
+    const [bestMove2, setBestMove2] = useState('');
     const [board, setBoard] = useState<Board>(new Board(DecodeFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").squares, 1));
 
     const playMove = async(playedPiece: Piece, destination: Position) => {
@@ -37,6 +41,38 @@ export default function ChessboardEdit(){
         board.pieces[pieceInd].position = destination;
         
     }
+
+    useEffect(() => {
+        (
+            async() => {
+                if(activePiece === null) {
+                    const finalBoard: fenComponents = {
+                        squares: board.pieces,
+                        turn: turnColor,
+                        castling: '-',
+                        enPassantSquare: null,
+                    };
+                    const encoder = EncodeFen(finalBoard);
+                    await fetch( `${backend}/api/bestmove`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fen: encoder
+                        })
+                        // credentials: 'include'
+                      }).then((res) => {
+                        if (res && res.status === 200) {
+                            res.json().then((data) => {
+                                setBestMove(data.bestmove)
+                            });
+                        } else {
+                          console.log(res.status)
+                        }
+                    })
+                }
+            }
+        )()
+    },[board, activePiece, turnColor])
 
     const deleteItem = async(index: number | undefined) => {
         const newBoard : Board = new Board([], 1);
@@ -58,6 +94,7 @@ export default function ChessboardEdit(){
                 cnt++;
             }
         }
+        console.log(board)
         if(!board.pieces.find((p) => p.type === PieceType.KING && p.team === TeamType.OUR) || !board.pieces.find((p) => p.type === PieceType.KING && p.team === TeamType.OPPONENT) || cnt !== 2) {
             alert("Невозможно начать партию");
             return;
@@ -70,9 +107,10 @@ export default function ChessboardEdit(){
             enPassantSquare: null,
         };
 
+
         const finalFen = EncodeFen(finalBoard);
 
-        navigate("/topic", {state:{gameWithFriend: true, basicFenCode: finalFen}})
+        navigate("/topic/playWithFriend", {state:{gameWithFriend: true, basicFenCode: finalFen}})
 
     }
 
@@ -149,8 +187,6 @@ export default function ChessboardEdit(){
             const y = Math.abs(
               Math.ceil((e.clientY - chessboardRef.current.offsetTop - boardSize  + window.scrollY  - GRID_SIZE/2) / GRID_SIZE)
             ) - 9;
-            console.log(grabPosition)
-            console.log(x,y)
 
             if(grabPosition.y === 9) {
                 let word = activePiece.style.backgroundImage.split('/')[5].split('_')[0];
@@ -175,6 +211,11 @@ export default function ChessboardEdit(){
             const currentPiece = board?.pieces?.find((p) =>
                 p.samePosition(grabPosition)
             );  
+
+            if(x < 0 || x > 7 || y < 0 || y > 7) {
+                let destInd = board.pieces.findIndex((p) => p.position.x === grabPosition.x && p.position.y === grabPosition.y);
+                deleteItem(destInd)
+            }
 
             if (currentPiece) {
                 playMove(currentPiece, new Position(x,y));
@@ -201,8 +242,8 @@ export default function ChessboardEdit(){
         let highlight = currentPiece?.possibleMoves ? 
         currentPiece.possibleMoves.some(p => p.samePosition(new Position(i, j))) : false;
         let image = piece ? piece.image : undefined;
-        let digit = i === 0 ? VERTICAL_AXIS[7 - j] : '';
-        let symbol = (j === 0) ? HORIZONTAL_AXIS[7 - i] : '';
+        let digit = i === 0 ? VERTICAL_AXIS[j] : '';
+        let symbol = (j === 0) ? HORIZONTAL_AXIS[i] : '';
 
         boardDraw.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} highlightRightMove1={false} highlightRightMove2={false}/> );
       }
@@ -220,6 +261,7 @@ export default function ChessboardEdit(){
 
     return (
         <div className="chessboardEdit">
+            <MoveDisplay bestMove={bestMove} secondBestMove={bestMove2} />
             <div className="chessboardEdit-boardWrapper">
                 <div className="chessboardEdit-boardPanel" ref={chessboardRef}
                     onMouseMove={(e) => movePiece(e)}
@@ -246,10 +288,10 @@ export default function ChessboardEdit(){
                 <div className="chessboardEdit-turn-title">Кто ходит первым?</div>
                 <div className="chessboardEdit-turn">
                     <div className={turnColor === 'b' ? "chessboardEdit-turn-active" : ""} onClick={() => setTurnColor('b')}>
-                        <img src="assets/images/pawn_b.png" alt="" />
+                        <img src="/assets/images/pawn_b.png" alt="" />
                     </div>
                     <div className={turnColor === 'w' ? "chessboardEdit-turn-active" : ""} onClick={() => setTurnColor('w')}>
-                        <img src="assets/images/pawn_w.png" alt="" />
+                        <img src="/assets/images/pawn_w.png" alt="" />
                     </div>
                 </div>
             </div>

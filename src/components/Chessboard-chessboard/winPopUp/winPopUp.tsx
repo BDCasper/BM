@@ -28,7 +28,7 @@ const WinPopup: React.FC<PopupProps> = ({ onClose, activeIndex, setActiveIndex, 
         <div className="winPopup-close" onClick={backClick}></div>
             <div className="winPopup-block">
                 <div className="winPopup-ramka">
-                    <img src="assets/images/astana.png" alt="" />
+                    <img src="/assets/images/astana.png" alt="" />
                     <div className="winPopup-ramka-title">Поздравляем</div>
                     {activeIndex < lengthOfArray - 1 ?
                      <button onClick={handleClick}>Следующая задача</button>

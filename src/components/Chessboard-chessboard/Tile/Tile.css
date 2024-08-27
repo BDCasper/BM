@@ -8,10 +8,13 @@
 .tile .chess-piece {
     width: 57.4px;
     height: 57.4px;
-    z-index: 2;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50px;
+}
+
+.tile .tile-highlight {
+    z-index: 1;
 }
 
 .tile .chess-piece:hover {

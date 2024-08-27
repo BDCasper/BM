@@ -38,6 +38,7 @@ function App() {
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
   const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
   const location = useLocation();
+  const params = useParams();
 
   useEffect(() => {
     (
@@ -65,8 +66,8 @@ function App() {
     <div className="app">
         <SpeedInsights/>
         <MediaQuery minWidth={1200}>
-          <img src="assets/images/ornament-left.jpg" alt="" className="ornament-left"/>
-          <img src="assets/images/ornament-right.jpg" alt="" className="ornament-right"/>
+          <img src="/assets/images/ornament-left.jpg" alt="" className="ornament-left"/>
+          <img src="/assets/images/ornament-right.jpg" alt="" className="ornament-right"/>
         </MediaQuery>
         <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen} allowSearch={location.pathname === '/'}/>
         <Routes>
@@ -74,7 +75,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/recovery" element={<ResetPassword/>}/>
           <Route path="/" element={<Main inp={inp} user={user}/>} />
-          {user && <Route path="/topic" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
+          {user && <Route path="/topic/:id" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
           {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
           <Route path="/editor" element={<ChessboardEdit/>}/>
           <Route path="/rating" element={<Rating user={user}/>}/>

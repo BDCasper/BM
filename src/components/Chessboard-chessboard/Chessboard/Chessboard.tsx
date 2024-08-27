@@ -107,7 +107,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     setReview(true);
     setReviewMode(true);
     setWinPopUp(true);
-    if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
+    let solvedCheck = false;
+    if(arrayOfSolved && !arrayOfSolved.has(arrayOfObjects[activeIndex].puzzle_id)) {
+      solvedCheck = true;
+      arrayOfSolved.add(arrayOfObjects[activeIndex].puzzle_id)
+    }
     winSound();
     let chk;
     // let ind = 0;
@@ -128,7 +132,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         break;
       }
     }
-    if(chk === true) {
+    if(chk === true && solvedCheck) {
       handleAnimation(true);
     }
     // if (lengthOfArray - 1 === activeIndex) {
@@ -588,8 +592,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       let currentPiece = activePiece != null ? pieces?.find(p => p.samePosition(grabPosition)) : undefined;
       let highlight = currentPiece?.possibleMoves ? 
       currentPiece.possibleMoves.some(p => p.samePosition(new Position(i, j))) : false;
-      let digit = (i === 0) ? VERTICAL_AXIS[gameWithFriend ? j : fenComponents.turn === 'w' ? j : 7 - j] : '';
-      let symbol = (j === 0) ? HORIZONTAL_AXIS[gameWithFriend ? i : fenComponents.turn === 'w' ? i : 7 - i] : '';
+      let digit = (i === 0) ? VERTICAL_AXIS[j] : '';
+      let symbol = (j === 0) ? HORIZONTAL_AXIS[i] : '';
       let highlightRightMove1 = (fenComponents.turn === 'b' && (i === rightMove[0].x && j === rightMove[0].y)) || (fenComponents.turn === 'w' && (i === rightMove[0].x && j === rightMove[0].y)) ? true : false;
       let highlightRightMove2 = (fenComponents.turn === 'b' && (i === rightMove[1].x && j === rightMove[1].y)) || (fenComponents.turn === 'w' && (i === rightMove[1].x && j === rightMove[1].y)) ? true : false;
       boardDraw.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} highlightRightMove1={highlightRightMove1} highlightRightMove2={highlightRightMove2}/> );
@@ -611,6 +615,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       </div>
       
       <div className="task-name">{t(arrayOfObjects[activeIndex]?.subtopic)}</div>
+      {mode === 'labirint' && 
+      <>
+        <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>
+      </>
+      }
       <div className="chessboard-board">
         {isMobile ? 
         <>
@@ -626,10 +635,21 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
           onClick={() => clearArrows()}
           onMouseDownCapture={onRightMouseDown}
           onMouseUpCapture={onRightMouseUp} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
-          <canvas ref={canvasRef} className={gameWithFriend ? "arrow-canvas-gameWithFriend" : (arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 ? "arrow-canvas-basicTask" : mode === 'test' ? "arrow-canvas-test" : "arrow-canvas-tasks")} width={boardSize} height={boardSize}></canvas>
+          <canvas ref={canvasRef} className={gameWithFriend ? "arrow-canvas-gameWithFriend" : (arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 ? "arrow-canvas-basicTask" : mode === 'test' ? "arrow-canvas-test" : mode === 'labirint' ? "arrow-canvas-labirint" : "arrow-canvas-tasks")} width={boardSize} height={boardSize}></canvas>
         </>
         }
       </div>
+      {mode === 'labirint' && 
+      <>
+        <div className="task-title-rules">
+          <div>Правила:</div>
+          <div>1. Ходить только одной фигурой</div>
+          <div>2. Нельзя вставать под бой</div>
+          <div>3. Можно есть фигуры противника</div>
+          <div>4. Противник не ходит</div>
+        </div>
+      </>
+      }
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
       {mode !== 'test' && gameWithFriend === undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}

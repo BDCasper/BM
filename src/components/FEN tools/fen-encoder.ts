@@ -2,7 +2,7 @@ import { Piece, Position } from "../Chessboard-chessboard/models";
 import { PieceType, TeamType } from "../Chessboard-chessboard/Types";
 import { fenComponents } from "../fenComponents";
 
-export const EncodeFen = async(board: fenComponents) => {
+export default function EncodeFen(board: fenComponents) {
   let fen = '';
 
   for (let row = 7; row >= 0; row--) {

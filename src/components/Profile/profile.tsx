@@ -164,7 +164,7 @@ export default function Profile({setUserLog, user, token}:Props) {
                     <div className="profile-upper-text">Личный профиль</div>
                     <div className="profile-image-block">                
                         <div className="profile-image-wrapper" style={{backgroundImage: `url(assets/images/profile-avatar.svg)`}}><img alt="" src={user && user.pfp ? user.pfp : avatar} className="profile-image"/></div>
-                        <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="assets/images/profile-edit.svg" className="profile-edit"/></button>
+                        <button className="edit-button" onClick={handleAvatarUpload}><img alt="" src="/assets/images/profile-edit.svg" className="profile-edit"/></button>
                         <input type="file" ref={fileUploadRef} onChange={uploadProfileImage} hidden/>
                     </div>
                     <div className="profile-score">Количество очков: {user.score ? user.score : 0} <img src="/assets/images/asyk-win.svg" alt="" /></div>

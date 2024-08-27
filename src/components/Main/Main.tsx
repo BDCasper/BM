@@ -70,34 +70,33 @@ export default function Main({inp, user}:MainProps) {
         )();
     }, [token]);
 
-      console.log(topicList)
 
 
     return(
       <div className="main-page">
         <div className="lists-wrapper">
           <div className="course-list">
-            <div className={filterTopic === '' ? "all-courses setOn" : "all-courses"} onClick={() => setFilter('')}>
+            <div className="podpiska">
+              <div className={filterTopic === '' ? "podpiska-item setOn" : "podpiska-item"} id="allCourses" onClick={() => setFilter('')}>
                 <div className="podpiska-text">{t('Все курсы')}</div>
                 <img className="podpiskaImg" src={filterTopic === '' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
-            <div className="podpiska">
-              <div className={filterTopic === 'easy' ? "podpiska1 setOn" : "podpiska1"} onClick={() => setFilter('easy')}>
-              <div className="podpiska-text">{t('Начинающий')}</div>
-              <img className="podpiskaImg" src={filterTopic === 'easy' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
+              <div className={filterTopic === 'easy' ? "podpiska-item setOn" : "podpiska-item"} id='firstPodpiska' onClick={() => setFilter('easy')}>
+                <div className="podpiska-text">{t('Начинающий')}</div>
+                <img className="podpiskaImg" src={filterTopic === 'easy' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
-              <div className={filterTopic === 'medium' ? "podpiska2 setOn" : "podpiska2"} onClick={() => setFilter('medium')}>
-              <div className="podpiska-text">{t('Продолжающий')}</div>
-              <img className="podpiskaImg" src={filterTopic === 'medium' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
+              <div className={filterTopic === 'medium' ? "podpiska-item setOn" : "podpiska-item"}  onClick={() => setFilter('medium')}>
+                <div className="podpiska-text">{t('Продолжающий')}</div>
+                <img className="podpiskaImg" src={filterTopic === 'medium' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
-              <div className={filterTopic === 'hard' ? "podpiska3 setOn" : "podpiska3"} onClick={() => setFilter('hard')}>
-              <div className="podpiska-text">{t('Продвинутый')}</div>
-              <img className="podpiskaImg" src={filterTopic === 'hard' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
+              <div className={filterTopic === 'hard' ? "podpiska-item setOn" : "podpiska-item"} id='thirdPodpiska' onClick={() => setFilter('hard')}>
+                <div className="podpiska-text">{t('Продвинутый')}</div>
+                <img className="podpiskaImg" src={filterTopic === 'hard' ? "/assets/images/podpiskaArrowWhite.svg" : "/assets/images/podpiskaArrow.svg"}/>
               </div>
             </div>
           </div>
           <div className="game-list">
-            <div className="game-type" onClick={() => navigate("/topic", {state:{gameWithFriend: true, basicFenCode: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}})}>
+            <div className="game-type" onClick={() => navigate("/topic/playWithFriend", {state:{gameWithFriend: true, basicFenCode: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}})}>
                 <div className="podpiska-text">{t('Играть вдвоём')}</div>
                 <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
             </div>
@@ -118,7 +117,7 @@ export default function Main({inp, user}:MainProps) {
                   {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <>
                       {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
                             <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
                             <div className="theme-content">
                               <div className="theme-text">
@@ -140,7 +139,7 @@ export default function Main({inp, user}:MainProps) {
                   {topicList.filter((topics) => topics.difficulty.includes(dif)).map((topic, ind) => (
                     <>
                     {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
+                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/${topic.topic_id}`) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ topic.number < 200 && topic.number > 7 ? topic.number : topic.number % 200 }.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
                           <div className={user.user_id ? "theme-content-percent" : "theme-content-percent hidden"}>{Math.round(topic.solved*100/topic.puzzles)}%</div>
@@ -160,7 +159,7 @@ export default function Main({inp, user}:MainProps) {
                 :
                   <>
                   {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
-                    <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                    <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
                       <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
                       <div className="theme-content">
                           <div className="theme-text">
@@ -178,7 +177,7 @@ export default function Main({inp, user}:MainProps) {
                     </div>
                   ))}
                   {topicList.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
-                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate("/topic", {state:{id:topic.topic_id, topic:topic.topic}}) : navigate("/login")}>
+                    <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/${topic.topic_id}`) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ topic.number < 200 && topic.number > 7 ? topic.number : topic.number % 200 }.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
                           <div className={user.user_id ? "theme-content-percent" : "theme-content-percent hidden"}>{Math.round(topic.solved*100/topic.puzzles)}%</div>

@@ -60,13 +60,13 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                 <div className="header-subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
                 {allowSearch === true ? 
                     <div className="header-search ">
-                        <img src="assets/images/search.svg" className="header-loop"/>
+                        <img src="/assets/images/search.svg" className="header-loop"/>
                         <input type="text" className="header-searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
                         <button className="header-poisk" onClick={() => setInp(inputText)}>{t('Поиск')}</button>
                     </div> 
                 :
                     <div className="header-search sHidden">
-                        <img src="assets/images/search.svg" className="header-loop"/>
+                        <img src="/assets/images/search.svg" className="header-loop"/>
                         <input type="text" className="header-searchBar"/>
                         <button name="button" className="header-poisk">{t('Поиск')}</button>
                     </div>
@@ -80,7 +80,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                         <>
                             <div className="header-rating"><a href="/rating">{t('Рейтинг')}</a></div>
                             <div className="header-username">{user.username ? user.username : user.email}</div>
-                            <a href="/profile" className="header-profile"><img className="header-profile-image" src={user && user.pfp ? user.pfp : "assets/images/header-profile.svg"}/></a>
+                            <a href="/profile" className="header-profile"><img className="header-profile-image" src={user && user.pfp ? user.pfp : "/assets/images/header-profile.svg"}/></a>
                         </>
                 )}
                 <div className="header-lang"> 
@@ -102,7 +102,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                 {user.user_id && <div className="header-username">{user.email}</div>}
                 <div className='menu-container'>
                     <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
-                        <img src={`assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
+                        <img src={`/assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
                     </div>
                     <div className={`header-dropdown-menu ${open ? 'active' : 'inactive'}`} >
                         <ul>

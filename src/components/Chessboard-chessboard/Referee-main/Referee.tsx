@@ -9,13 +9,12 @@ import TaskProps from "../../Chessboard-panel/Panel"
 import { User } from "../../../App";
 import useSound from "use-sound";
 import { DecodeFen } from "../../FEN tools/fenDecoder";
-import { EncodeFen } from "../../FEN tools/fen-encoder";
+import EncodeFen from "../../FEN tools/fen-encoder";
 import { fenComponents } from "../../fenComponents";
-import { ReverseFen } from "../../FEN tools/fen-reverser";
 import { useNavigate } from "react-router-dom";
 import { backend } from "../../../App";
-import MoveDisplay from "../../moveDisplay/MoveDisplay";
 import ChessClock from "../Chess clock/chessClock";
+import InitialTime from "./initialTime";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -45,9 +44,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [everyMove, setEveryMove] = useState<Board[]>([]);
     const [movePtr, setMovePtr] = useState<number>(0);
     const [reviewMode, setReviewMode] = useState<boolean>(false);
-    const [bestMove, setBestMove] = useState('');
-    const [bestMove2, setBestMove2] = useState('');
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
+    const [initialTime, setInitialTime] = useState<string>('');
+    const [initialPopupOpen, setInitialPopupOpen] = useState<boolean>(true);
+    const closePopup = () => setInitialPopupOpen(false);
+    const [winner, setWinner] = useState<string>('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -59,6 +60,19 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             }
           )();
     }, [fenCode])
+
+    useEffect(() => {
+        (
+            async () => {
+                if(winner !== ''){
+                    checkmateModalRef.current?.classList.remove("hidden");
+                    if(gameWithFriend) winSound();
+                }
+                setWinner('');
+            }
+          )();
+    }, [winner])
+
 
     const initialBoard: Board = new Board(fen, 1);
     initialBoard.calculateAllMoves();
@@ -84,32 +98,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         }
                     }
                     if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '') everyMove.push(board);
-                }
-                if(gameWithFriend && fenCode && board.totalTurns > 1) {
-                    const finalBoard: fenComponents = {
-                        squares: board.pieces,
-                        turn: board.currentTeam,
-                        castling: '-',
-                        enPassantSquare: null,
-                    };
-                    const encoder = await EncodeFen(finalBoard)
-                    await fetch( `${backend}/api/bestmove`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            fen: encoder
-                        })
-                        // credentials: 'include'
-                      }).then((res) => {
-                        if (res && res.status === 200) {
-                            res.json().then((data) => {
-                                setBestMove(data.bestmove)
-                                setBestMove2(data.ponder)
-                            });
-                        } else {
-                          console.log(res.status)
-                        }
-                    })
                 }
             }
         )();
@@ -282,13 +270,21 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         }
     }
 
-    function restartGame() {
-        checkmateModalRef.current?.classList.add("hidden");
-        setBoard(initialBoard.clone());
+    function restartGame(way: string) {
+        if(way === 'continue'){
+            setWinner('')
+            setInitialTime('');
+            checkmateModalRef.current?.classList.add("hidden");
+        }
+        if(way === 'restart'){
+            checkmateModalRef.current?.classList.add("hidden");
+            setBoard(initialBoard.clone());
+        }
     }
 
     return (
         <div className="referee">
+            {gameWithFriend && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setInitialTime}/>}
             {gameWithFriend &&
             <>
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
@@ -298,12 +294,15 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                                 board.winningTeam === TeamType.NONE ?
                                 <>
                                     <span>Ничья!</span>
-                                    <button onClick={restartGame}>Играть снова</button>
+                                    <button onClick={() => restartGame('restart')}>Играть снова</button>
                                 </>
                                 :
                                 <>
-                                    <span>Победа {board.winningTeam === TeamType.OUR ? "белых" : "чёрных"}!</span>
-                                    <button onClick={restartGame}>Играть снова</button>
+                                    <span>Победа {board.winningTeam ? (board.winningTeam === TeamType.OUR ? "белых" : "чёрных") : winner !== '' && winner === 'w' ? "чёрных" : "белых"}!</span>
+                                    <div>
+                                        <button onClick={() => restartGame('restart')}>Играть снова</button>
+                                        <button onClick={() => restartGame('continue')}>Продолжить партию</button>
+                                    </div>
                                 </>
                             }
                         </div>
@@ -330,8 +329,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                     </div>
                 </div>
             }
-            <div className={gameWithFriend ? 'chessboard-gameWithFriend' : ''}>
-                {gameWithFriend && <ChessClock initialTime={300} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped}/>}
+            <div className={gameWithFriend ? initialTime === '' ? 'chessboard-gameWithFriend' : 'chessboard-gameWithFriend-wTimer' : ''}>
+                {initialTime !== '' && gameWithFriend && <ChessClock initialTime={Number(initialTime)} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped} setWinner={setWinner}/>}
                 <Chessboard playMove={playMove}
                     pieces={board?.pieces} 
                     fenComponents={newboard} 
@@ -356,7 +355,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                     setProgress={setProgress}
                     gameWithBot={gameWithFriend}
                     />
-                {gameWithFriend && <MoveDisplay bestMove={bestMove} secondBestMove={bestMove2} />}
 
 
             </div>
