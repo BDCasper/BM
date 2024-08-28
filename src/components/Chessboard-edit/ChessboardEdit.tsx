@@ -63,7 +63,7 @@ export default function ChessboardEdit(){
                       }).then((res) => {
                         if (res && res.status === 200) {
                             res.json().then((data) => {
-                                setBestMove(data.bestmove)
+                                setBestMove(data)
                             });
                         } else {
                           console.log(res.status)
