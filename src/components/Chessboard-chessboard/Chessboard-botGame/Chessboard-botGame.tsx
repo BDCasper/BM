@@ -410,7 +410,7 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
   }
 
   return (
-    <div className="chessboardWrapper">
+    <div className="chessboardWrapper2">
       <div className="modal hidden" ref={modalRef}>
           <div className="modal-body">
               <img onClick={() => promotePawn(PieceType.ROOK)} src={`/assets/images/rook_${promotionTeamType()}.png`} />
@@ -435,7 +435,7 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
           onClick={() => clearArrows()}
           onMouseDownCapture={onRightMouseDown}
           onMouseUpCapture={onRightMouseUp} id="chessboard" ref={chessboardRef}> {boardDraw} </div>
-          <canvas ref={canvasRef} className="arrow-canvas-tasks" width={boardSize} height={boardSize}></canvas>
+          <canvas ref={canvasRef} className="arrow-canvas-botGame" width={boardSize} height={boardSize}></canvas>
         </>
         }
       </div>

@@ -9,11 +9,12 @@
     background-color: rgb(255, 255, 255);
 }
 
-.chessboardWrapper {
+.chessboardWrapper2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     height: fit-content;
+    margin-top: 50px;
 }
 
 .chessboard-gameWithFriend {
@@ -27,46 +28,10 @@
     margin-right: 100px;
 }
 
-.arrow-canvas-gameWithFriend {
+.arrow-canvas-botGame {
     position: absolute;
     top: 0;
-    margin-top: 200px;
-    margin-left: 20px;
-    z-index: 1; /* Ensure it is above the chessboard */
-    pointer-events: none; /* Allow pointer events to pass through */
-}
-
-.arrow-canvas-labirint {
-    position: absolute;
-    top: 0;
-    margin-top: 393px;
-    margin-left: 19px;
-    z-index: 1; /* Ensure it is above the chessboard */
-    pointer-events: none; /* Allow pointer events to pass through */
-}
-
-.arrow-canvas-basicTask {
-    position: absolute;
-    top: 0;
-    margin-top: 288px;
-    margin-left: 20px;
-    z-index: 1; /* Ensure it is above the chessboard */
-    pointer-events: none; /* Allow pointer events to pass through */
-}
-
-.arrow-canvas-tasks {
-    position: absolute;
-    top: 0;
-    margin-top: 357.5px;
-    margin-left: 20px;
-    z-index: 1; /* Ensure it is above the chessboard */
-    pointer-events: none; /* Allow pointer events to pass through */
-}
-
-.arrow-canvas-test {
-    position: absolute;
-    top: 0;
-    margin-top: 361.5px;
+    margin-top: 158px;
     margin-left: 20px;
     z-index: 1; /* Ensure it is above the chessboard */
     pointer-events: none; /* Allow pointer events to pass through */
