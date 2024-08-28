@@ -13,6 +13,7 @@ import ChessboardEdit from "./components/Chessboard-edit/ChessboardEdit";
 import Rating from "./components/Rating/rating";
 import ResetPassword from "./components/login-reg/reset password/resetPassword";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import BotSetting from "./components/chooseBotPopup/botSetting";
 
 export interface User {
   user_id?: number;

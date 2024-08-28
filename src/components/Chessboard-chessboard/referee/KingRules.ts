@@ -211,19 +211,18 @@ export const getCastlingMoves = (king: Piece, boardstate: Piece[]): Position[] =
 
     // We know that the rook can move to the adjacent side of the king
 
-    const conceringTiles = rook.possibleMoves.filter(m => m.y === king.position.y);
+    const conceringTiles = rook.possibleMoves.filter(m => m.y === king.position.y && m.x > 0 && m.x < 8);
 
     // Checking if any of the enemy pieces can attack the spaces between
     // The rook and the king
     const enemyPieces = boardstate.filter(p => p.team !== king.team);
 
-    let valid = true;
 
+    let valid = true;
     for(const enemy of enemyPieces) {
       if(enemy.possibleMoves === undefined) continue;
-
       for(const move of enemy.possibleMoves) {
-        if(conceringTiles.some(t => t.samePosition(move))) {
+        if(conceringTiles.some(t => t.samePosition(move)) || king.position.samePosition(move)) {
           valid = false;
         }
 
@@ -238,7 +237,7 @@ export const getCastlingMoves = (king: Piece, boardstate: Piece[]): Position[] =
     if(!valid) continue;
 
     // We now want to add it as a possible move!
-    possibleMoves.push(rook.position.clone());
+    possibleMoves.push(new Position(direction === 1 ? rook.position.x - 1 : rook.position.x + 2, rook.position.y) );
   }
 
 

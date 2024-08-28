@@ -26,7 +26,7 @@ export default function ChessboardEdit(){
     const [review, setReview] = useState<boolean>(false);
     const [bestMove, setBestMove] = useState('');
     const [bestMove2, setBestMove2] = useState('');
-    const [board, setBoard] = useState<Board>(new Board(DecodeFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").squares, 1));
+    const [board, setBoard] = useState<Board>(new Board(DecodeFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", '').squares, 1));
 
     const playMove = async(playedPiece: Piece, destination: Position) => {
 
@@ -283,7 +283,7 @@ export default function ChessboardEdit(){
             </div>
             <div className="chessboardEdit-panelWrapper">
                 <button onClick={() => handleStartGame()}>Начать игру</button>
-                <button onClick={() => setBoard(new Board(DecodeFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").squares, 1))}>Начальная позиция</button>
+                <button onClick={() => setBoard(new Board(DecodeFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", '').squares, 1))}>Начальная позиция</button>
                 <button onClick={() => clearBoard()}>Очистить доску</button>
                 <div className="chessboardEdit-turn-title">Кто ходит первым?</div>
                 <div className="chessboardEdit-turn">

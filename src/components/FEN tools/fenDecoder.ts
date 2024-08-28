@@ -2,7 +2,7 @@ import { Piece, Position } from "../Chessboard-chessboard/models";
 import { PieceType, TeamType } from "../Chessboard-chessboard/Types";
 import { fenComponents } from "../fenComponents";
 
-export const DecodeFen: any = (fen: String)=>{
+export const DecodeFen: any = (fen: string, move: string)=>{
   const newboard: fenComponents = {
     squares: [],
     turn: '',
@@ -13,7 +13,9 @@ export const DecodeFen: any = (fen: String)=>{
 
   const parts = fen.split(' ');
   
-  newboard.turn = parts[1];
+  newboard.turn = move === '' ? parts[1] : move === 'b' ? TeamType.OPPONENT : TeamType.OUR;
+
+  if(move !== '') parts[1] = move;
 
   let row = 0;
   let col = 0;

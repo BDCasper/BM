@@ -18,6 +18,16 @@ export class Board {
         return this.totalTurns % 2 === 0 ? TeamType.OPPONENT : TeamType.OUR;
     }
 
+
+    get castlingMoves(): Array<Position[]> {
+        let moves = [];
+        for (const king of this.pieces.filter(p => p.isKing)) {
+            if (king.possibleMoves === undefined) continue;
+            moves.push(getCastlingMoves(king, this.pieces))
+        }
+        return moves;
+    }
+
     calculateAllMoves() {
         // Calculate the moves of all the pieces
         for (const piece of this.pieces) {
@@ -27,7 +37,6 @@ export class Board {
         // Calculate castling moves
         for (const king of this.pieces.filter(p => p.isKing)) {
             if (king.possibleMoves === undefined) continue;
-
             king.possibleMoves = [...king.possibleMoves, ...getCastlingMoves(king, this.pieces)];
         }
 
@@ -50,6 +59,7 @@ export class Board {
         } else {
             this.winningTeam = TeamType.NONE; // Indicating a draw (stalemate)
         }
+
     }
 
     isKingInCheck(team: TeamType): boolean {
@@ -128,12 +138,12 @@ export class Board {
         playedPiece: Piece,
         destination: Position): boolean {
         const pawnDirection = playedPiece.team === TeamType.OUR ? 1 : -1;
-        const destinationPiece = this.pieces.find(p => p.samePosition(destination));
+        const direction = (destination.x - playedPiece.position.x > 0) ? 1 : -1;
+        const destinationPiece = this.pieces.find(p => p.samePosition(new Position(direction === 1 ? destination.x + 1 : destination.x - 2, destination.y)));
 
         // If the move is a castling move do this
         if (playedPiece.isKing && destinationPiece?.isRook
             && destinationPiece.team === playedPiece.team) {
-            const direction = (destinationPiece.position.x - playedPiece.position.x > 0) ? 1 : -1;
             const newKingXPosition = playedPiece.position.x + direction * 2;
             this.pieces = this.pieces.map(p => {
                 if (p.samePiecePosition(playedPiece)) {

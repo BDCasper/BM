@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { backend } from "../../../App";
 import ChessClock from "../Chess clock/chessClock";
 import InitialTime from "./initialTime";
+import ChessboardBot from "../Chessboard-botGame/Chessboard-botGame";
 
 interface RefereeProps {
     setSolved: (solved: number) => any;
@@ -32,10 +33,11 @@ interface RefereeProps {
     gameWithFriend: boolean|undefined;
     handleAnimation: (check: boolean) => any;
     setProgress: (num: number) => any;
+    level: number
+    moveTurn: string;
 }
 
-const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, mode, closed, setPopOpen, user, arrayOfSolved, gameWithFriend, handleAnimation, setProgress}) => {
-
+const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, mode, closed, setPopOpen, user, arrayOfSolved, gameWithFriend, handleAnimation, setProgress, level, moveTurn}) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const checkmateModalRef = useRef<HTMLDivElement>(null);
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
@@ -49,12 +51,12 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [initialPopupOpen, setInitialPopupOpen] = useState<boolean>(true);
     const closePopup = () => setInitialPopupOpen(false);
     const [winner, setWinner] = useState<string>('');
-    const navigate = useNavigate();
+    const [botMove, setBotMove] = useState<Position[]>([new Position(-1,-1)]);
 
     useEffect(() => {
         (
             async () => {
-                const newboard = DecodeFen(fenCode);
+                const newboard = DecodeFen(fenCode, moveTurn);
                 setNewBoard(newboard);
                 setFen(newboard.squares);
             }
@@ -86,11 +88,58 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         )();
       }, [fen]);
 
+
       useEffect(() => {
         (
             async () => {
                 if(board?.pieces?.length !== 0)
                 {
+                    board.calculateAllMoves()
+                    let possible = '';
+                    if(board.currentTeam === 'w' && board.castlingMoves[1].length > 0){
+                        if(board.castlingMoves[1].some((pos) => pos.x === 6 && pos.y === 0)){
+                            possible += 'K'
+                        }
+                        if(board.castlingMoves[1].some((pos) => pos.x === 2 && pos.y === 0)){
+                            possible += 'Q'
+                        }
+                    }
+                    if(board.currentTeam === 'b' && board.castlingMoves[0].length > 0){
+                        if(board.castlingMoves[0].some((pos) => pos.x === 6 && pos.y === 7)){
+                            possible += 'k'
+                        }
+                        if(board.castlingMoves[0].some((pos) => pos.x === 2 && pos.y === 7)){
+                            possible += 'q'
+                        }
+                    }
+                    if(mode === 'botGame' && board.currentTeam !== (moveTurn === 'w' ? TeamType.OUR : TeamType.OPPONENT)){
+                        console.log('hui')
+                        const finalBoard: fenComponents = {
+                            squares: board.pieces,
+                            turn: board.currentTeam,
+                            castling: possible,
+                            enPassantSquare: null,
+                        };
+                        const encoder = EncodeFen(finalBoard)
+                        console.log(encoder)
+                        await fetch( `${backend}/api/bestmove`, {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                                // credentials: 'include',
+                                body: JSON.stringify({
+                                fen: encoder,
+                                level: level,
+                                team: moveTurn === 'w' ? 'b' : 'w'
+                            })
+                        }).then((response) => {
+                        if (response && response.status === 200) {
+                            response.json().then((data) => {
+                                console.log(data)
+                                setBotMove([new Position(data.position.fromX, data.position.fromY), new Position(data.position.toX, data.position.toY)]);
+                                })
+                            }
+                        })
+                    }
                     if(!everyMove.some((bord) => (bord === board)) && everyMove[everyMove.length - 1] !== board && movePtr < everyMove.length - 1) {
                         for(let i = everyMove.length - 1; i >= 0; i--) {
                             if(everyMove[i] !== everyMove[movePtr-1]) everyMove.pop();
@@ -285,7 +334,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     return (
         <div className="referee">
             {gameWithFriend && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setInitialTime}/>}
-            {gameWithFriend &&
+            {gameWithFriend || mode === 'botGame' &&
             <>
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
                     <div className="modal-body-checkmate">
@@ -301,7 +350,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                                     <span>Победа {board.winningTeam ? (board.winningTeam === TeamType.OUR ? "белых" : "чёрных") : winner !== '' && winner === 'w' ? "чёрных" : "белых"}!</span>
                                     <div>
                                         <button onClick={() => restartGame('restart')}>Играть снова</button>
-                                        <button onClick={() => restartGame('continue')}>Продолжить партию</button>
+                                        {winner && <button onClick={() => restartGame('continue')}>Продолжить партию</button>}
                                     </div>
                                 </>
                             }
@@ -329,36 +378,48 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                     </div>
                 </div>
             }
-            <div className={gameWithFriend ? initialTime === '' ? 'chessboard-gameWithFriend' : 'chessboard-gameWithFriend-wTimer' : ''}>
-                {initialTime !== '' && gameWithFriend && <ChessClock initialTime={Number(initialTime)} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped} setWinner={setWinner}/>}
-                <Chessboard playMove={playMove}
-                    pieces={board?.pieces} 
-                    fenComponents={newboard} 
-                    setSolved={setSolved} 
-                    solved={solved} 
-                    activeIndex={activeIndex} 
-                    setActiveIndex={setActiveIndex} 
-                    lengthOfArray={lengthOfArray} 
-                    arrayOfObjects={arrayOfObjects}
-                    mode={mode}
-                    closed={closed}
-                    setPopOpen={setPopOpen}
-                    setBoard={setBoard}
-                    board={board}
-                    user={user}
-                    arrayOfSolved={arrayOfSolved}
-                    gameWithFriend={gameWithFriend}
-                    everyMove={everyMove}
-                    movePtr={movePtr}
-                    handleAnimation={handleAnimation}
-                    setReviewMode={setReviewMode}
-                    setProgress={setProgress}
-                    gameWithBot={gameWithFriend}
-                    />
-
-
-            </div>
-
+            {
+                mode === 'botGame' ? 
+                <div>
+                    <ChessboardBot playMove={playMove}
+                        pieces={board?.pieces} 
+                        fenComponents={newboard} 
+                        setPopOpen={setPopOpen}
+                        setBoard={setBoard}
+                        everyMove={everyMove}
+                        movePtr={movePtr}
+                        botMover={botMove}
+                        />
+                </div>
+                :
+                <div className={gameWithFriend ? initialTime === '' ? 'chessboard-gameWithFriend' : 'chessboard-gameWithFriend-wTimer' : ''}>
+                    {initialTime !== '' && gameWithFriend && <ChessClock initialTime={Number(initialTime)} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped} setWinner={setWinner}/>}
+                    <Chessboard playMove={playMove}
+                        pieces={board?.pieces} 
+                        fenComponents={newboard} 
+                        setSolved={setSolved} 
+                        solved={solved} 
+                        activeIndex={activeIndex} 
+                        setActiveIndex={setActiveIndex} 
+                        lengthOfArray={lengthOfArray} 
+                        arrayOfObjects={arrayOfObjects}
+                        mode={mode}
+                        closed={closed}
+                        setPopOpen={setPopOpen}
+                        setBoard={setBoard}
+                        board={board}
+                        user={user}
+                        arrayOfSolved={arrayOfSolved}
+                        gameWithFriend={gameWithFriend}
+                        everyMove={everyMove}
+                        movePtr={movePtr}
+                        handleAnimation={handleAnimation}
+                        setReviewMode={setReviewMode}
+                        setProgress={setProgress}
+                        gameWithBot={gameWithFriend}
+                        />
+                </div>
+            }
         </div>
     )
 }

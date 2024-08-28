@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { backend } from "../../App";
 import { User } from "../../App";
+import { useTranslation } from "react-i18next";
 
 interface RatingUser {
     username: string,
@@ -22,6 +23,7 @@ export default function Rating({user} : Props){
     const [topList, setTopList] = useState<RatingUser[]>([]);
     const [userRating, setUserRating] = useState<number>(-1);
     const [interval, setInterval] = useState<string>('all');
+    const {t} = useTranslation();
 
     useEffect(() => {
         (
@@ -69,18 +71,18 @@ export default function Rating({user} : Props){
     return(
         <div className="rating">
             <div className="rating-time-wrapper">
-                <div className={interval === 'week' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('week')}>Неделя</div>
-                <div className={interval === 'month' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('month')}>Месяц</div>
-                <div className={interval === 'all' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('all')}>Всё время</div>
+                <div className={interval === 'week' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('week')}>{t('Неделя')}</div>
+                <div className={interval === 'month' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('month')}>{t('Месяц')}</div>
+                <div className={interval === 'all' ? "rating-time-item rating-time-item-active" : "rating-time-item"} onClick={() => sendInterval('all')}>{t('Всё время')}</div>
             </div>
             <div className="rating-toplist-wrapper">
                 <table>
                     <thead>
                         <tr>
                             <td>№</td>
-                            <td>Имя пользователя</td>
-                            <td>Страна</td>
-                            <td>Счёт</td>
+                            <td>{t('Имя пользователя')}</td>
+                            <td>{t('Страна')}</td>
+                            <td>{t('Счёт')}</td>
                         </tr>
                     </thead>
                     <tbody>

@@ -6,6 +6,7 @@ import { User } from "../../App";
 import MediaQuery from "react-responsive";
 import { useTranslation } from "react-i18next";
 import Data from "../BasicData";
+import BotSetting from "../chooseBotPopup/botSetting";
 
 const arrOfFigures = ["Пешка", "Слон", "Ладья", "Ферзь", "Король", "Конь", "Слон"];
 
@@ -30,7 +31,9 @@ export default function Main({inp, user}:MainProps) {
     const navigate = useNavigate();
     const [filterTopic, setFilter] = useState<string>('');
     const arrOfDif = ['easy', 'medium', 'hard'];
-    const [count, setCount] = useState<number>(0);
+    const [level, setLevel] = useState<number>(-1);
+    const [playerSide, setPlayerSide] = useState<string>('');
+    const [settingsPopupOpen, setSettingsPopupOpen] = useState<boolean>(false);
 
     const {t} = useTranslation();
 
@@ -70,10 +73,23 @@ export default function Main({inp, user}:MainProps) {
         )();
     }, [token]);
 
+    const handleSettings = async() => {
+      setSettingsPopupOpen(true);
+    }
 
+    useEffect(() => {
+      (
+        async() => {
+          if(settingsPopupOpen === false && level !== -1){
+            navigate("/topic/GameWithBot", {state:{basicFenCode: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", level: level, moveTurn: playerSide === 'White' ? 'w' : 'b'}})
+          }
+        }
+      )()
+    },[level, playerSide])
 
     return(
       <div className="main-page">
+        {settingsPopupOpen && <BotSetting Level={setLevel} Side={setPlayerSide} onClose={setSettingsPopupOpen} />}
         <div className="lists-wrapper">
           <div className="course-list">
             <div className="podpiska">
@@ -102,6 +118,10 @@ export default function Main({inp, user}:MainProps) {
             </div>
             <div className="game-type" onClick={() => navigate("/editor")}>
                 <div className="podpiska-text">{t('Редактор доски')}</div>
+                <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+            </div>
+            <div className="game-type" onClick={handleSettings}>
+                <div className="podpiska-text">{t('Играть с ботом')}</div>
                 <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
             </div>
           </div>

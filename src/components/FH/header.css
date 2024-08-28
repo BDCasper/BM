@@ -150,6 +150,7 @@
 .header-lang select {
     font-family: 'Open Sans';font-size: 16px;font-weight: 550;color: #AB2A3B;
     border: none;
+    cursor: pointer;
 }
 
 a {
