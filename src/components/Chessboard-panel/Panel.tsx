@@ -257,7 +257,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                       <div className="panel" ref={scrollToBoard}>
                         <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>   
                         {
-                          arrayOfObjects[0].mode === 'video' ?
+                          arrayOfObjects[0] && arrayOfObjects[0].mode === 'video' ?
                             <video width="360" height="260" controls> 
                                 <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${arrayOfObjects[0].url}`} type="video/mp4" /> 
                             </video> 
