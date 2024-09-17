@@ -340,7 +340,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                       : puzzle.mode === 'video' ?
                                       <>
                                         <div className="zadachi-content">
-                                          <div className="block-checkSign"><img alt="" className="solved" src='/assets/images/video-lesson.png'/></div>
+                                          <div className="block-checkSign"><img alt="" className="video-player" src='/assets/images/video-lesson.png'/></div>
                                             <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                             <div className="zadachi-text" >
                                               <div className="id" >{t('Задание')} №{index+1}</div>

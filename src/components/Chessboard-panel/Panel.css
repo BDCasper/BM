@@ -181,6 +181,12 @@
     width: 40px;
 }
 
+.video-player {
+    position: relative;
+    width: 25px;
+    margin-left: 10px;
+}
+
 .chess-win-scene {
     position: absolute;
     width: 100%;
