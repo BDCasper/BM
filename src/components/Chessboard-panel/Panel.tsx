@@ -300,7 +300,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                         {arrayOfObjects[0] && <div className="topic"><p>{arrayOfObjects[0].topic}</p></div>}
                           <div className="spisokList">
                             {arrayOfObjects.map((puzzle, index) => (
-                                  <div className={puzzle.closed === false ? (index === activeIndex ? "zadachi active" :"zadachi") : "zadachi zadachi-closed"} key={puzzle.puzzle_id} onClick={() => {
+                                  <div className={puzzle.mode !== 'video' ? puzzle.closed === false ? (index === activeIndex ? "zadachi active" :"zadachi") : "zadachi zadachi-closed" : (index === activeIndex ? "zadachi active" :"zadachi")} key={puzzle.puzzle_id} onClick={() => {
                                     if(puzzle.closed === false)
                                     {
                                       setActiveIndex(index)
