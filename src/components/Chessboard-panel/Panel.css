@@ -36,6 +36,10 @@
     float: left;
 }
 
+.panel-video {
+    border-radius: 15px;
+}
+
 .panel-size-button {
     align-self: flex-end;
     margin-right: 20px;
