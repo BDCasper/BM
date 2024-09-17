@@ -44,6 +44,14 @@ export default function ChessboardEdit(){
 
     useEffect(() => {
         (
+          async () => {
+                window.scrollTo(0, 0);
+            }
+        )();
+      }, []);
+
+    useEffect(() => {
+        (
             async() => {
                 if(activePiece === null) {
                     const finalBoard: fenComponents = {

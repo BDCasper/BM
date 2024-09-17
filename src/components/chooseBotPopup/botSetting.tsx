@@ -61,8 +61,8 @@ const BotSetting: React.FC<PopupProps> = ({ onClose, Level, Side }) => {
                     </div>
 
                     <div className="popupBot-buttons">
-                    <button onClick={() => onClose(false)}>Cancel</button>
-                    <button onClick={handleSave}>Save</button>
+                    <button onClick={() => onClose(false)}>Отмена</button>
+                    <button onClick={handleSave}>Играть</button>
                     </div>
             </div>
         </div>

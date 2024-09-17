@@ -96,7 +96,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 {
                     board.calculateAllMoves()
                     let possible = '';
-                    if(board.currentTeam === 'w' && board.castlingMoves[1].length > 0){
+                    if(board.currentTeam === 'w' && board.castlingMoves[1] && board.castlingMoves[1].length > 0){
                         if(board.castlingMoves[1].some((pos) => pos.x === 6 && pos.y === 0)){
                             possible += 'K'
                         }
@@ -113,7 +113,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         }
                     }
                     if(mode === 'botGame' && board.currentTeam !== (moveTurn === 'w' ? TeamType.OUR : TeamType.OPPONENT)){
-                        console.log('hui')
                         const finalBoard: fenComponents = {
                             squares: board.pieces,
                             turn: board.currentTeam,

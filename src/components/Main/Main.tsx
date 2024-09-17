@@ -53,6 +53,9 @@ export default function Main({inp, user}:MainProps) {
       return five;
     }
 
+    const handleScroll = async() => {
+      sessionStorage.setItem("scrollPosition", JSON.stringify(window.scrollY));
+    }
 
     useEffect(() => {
         (
@@ -73,6 +76,20 @@ export default function Main({inp, user}:MainProps) {
         )();
     }, [token]);
 
+    useEffect(() => {
+      (
+        async () => {
+          if(topicList.length > 10){
+            const scrollPosition = sessionStorage.getItem("scrollPosition");
+            if (scrollPosition) {
+              window.scrollTo(0, parseInt(scrollPosition));
+              sessionStorage.removeItem("scrollPosition");
+            }
+          }
+        }
+      )();
+    }, [topicList]);
+
     const handleSettings = async() => {
       setSettingsPopupOpen(true);
     }
@@ -88,7 +105,7 @@ export default function Main({inp, user}:MainProps) {
     },[level, playerSide])
 
     return(
-      <div className="main-page">
+      <div className="main-page" onClick={handleScroll}>
         {settingsPopupOpen && <BotSetting Level={setLevel} Side={setPlayerSide} onClose={setSettingsPopupOpen} />}
         <div className="lists-wrapper">
           <div className="course-list">

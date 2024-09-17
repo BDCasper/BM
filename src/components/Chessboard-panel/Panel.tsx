@@ -25,6 +25,7 @@ interface Props {
   difficulty: string;
   variants: string;
   closed: boolean;
+  url?: string;
 }
 
 interface PanelProps {
@@ -77,6 +78,14 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   useEffect(() => {
     (
       async () => {
+        scrollToBoard.current?.scrollIntoView()
+      }
+    )();
+  }, []);
+
+  useEffect(() => {
+    (
+      async () => {
         if(user){
           if(location.state === null && params.id && !params.id.includes('basic')){
             if(params.id === undefined) navigate('/'); 
@@ -86,7 +95,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             }).then((res) => {
               if (res && res.status === 200) {
               res.json().then((data) => {
-                setArrayOfObjects(data)
+                setArrayOfObjects(data);
               });
               } else {
                 console.log("No FEN :(")
@@ -189,7 +198,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
       </div>
   )
 
-
   return (
       <>
       { startAnimation === true &&
@@ -247,27 +255,34 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                   <div className="panel-content">
                     <div className="panel-spisok">
                       <div className="panel" ref={scrollToBoard}>
-                        <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
-                        <div className="referee">
-                          <Referee fenCode={fenCode} 
-                          setSolved={setSolved} 
-                          solved={solved} 
-                          activeIndex={activeIndex} 
-                          setActiveIndex={setActiveIndex} 
-                          lengthOfArray={arrayOfObjects.length} 
-                          arrayOfObjects={arrayOfObjects}
-                          mode={arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].mode}
-                          closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
-                          setPopOpen={setPopOpen}
-                          user={user}
-                          arrayOfSolved={arrayOfSolved}
-                          gameWithFriend={undefined}
-                          handleAnimation={setStartAnimation}
-                          setProgress={setProgressWidthcnt}
-                          level={-1}
-                          moveTurn={''}
-                          />
-                        </div>
+                        <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>   
+                        {
+                          arrayOfObjects[0].mode === 'video' ?
+                            <video width="360" height="260" controls> 
+                                <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${arrayOfObjects[0].url}`} type="video/mp4" /> 
+                            </video> 
+                          :
+                            <div className="referee">
+                              <Referee fenCode={fenCode} 
+                              setSolved={setSolved} 
+                              solved={solved} 
+                              activeIndex={activeIndex} 
+                              setActiveIndex={setActiveIndex} 
+                              lengthOfArray={arrayOfObjects.length} 
+                              arrayOfObjects={arrayOfObjects}
+                              mode={arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].mode}
+                              closed={arrayOfObjects[activeIndex+1] ? arrayOfObjects[activeIndex+1].closed : false}
+                              setPopOpen={setPopOpen}
+                              user={user}
+                              arrayOfSolved={arrayOfSolved}
+                              gameWithFriend={undefined}
+                              handleAnimation={setStartAnimation}
+                              setProgress={setProgressWidthcnt}
+                              level={-1}
+                              moveTurn={''}
+                              />
+                            </div>
+                        } 
                       </div>
                       <MediaQuery maxWidth={1200}>
                         <div className="arrows">
@@ -322,7 +337,16 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
                                           </div>
                                         }
                                         </>
-                                      : 
+                                      : puzzle.mode === 'video' ?
+                                      <>
+                                        <div className="zadachi-content">
+                                            <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                            <div className="zadachi-text" >
+                                              <div className="id" >{t('Задание')} №{index+1}</div>
+                                            </div>
+                                        </div>
+                                      </>
+                                      :
                                         <>
                                           <div className="zadachi-content">
                                           {puzzle.closed === false && <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "solved black") : ''} src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/asyk-win.svg" : "/assets/images/asyk-wait.svg") : '' }/></div>}
@@ -359,7 +383,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
               </div>
             </>
             :
-            <div className="gameWithFriend">
+            <div className="gameWithFriend" ref={scrollToBoard}>
                 <Referee fenCode={location.state && location.state.basicFenCode} 
                       setSolved={setSolved} 
                       solved={solved} 
@@ -383,7 +407,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
             </>
             :
             <>
-              <div className="gameWithFriend">
+              <div className="gameWithFriend" ref={scrollToBoard}>
                 <Referee fenCode={location.state && location.state.basicFenCode} 
                       setSolved={setSolved} 
                       solved={solved} 
