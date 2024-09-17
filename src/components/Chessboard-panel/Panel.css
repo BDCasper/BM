@@ -38,6 +38,8 @@
 
 .panel-video {
     border-radius: 15px;
+    height: 600px;
+    width: 700px;
 }
 
 .panel-size-button {
