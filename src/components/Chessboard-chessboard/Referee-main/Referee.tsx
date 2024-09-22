@@ -68,13 +68,12 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             async () => {
                 if(winner !== ''){
                     checkmateModalRef.current?.classList.remove("hidden");
-                    if(gameWithFriend) winSound();
+                    winSound();
+                    setInitialTime('');
                 }
-                setWinner('');
             }
           )();
     }, [winner])
-
 
     const initialBoard: Board = new Board(fen, 1);
     initialBoard.calculateAllMoves();
@@ -120,7 +119,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                             enPassantSquare: null,
                         };
                         const encoder = EncodeFen(finalBoard)
-                        console.log(encoder)
                         await fetch( `${backend}/api/bestmove`, {
                         method: "POST",
                         headers: { 'Content-Type': 'application/json' },
@@ -327,13 +325,14 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         if(way === 'restart'){
             checkmateModalRef.current?.classList.add("hidden");
             setBoard(initialBoard.clone());
+            window.location.reload();
         }
     }
 
     return (
         <div className="referee">
             {gameWithFriend && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setInitialTime}/>}
-            {gameWithFriend || mode === 'botGame' &&
+            {(gameWithFriend || mode === 'botGame') &&
             <>
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
                     <div className="modal-body-checkmate">
@@ -346,7 +345,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                                 </>
                                 :
                                 <>
-                                    <span>Победа {board.winningTeam ? (board.winningTeam === TeamType.OUR ? "белых" : "чёрных") : winner !== '' && winner === 'w' ? "чёрных" : "белых"}!</span>
+                                    <span>Победа {board.winningTeam ? (board.winningTeam === TeamType.OUR ? "белых" : "чёрных") : winner === 'w' ? "чёрных" : winner === 'b' ? "белых" : ''}!</span>
                                     <div>
                                         <button onClick={() => restartGame('restart')}>Играть снова</button>
                                         {winner && <button onClick={() => restartGame('continue')}>Продолжить партию</button>}

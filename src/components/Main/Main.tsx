@@ -217,7 +217,6 @@ export default function Main({inp, user}:MainProps) {
                     <div key={topic.topic_id} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/${topic.topic_id}`) : navigate("/login")}>
                         <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ topic.number < 200 && topic.number > 7 ? topic.number : topic.number % 200 }.jpg`} className="themeImgSize"/></div>
                         <div className="theme-content">
-                          <div className={user.user_id ? "theme-content-percent" : "theme-content-percent hidden"}>{Math.round(topic.solved*100/topic.puzzles)}%</div>
                             <div className="theme-text">
                                 <div className="theme-name">{t(topic.topic)}</div>
                                 <div className="theme-info">
@@ -228,6 +227,7 @@ export default function Main({inp, user}:MainProps) {
                                     <li className="theme-puzzles"><span>{topic.puzzles} {getNoun(topic.puzzles, "задача", "задачи", "задач")}</span></li>
                                   </ul>
                                 </div>
+                                <div className={user.user_id ? "theme-content-percent" : "theme-content-percent hidden"}><span>{topic.solved}</span> / {topic.puzzles}</div>
                             </div>
                         </div>
                     </div>

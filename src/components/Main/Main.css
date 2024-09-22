@@ -188,13 +188,6 @@
     z-index: 2;
 }
 
-.theme-content-percent {
-    position: absolute;
-    margin-left: 5px;
-    margin-top: 5px;
-    font-size: 15px;font-weight: normal;color: #282323;
-}
-
 .theme-text {
     display: flex;
     flex-direction: column;
@@ -230,28 +223,40 @@
 }
 
 .theme-name {
-    margin-top: 40px;
+    margin-top: 20px;
+    height: 55px;
+    padding-left: 5px;
+    padding-right: 5px;
     font-size: 20px;font-weight: normal;color: #282323;
-    height: fit-content;
 }
 
 .theme-info {
     display: flex;
     justify-content: center;
-    font-size: 16px;font-weight: lighter;
-}
-
-.theme-puzzles {
+    align-items: center;
+    margin-right: 5px;
+    margin-top: 5px;
+    height: 30px;
     font-size: 16px;font-weight: lighter;
 }
 
 .theme-info span{
     color: #282323;
+    width: 80px;
 }
 
 .theme-info li{
     color: red;
-    margin-right: 20px;
+    margin-right: 10px;
+}
+
+.theme-content-percent {
+    margin-top: 5px;
+    font-size: 20px;font-weight: normal;color: black;
+}
+
+.theme-content-percent span {
+    color: #AB2A3B;
 }
 
 @media screen and (max-width: 1200px) {

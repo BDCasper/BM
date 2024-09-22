@@ -289,7 +289,6 @@ input[type="radio"] {
 .progressBar {
     width: 1250px;
     height: 29px;
-    border-radius: 5px;
     margin-top: 39px;
     background-color: #E7E2E2;
     border-radius: 60px;
