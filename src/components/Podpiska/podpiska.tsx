@@ -163,6 +163,7 @@ export default function Podpiska({setPopOpen}:Props) {
         }
         else {
             navigate("/login");
+            setPopOpen(false);
         }
     }
 
