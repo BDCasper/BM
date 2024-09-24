@@ -141,7 +141,7 @@ export default function Podpiska({setPopOpen}:Props) {
     const sign = CryptoJS.HmacSHA512(request_data_base64, "dbdb378ea0c5a07951140a1b207bc24cb3f8441b00239f674b2d5771e6b74fff").toString()
 
     const makePayment = async() => {
-        if(localStorage.getItem("user_id")){
+        if(sessionStorage.getItem("user_id")){
             await fetch(`https://api.onevisionpay.com/payment/create`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + api_key_base64 },

@@ -60,7 +60,7 @@ export default function Main({inp, user}:MainProps) {
     useEffect(() => {
         (
           async () => {
-            await fetch( `${backend}/api/topics?id=${user.user_id ? user.user_id : localStorage.getItem('user_id')}`, {
+            await fetch( `${backend}/api/topics?id=${user.user_id ? user.user_id : sessionStorage.getItem('user_id')}`, {
               headers: { 'Content-Type': 'apppcation/json' },
               // credentials: 'include'
             }).then((res) => {

@@ -140,7 +140,7 @@ export default function Profile({setUserLog, user, token}:Props) {
 
     const logout = async() => {
         localStorage.removeItem('token');
-        localStorage.removeItem('user_id');
+        sessionStorage.removeItem('user_id');
         setUserLog(false);
         navigate('/login');
         window.location.reload();

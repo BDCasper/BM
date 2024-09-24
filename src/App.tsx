@@ -41,6 +41,10 @@ function App() {
   const location = useLocation();
   const params = useParams();
 
+  if (!localStorage.getItem('i18nextLng')) {
+    localStorage.setItem('i18nextLng', 'ru');
+  }
+
   useEffect(() => {
     (
       async () => {
@@ -53,7 +57,7 @@ function App() {
             if (response && response.status === 200) {
               response.json().then((data) => {
                 setUser(data.user);
-                localStorage.setItem('user_id', data.user.user_id)
+                sessionStorage.setItem('user_id', data.user.user_id)
                 setArrayOfSolved(new Set<number>(data.solved));
               })
             }
@@ -87,6 +91,6 @@ function App() {
 }
 
 export default App; 
-// export const backend = "http://195.49.215.186:10000";
-export const backend = "https://api.bm-chess.com";
+export const backend = "http://195.49.215.186:10000";
+// export const backend = "https://api.bm-chess.com";
 
