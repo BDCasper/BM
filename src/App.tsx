@@ -41,8 +41,9 @@ function App() {
   const location = useLocation();
   const params = useParams();
 
-  if (!localStorage.getItem('i18nextLng')) {
+  if (!sessionStorage.getItem('i18next')) {
     localStorage.setItem('i18nextLng', 'ru');
+    sessionStorage.setItem('i18next','yes');
   }
 
   useEffect(() => {
