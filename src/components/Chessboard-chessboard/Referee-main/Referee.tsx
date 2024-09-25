@@ -53,6 +53,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const closePopup = () => setInitialPopupOpen(false);
     const [winner, setWinner] = useState<string>('');
     const [botMove, setBotMove] = useState<Position[]>([new Position(-1,-1)]);
+    const [increment, setIncrement] = useState<string>('');
 
     useEffect(() => {
         (
@@ -63,6 +64,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             }
           )();
     }, [fenCode])
+
+    const setGame = async(inTime: string, incr:string) => {
+        setInitialTime(inTime);
+        setIncrement(incr);
+    }
 
     useEffect(() => {
         (
@@ -332,7 +338,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
 
     return (
         <div className="referee">
-            {gameWithFriend && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setInitialTime}/>}
+            {gameWithFriend && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setGame}/>}
             {(gameWithFriend || mode === 'botGame') &&
             <>
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
@@ -392,7 +398,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 </div>
                 :
                 <div className={gameWithFriend ? initialTime === '' ? 'chessboard-gameWithFriend' : 'chessboard-gameWithFriend-wTimer' : ''}>
-                    {initialTime !== '' && gameWithFriend && <ChessClock initialTime={Number(initialTime)} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped} setWinner={setWinner}/>}
+                    {initialTime !== '' && gameWithFriend && <ChessClock initialTime={Number(initialTime)} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped} setWinner={setWinner} increment={Number(increment)}/>}
                     <Chessboard playMove={playMove}
                         pieces={board?.pieces} 
                         fenComponents={newboard} 

@@ -3,14 +3,15 @@ import "./initialTime.css"
 
 interface PopupProps {
   onClose: () => void;
-  onSave: (time: string) => any;
+  onSave: (time: string, incr: string) => any;
 }
 
 const InitialTime: React.FC<PopupProps> = ({ onClose, onSave }) => {
   const [time, setTime] = useState<string>('');
+  const [increment, setIncrement] = useState<string>(''); // State for increment time
 
   const handleSave = () => {
-    onSave(time);
+    onSave(time, increment);
     onClose();
   };
 
@@ -26,6 +27,16 @@ const InitialTime: React.FC<PopupProps> = ({ onClose, onSave }) => {
                 onChange={(e) => { 
                     if(!e.target.value.includes('-')){
                         setTime(e.target.value)
+                    }
+                }}
+                />
+                <h4>Установите добавочное время</h4>
+                <input
+                type="number"
+                value={increment}
+                onChange={(e) => { 
+                    if(!e.target.value.includes('-')){
+                        setIncrement(e.target.value)
                     }
                 }}
                 />
