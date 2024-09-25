@@ -72,6 +72,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [arrowStart, setArrowStart] = useState<Position | null>(null);
   const [initialMousePosition, setInitialMousePosition] = useState<Position | null>(null);
+  const [playSide, setPlaySide] = useState<string>('');
   
   useEffect(() => {
     (
@@ -87,6 +88,16 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       }
     )()
   },[])
+
+  useEffect(() => {
+    (
+      async() => {
+        if(totalTurns === 0){
+          setPlaySide(fenComponents.turn);
+        }
+      }
+    )()
+  },[fenComponents.turn])
 
   const botMove = async(botPosition:Position[]) => {
     const botMove = pieces?.find((p) => p.samePosition(botPosition[0]));
@@ -592,8 +603,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       let currentPiece = activePiece != null ? pieces?.find(p => p.samePosition(grabPosition)) : undefined;
       let highlight = currentPiece?.possibleMoves ? 
       currentPiece.possibleMoves.some(p => p.samePosition(new Position(i, j))) : false;
-      let digit = (i === 0) ? VERTICAL_AXIS[j] : '';
-      let symbol = (j === 0) ? HORIZONTAL_AXIS[i] : '';
+      let digit = (i === 0) ? playSide === 'w' ? VERTICAL_AXIS[j] : playSide === 'b' ? VERTICAL_AXIS[7-j] : '' : '';
+      let symbol = (j === 0) ? playSide === 'w' ? HORIZONTAL_AXIS[i] : playSide === 'b' ? HORIZONTAL_AXIS[7-i] : '' : '';
       let highlightRightMove1 = (fenComponents.turn === 'b' && (i === rightMove[0].x && j === rightMove[0].y)) || (fenComponents.turn === 'w' && (i === rightMove[0].x && j === rightMove[0].y)) ? true : false;
       let highlightRightMove2 = (fenComponents.turn === 'b' && (i === rightMove[1].x && j === rightMove[1].y)) || (fenComponents.turn === 'w' && (i === rightMove[1].x && j === rightMove[1].y)) ? true : false;
       boardDraw.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} symbol={symbol} digit={digit} highlightRightMove1={highlightRightMove1} highlightRightMove2={highlightRightMove2}/> );
