@@ -43,6 +43,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [newboard, setNewBoard] = useState<fenComponents>({squares: [], turn: '', castling: '', enPassantSquare: null,});
     const [fen, setFen] = useState<Piece[]>([]);
     const [winSound] = useSound('win.wav', { volume: 0.2 });
+    const [moveSound] = useSound('/move-self.mp3', { volume: 0.2 });
     const [everyMove, setEveryMove] = useState<Board[]>([]);
     const [movePtr, setMovePtr] = useState<number>(0);
     const [reviewMode, setReviewMode] = useState<boolean>(false);
@@ -181,9 +182,9 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             return clonedBoard;
         })
 
+        moveSound();
         return playedMoveIsValid;
     }
-
 
     function isEnPassantMove(
         initialPosition: Position,

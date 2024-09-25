@@ -58,10 +58,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const chessboardRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const [moveSound] = useSound('move-self.mp3');
-  const [wrongSound] = useSound('wrong.mp3');
-  const [winSound] = useSound('win.wav', { volume: 0.2 });
-  const [topicWin] = useSound('topicWin.mp3');
+  const [moveSound] = useSound('/move-self.mp3', { volume: 0.2 });
+  const [wrongSound] = useSound('/wrong.mp3', { volume: 0.2 });
+  const [winSound] = useSound('/win.wav', { volume: 0.2 });
   const modalRef = useRef<HTMLDivElement>(null);
   const [promotionPawn, setPromotionPawn] = useState<Piece>();
   const [sendPromote, setSendPromote] = useState<boolean>(false);
@@ -320,6 +319,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const playWithBot = async(currentPiece: Piece, pos2: Position) => {
+    moveSound();
     await playMove(currentPiece.clone(), pos2)
     await promoteNow(currentPiece.clone(), pos2)
   }

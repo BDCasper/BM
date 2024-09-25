@@ -47,8 +47,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
   const [isCorrect, setIsCorrect] = useState<boolean>();
   const [progressWidthcnt, setProgressWidthcnt] = useState<number>(0);
   const location = useLocation();
-  const [winSound] = useSound('win.wav', { volume: 0.2 });
-  const [wrongSound] = useSound('wrong.mp3');
+  const [winSound] = useSound('/win.wav', { volume: 0.2 });
+  const [wrongSound] = useSound('/wrong.mp3');
   const [gameWithFriend, setGameWithFriend] = useState<boolean|undefined>(true);
   const [chooseQ, setChooseQ] = useState<number>(-1);
   const [startAnimation, setStartAnimation] = useState(false);

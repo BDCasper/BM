@@ -13,6 +13,7 @@ import ChessboardEdit from "./components/Chessboard-edit/ChessboardEdit";
 import Rating from "./components/Rating/rating";
 import ResetPassword from "./components/login-reg/reset password/resetPassword";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import CryptoJS from 'crypto-js';
 import BotSetting from "./components/chooseBotPopup/botSetting";
 
 export interface User {
@@ -40,11 +41,14 @@ function App() {
   const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
   const location = useLocation();
   const params = useParams();
+  const api_key_base64 = btoa("95d8d6be-c16c-4565-a086-301145b2c093");
 
-  if (!sessionStorage.getItem('i18next')) {
+  if (!sessionStorage.getItem('i18next') || !localStorage.getItem('i18nextLng')) {
     localStorage.setItem('i18nextLng', 'ru');
     sessionStorage.setItem('i18next','yes');
   }
+
+
 
   useEffect(() => {
     (
@@ -63,6 +67,31 @@ function App() {
               })
             }
           })
+
+          const paymentData = localStorage.getItem('paymentConfirm');
+          if(paymentData !== null){
+            const request_data_base64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(paymentData));
+            const reqData = request_data_base64;
+            const sign = CryptoJS.HmacSHA512(request_data_base64, "dbdb378ea0c5a07951140a1b207bc24cb3f8441b00239f674b2d5771e6b74fff").toString()
+  
+            await fetch(`https://api.onevisionpay.com/get-receipt`, {
+              method: "POST",
+              headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + api_key_base64 },
+              body: JSON.stringify({
+                data: reqData,
+                sign: sign
+              })
+            }).then((response) => { 
+              if (response && response.status === 200)
+              {
+                  response.json().then((data) => {
+                      console.log(data);
+                  })
+              }
+              else{
+              }
+            })
+          }
         }
       })();
   }, [token])
@@ -92,6 +121,6 @@ function App() {
 }
 
 export default App; 
-// export const backend = "http://195.49.215.186:10000";
-export const backend = "https://api.bm-chess.com";
+export const backend = "http://195.49.215.186:10000";
+// export const backend = "https://api.bm-chess.com";
 
