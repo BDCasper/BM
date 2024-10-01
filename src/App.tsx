@@ -63,6 +63,7 @@ function App() {
               })
             }
           })
+          console.log(params.status)
           if(params.status === 'success'){
             await fetch(`${backend}/api/payment/status`, {
               method: "POST",
