@@ -83,6 +83,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
     )();
   }, []);
 
+
   useEffect(() => {
     (
       async () => {

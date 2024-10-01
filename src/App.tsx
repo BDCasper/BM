@@ -39,7 +39,6 @@ function App() {
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
   const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
   const location = useLocation();
-  const params = useParams();
 
   if (!sessionStorage.getItem('i18next') || !localStorage.getItem('i18nextLng')) {
     localStorage.setItem('i18nextLng', 'ru');
@@ -63,23 +62,6 @@ function App() {
               })
             }
           })
-          if(params.status && params.status === 'success'){
-            await fetch(`${backend}/api/payment/status`, {
-              method: "POST",
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-              credentials: 'include',
-              body: JSON.stringify({
-                payment_id: localStorage.getItem('payment_id'),
-                order_id: localStorage.getItem('order_id')
-              })
-            }).then((response) => {
-              if (response && response.status === 200) {
-                response.json().then((data) => {
-                  console.log(data)
-                })
-              }
-            })
-          }
         }
       })();
   }, [token])

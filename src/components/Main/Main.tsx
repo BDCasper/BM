@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { backend } from "../../App";
 import "./Main.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { User } from "../../App";
 import MediaQuery from "react-responsive";
 import { useTranslation } from "react-i18next";
@@ -33,6 +33,7 @@ export default function Main({inp, user}:MainProps) {
     const arrOfDif = ['easy', 'medium', 'hard'];
     const [level, setLevel] = useState<number>(-1);
     const [playerSide, setPlayerSide] = useState<string>('');
+    const params = useParams();
     const [settingsPopupOpen, setSettingsPopupOpen] = useState<boolean>(false);
 
     const {t} = useTranslation();
@@ -57,6 +58,7 @@ export default function Main({inp, user}:MainProps) {
       sessionStorage.setItem("scrollPosition", JSON.stringify(window.scrollY));
     }
 
+
     useEffect(() => {
         (
           async () => {
@@ -72,6 +74,23 @@ export default function Main({inp, user}:MainProps) {
                 console.log("No DATA:(")
               }
             })
+            if(params.status && params.status === 'success'){
+              await fetch(`${backend}/api/payment/status`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                credentials: 'include',
+                body: JSON.stringify({
+                  payment_id: localStorage.getItem('payment_id'),
+                  order_id: localStorage.getItem('order_id')
+                })
+              }).then((response) => {
+                if (response && response.status === 200) {
+                  response.json().then((data) => {
+                    console.log(data)
+                  })
+                }
+              })
+            }
           }
         )();
     }, [token]);
