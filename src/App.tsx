@@ -63,8 +63,7 @@ function App() {
               })
             }
           })
-          console.log(params.status)
-          if(params.status === 'success'){
+          if(params.status && params.status === 'success'){
             await fetch(`${backend}/api/payment/status`, {
               method: "POST",
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -98,6 +97,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/recovery" element={<ResetPassword/>}/>
           <Route path="/" element={<Main inp={inp} user={user}/>} />
+          <Route path="/:status" element={<Main inp={inp} user={user}/>} />
           {user && <Route path="/topic/:id" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
           {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
           <Route path="/editor" element={<ChessboardEdit/>}/>
