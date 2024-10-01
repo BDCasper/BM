@@ -52,6 +52,7 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [arrowStart, setArrowStart] = useState<Position | null>(null);
   const [initialMousePosition, setInitialMousePosition] = useState<Position | null>(null);
+  const [botAllowToMove, setBotAllowToMove] = useState<boolean>(false);
   
   useEffect(() => {
     (
@@ -64,6 +65,10 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
           setGridSize(57.2);
           setBoardSize(458.4);
         }
+        rightMove[0].x = -1;
+        rightMove[0].y = -1;
+        rightMove[1].x = -1;
+        rightMove[1].y = -1;
       }
     )()
   },[])
@@ -132,10 +137,11 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
   useEffect(() => {
     (
       async() => {
-        if(botMover[0].x !== -1){
+        if(botMover[0].x !== -1 && botAllowToMove){
           botMove(botMover);
           moveSound();
           fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
+          setBotAllowToMove(false);
         }
       }
     )()
@@ -143,6 +149,8 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
 
   const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
     await playMove(currentPiece.clone(), pos2);
+    await promoteNow(currentPiece.clone(), pos2)
+    setBotAllowToMove(true);
   }
 
   function grabPiece(e: React.MouseEvent) {

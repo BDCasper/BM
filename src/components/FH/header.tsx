@@ -46,7 +46,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
     
     const popup = (
         <div className={popOpen ? "sub-show" : "hidden"}>
-            <Podpiska setPopOpen={setPopOpen}/>
+            <Podpiska setPopOpen={setPopOpen} user={user}/>
         </div>
     )
 

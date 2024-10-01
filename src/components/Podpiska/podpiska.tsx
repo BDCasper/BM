@@ -1,177 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { backend } from "../../App";
-import { Buffer } from "buffer";
+import { backend, User } from "../../App";
 import { useNavigate } from "react-router-dom";
-import CryptoJS from 'crypto-js';
 import "./podpiska.css"
 
 interface Props {
     setPopOpen: (pop: boolean) => any;
+    user: User;
 }
 
-export default function Podpiska({setPopOpen}:Props) {
+export default function Podpiska({setPopOpen, user}:Props) {
 
     const navigate = useNavigate();
     const [choose, setChoose] = useState<number>(1);
-    const [paymentData, setPaymentData] = useState<object>({
-        amount: 8990,                  
-        currency: "KZT",                
-        order_id: "pay_" + (new Date()).getTime(),        
-        description: "test",
-        payment_type: "pay",
-        payment_method: "ecom", 
-        user_id: "test",
-        email: "test@mail.ru",
-        phone: "77777777",
-        success_url: "http://bm-chess.com",
-        failure_url: "http://bm-chess.com",
-        callback_url: "http://bm-chess.com",
-        merchant_term_url: "http://bm-chess.com",
-        payment_lifetime: 6000,
-        create_recurrent_profile: false,
-        recurrent_profile_lifetime: 9999,
-        lang: "ru",
-        items: [
-                {
-                    merchant_id: "1a49fb7e-4c75-4317-b421-c4da40668e1e",
-                    service_id: "bc69c289-4b0a-4c6f-ab20-12884716b7c5",
-                    merchant_name: "Test",
-                    name: "hello",
-                    quantity: 1,
-                    amount_one_pcs: 8990,
-                    amount_sum: 8990,
-                }
-            ],    
-    });
-
-    useEffect(() => {
-        (
-            async() => {
-                if(choose === 1) {
-                    setPaymentData({
-                        amount: 8990,                  
-                        currency: "KZT",                
-                        order_id: "pay_" + (new Date()).getTime(),        
-                        description: "test",
-                        payment_type: "pay",
-                        payment_method: "ecom", 
-                        user_id: "test",
-                        email: "test@mail.ru",
-                        phone: "77777777",
-                        success_url: "http://bm-chess.com",
-                        failure_url: "http://bm-chess.com",
-                        callback_url: "http://bm-chess.com",
-                        merchant_term_url: "http://bm-chess.com",
-                        payment_lifetime: 6000,
-                        create_recurrent_profile: false,
-                        recurrent_profile_lifetime: 9999,
-                        lang: "ru",
-                        items: [
-                                {
-                                    merchant_id: "1a49fb7e-4c75-4317-b421-c4da40668e1e",
-                                    service_id: "bc69c289-4b0a-4c6f-ab20-12884716b7c5",
-                                    merchant_name: "Test",
-                                    name: "hello",
-                                    quantity: 1,
-                                    amount_one_pcs: 8990,
-                                    amount_sum: 8990,
-                                }
-                            ],    
-                    })
-                }
-                if(choose === 2) {
-                    setPaymentData({
-                        amount: 18990,                  
-                        currency: "KZT",                
-                        order_id: "pay_" + (new Date()).getTime(),        
-                        description: "test",
-                        payment_type: "pay",
-                        payment_method: "ecom", 
-                        user_id: "test",
-                        email: "test@mail.ru",
-                        phone: "77777777",
-                        success_url: "http://bm-chess.com",
-                        failure_url: "http://bm-chess.com",
-                        callback_url: "http://bm-chess.com",
-                        merchant_term_url: "http://bm-chess.com",
-                        payment_lifetime: 6000,
-                        create_recurrent_profile: false,
-                        recurrent_profile_lifetime: 9999,
-                        lang: "ru",
-                        items: [
-                                {
-                                    merchant_id: "1a49fb7e-4c75-4317-b421-c4da40668e1e",
-                                    service_id: "bc69c289-4b0a-4c6f-ab20-12884716b7c5",
-                                    merchant_name: "Test",
-                                    name: "hello",
-                                    quantity: 1,
-                                    amount_one_pcs: 18990,
-                                    amount_sum: 18990,
-                                }
-                            ],    
-                    })
-                }
-                if(choose === 3) {
-                    setPaymentData({
-                        amount: 26990,                  
-                        currency: "KZT",                
-                        order_id: "pay_" + (new Date()).getTime(),        
-                        description: "test",
-                        payment_type: "pay",
-                        payment_method: "ecom", 
-                        user_id: "test",
-                        email: "test@mail.ru",
-                        phone: "77777777",
-                        success_url: "http://bm-chess.com",
-                        failure_url: "http://bm-chess.com",
-                        callback_url: "http://bm-chess.com",
-                        merchant_term_url: "http://bm-chess.com",
-                        payment_lifetime: 6000,
-                        create_recurrent_profile: false,
-                        recurrent_profile_lifetime: 9999,
-                        lang: "ru",
-                        items: [
-                                {
-                                    merchant_id: "1a49fb7e-4c75-4317-b421-c4da40668e1e",
-                                    service_id: "bc69c289-4b0a-4c6f-ab20-12884716b7c5",
-                                    merchant_name: "Test",
-                                    name: "hello",
-                                    quantity: 1,
-                                    amount_one_pcs: 26990,
-                                    amount_sum: 26990,
-                                }
-                            ],    
-                    })
-                }
-            }
-        )()
-    },[choose])
-
-    const api_key_base64 = btoa("95d8d6be-c16c-4565-a086-301145b2c093");
-    const request_data_base64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(JSON.stringify(paymentData)));
-    const reqData = request_data_base64;
-    const sign = CryptoJS.HmacSHA512(request_data_base64, "dbdb378ea0c5a07951140a1b207bc24cb3f8441b00239f674b2d5771e6b74fff").toString()
+    const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
 
     const makePayment = async() => {
         if(sessionStorage.getItem("user_id")){
-            await fetch(`https://api.onevisionpay.com/payment/create`, {
+            await fetch(`${backend}/api/payment/create`, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + api_key_base64 },
+                headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + token },
                 body: JSON.stringify({
-                    data: reqData,
-                    sign: sign
+                    user_id: user.user_id,
+                    email: user.email,
+                    phone: user.phone,
+                    amount: choose === 1 ? 8990 : choose === 2 ? 18990 : 26990
                 }
                 )
             }).then((response) => { 
                 if (response && response.status === 200)
                 {
                     response.json().then((data) => {
-                        const payObj = JSON.stringify({
-                            payment_id: JSON.parse(atob(data.data)).payment_id,
-                            order_id: JSON.parse(atob(data.data)).order_id
-                        })
-                        localStorage.setItem("paymentConfirm", payObj);
-                        window.location.href = JSON.parse(atob(data.data)).payment_page_url;
+                        localStorage.setItem("pc", JSON.stringify({
+                            payment_id: data.payment_id,
+                            order_id: data.order_id
+                        }))
+                        window.location.href = data.payment_page_url;
                     })
                 }
                 else{
@@ -183,6 +46,7 @@ export default function Podpiska({setPopOpen}:Props) {
             setPopOpen(false);
         }
     }
+
 
     return(
         <>

@@ -194,7 +194,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
 
   const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
-          <Podpiska setPopOpen={setPopOpen}/>
+          <Podpiska setPopOpen={setPopOpen} user={user}/>
       </div>
   )
 
