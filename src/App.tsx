@@ -64,7 +64,7 @@ function App() {
             }
           })
           if(params.status === 'success' && localStorage.getItem('order_id') !== null && localStorage.getItem('payment_id') !== null){
-            await fetch(`${backend}/api/profile`, {
+            await fetch(`${backend}/api/payment/status`, {
               method: "POST",
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
               credentials: 'include',
