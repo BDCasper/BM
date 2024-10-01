@@ -63,15 +63,14 @@ function App() {
               })
             }
           })
-          const paymentData = localStorage.getItem('pc')
-          if(params.status === 'success' && paymentData !== null){
+          if(params.status === 'success' && localStorage.getItem('order_id') !== null && localStorage.getItem('payment_id') !== null){
             await fetch(`${backend}/api/profile`, {
               method: "POST",
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
               credentials: 'include',
               body: JSON.stringify({
-                payment_id: JSON.parse(paymentData).payment_id,
-                order_id: JSON.parse(paymentData).order_id
+                payment_id: localStorage.getItem('payment_id'),
+                order_id: localStorage.getItem('order_id')
               })
             }).then((response) => {
               if (response && response.status === 200) {

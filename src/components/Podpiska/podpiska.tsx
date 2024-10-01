@@ -30,10 +30,8 @@ export default function Podpiska({setPopOpen, user}:Props) {
                 if (response && response.status === 200)
                 {
                     response.json().then((data) => {
-                        localStorage.setItem("pc", JSON.stringify({
-                            payment_id: data.payment_id,
-                            order_id: data.order_id
-                        }))
+                        localStorage.setItem("order_id", data.order_id)
+                        localStorage.setItem("payment_id", data.payment_id)
                         window.location.href = data.payment_page_url;
                     })
                 }
