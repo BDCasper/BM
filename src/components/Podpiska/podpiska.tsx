@@ -45,6 +45,8 @@ export default function Podpiska({setPopOpen, user}:Props) {
         }
     }
 
+    console.log(user.subscribed)
+
 
     return(
         <>

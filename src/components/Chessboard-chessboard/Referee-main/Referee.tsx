@@ -150,7 +150,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                             else break;
                         }
                     }
-                    if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '') everyMove.push(board);
+                    if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '' && board.pieces.length > 0) everyMove.push(board);
                 }
             }
         )();

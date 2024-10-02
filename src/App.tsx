@@ -60,6 +60,7 @@ function App() {
                 sessionStorage.setItem('user_id', data.user.user_id)
                 setArrayOfSolved(new Set<number>(data.solved));
                 user.subscribed = data.subscribed;
+                console.log(data.subscribed);
               })
             }
           })
