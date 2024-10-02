@@ -243,5 +243,6 @@ export const getCastlingMoves = (king: Piece, boardstate: Piece[]): Position[] =
     }
   }
 
+
   return possibleMoves;
 }

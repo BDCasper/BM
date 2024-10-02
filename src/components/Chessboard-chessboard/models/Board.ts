@@ -142,23 +142,27 @@ export class Board {
         const pawnDirection = playedPiece.team === TeamType.OUR ? 1 : -1;
         const direction = (destination.x - playedPiece.position.x > 0) ? 1 : -1;
         const destinationPiece = this.pieces.find(p => p.samePosition(new Position(direction === 1 ? destination.x + 1 : destination.x - 2, destination.y)));
-
-        // If the move is a castling move do this
-        if (playedPiece.isKing && destinationPiece?.isRook
-            && destinationPiece.team === playedPiece.team && playedPiece.position.x === 4 && (playedPiece.position.y === 0 || playedPiece.position.y === 7)) {
-            const newKingXPosition = playedPiece.position.x + direction * 2;
-            this.pieces = this.pieces.map(p => {
-                if (p.samePiecePosition(playedPiece)) {
-                    p.position.x = newKingXPosition;
-                } else if (p.samePiecePosition(destinationPiece)) {
-                    p.position.x = newKingXPosition - direction;
-                }
-
-                return p;
-            });
-
-            this.calculateAllMoves();
-            return true;
+        let arr: Position[] = [];
+        if(playedPiece.team === TeamType.OUR) arr = this.castlingMoves[1];
+        if(playedPiece.team === TeamType.OPPONENT) arr = this.castlingMoves[0];
+        if(arr.some((pos) => pos.x === destination.x && pos.y === destination.y)){
+            // If the move is a castling move do this
+            if (playedPiece.isKing && destinationPiece?.isRook
+                && destinationPiece.team === playedPiece.team) {
+                const newKingXPosition = playedPiece.position.x + direction * 2;
+                this.pieces = this.pieces.map(p => {
+                    if (p.samePiecePosition(playedPiece)) {
+                        p.position.x = newKingXPosition;
+                    } else if (p.samePiecePosition(destinationPiece)) {
+                        p.position.x = newKingXPosition - direction;
+                    }
+    
+                    return p;
+                });
+    
+                this.calculateAllMoves();
+                return true;
+            }
         }
 
         if (enPassantMove) {
