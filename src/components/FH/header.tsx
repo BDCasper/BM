@@ -14,9 +14,10 @@ interface Props {
     popOpen: boolean;
     setPopOpen: (popOpen:boolean) => any;
     allowSearch: boolean;
+    isSubscribed: boolean;
 }
 
-export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen, allowSearch}:Props) {
+export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen, allowSearch, isSubscribed}:Props) {
 
     const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
 
@@ -46,7 +47,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
     
     const popup = (
         <div className={popOpen ? "sub-show" : "hidden"}>
-            <Podpiska setPopOpen={setPopOpen} user={user}/>
+            <Podpiska setPopOpen={setPopOpen} user={user} isSubscribed={isSubscribed}/>
         </div>
     )
 

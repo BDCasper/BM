@@ -38,6 +38,7 @@ function App() {
   const [popOpen, setPopOpen] = useState<boolean>(false);
   const [arrayOfSolved, setArrayOfSolved] = useState<Set<number>>(new Set([1,2,3]));
   const [token, setToken] = useState<string>(localStorage && localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '');
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
   const location = useLocation();
 
   if (!sessionStorage.getItem('i18next') || !localStorage.getItem('i18nextLng')) {
@@ -59,8 +60,7 @@ function App() {
                 setUser(data.user);
                 sessionStorage.setItem('user_id', data.user.user_id)
                 setArrayOfSolved(new Set<number>(data.solved));
-                user.subscribed = data.subscribed;
-                console.log(data.subscribed);
+                setIsSubscribed(data.subscribed)
               })
             }
           })
@@ -75,14 +75,14 @@ function App() {
           <img src="/assets/images/ornament-left.jpg" alt="" className="ornament-left"/>
           <img src="/assets/images/ornament-right.jpg" alt="" className="ornament-right"/>
         </MediaQuery>
-        <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen} allowSearch={location.pathname === '/'}/>
+        <Header checkUserLog={checkUserLog} setInp={setInp} user={user} popOpen={popOpen} setPopOpen={setPopOpen} allowSearch={location.pathname === '/'} isSubscribed={isSubscribed}/>
         <Routes>
           <Route path="/registration" element={<Reg/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/recovery" element={<ResetPassword/>}/>
-          <Route path="/" element={<Main inp={inp} user={user}/>} />
-          <Route path="/:status" element={<Main inp={inp} user={user}/>} />
-          {user && <Route path="/topic/:id" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved}/>} />}
+          <Route path="/" element={<Main inp={inp} user={user} isSubscribed={isSubscribed}/>} />
+          <Route path="/:status" element={<Main inp={inp} user={user} isSubscribed={isSubscribed}/>} />
+          {user && <Route path="/topic/:id" element={<Panel popOpen={popOpen} setPopOpen={setPopOpen} user={user} arrayOfSolved={arrayOfSolved} isSubscribed={isSubscribed}/>} />}
           {user && <Route path="/profile" element={<Profile setUserLog={setUserLog} user={user} token={token}/>} />}
           <Route path="/editor" element={<ChessboardEdit/>}/>
           <Route path="/rating" element={<Rating user={user}/>}/>

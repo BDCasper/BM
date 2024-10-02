@@ -6,9 +6,10 @@ import "./podpiska.css"
 interface Props {
     setPopOpen: (pop: boolean) => any;
     user: User;
+    isSubscribed: boolean;
 }
 
-export default function Podpiska({setPopOpen, user}:Props) {
+export default function Podpiska({setPopOpen, user, isSubscribed}:Props) {
 
     const navigate = useNavigate();
     const [choose, setChoose] = useState<number>(1);
@@ -45,8 +46,6 @@ export default function Podpiska({setPopOpen, user}:Props) {
         }
     }
 
-    console.log(user.subscribed)
-
 
     return(
         <>
@@ -56,7 +55,7 @@ export default function Podpiska({setPopOpen, user}:Props) {
                 <div className="sub-ramka">
                     <div className="sub-upper-text">
                         <div className="sub-title">ПОДПИСКА</div>
-                        <div className="sub-status">{user.subscribed ? user.subscribed === true && "АКТИВИРОВАНО" : "Неактивированно"}</div>
+                        <div className="sub-status">{isSubscribed !== null && isSubscribed === true ? "АКТИВИРОВАНО" : "Неактивированно"}</div>
                         <div className="sub-descr">Безлимитный доступ ко всем урокам</div>
                     </div>
                     <div className="sub-lenta">

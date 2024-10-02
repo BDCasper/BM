@@ -23,9 +23,10 @@ interface Props {
 interface MainProps {
   inp: string;
   user: User;
+  isSubscribed: boolean;
 }
 
-export default function Main({inp, user}:MainProps) {
+export default function Main({inp, user, isSubscribed}:MainProps) {
     let token = localStorage.getItem('token');
     const [topicList, setTopicList] = useState<Props[]>([]);
     const navigate = useNavigate();

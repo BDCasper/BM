@@ -33,9 +33,10 @@ interface PanelProps {
   setPopOpen: (pop: boolean) => any;
   user: User;
   arrayOfSolved: Set<number>;
+  isSubscribed: boolean;
 }
 
-export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelProps) {
+export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubscribed}:PanelProps) {
   const navigate = useNavigate();
 
   const [fenCode, setCurrentFen] = useState<string>("");
@@ -195,7 +196,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved}:PanelPr
 
   const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
-          <Podpiska setPopOpen={setPopOpen} user={user}/>
+          <Podpiska setPopOpen={setPopOpen} user={user} isSubscribed={isSubscribed}/>
       </div>
   )
 
