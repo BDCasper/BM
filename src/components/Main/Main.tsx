@@ -82,7 +82,7 @@ export default function Main({inp, user}:MainProps) {
                 body: JSON.stringify({
                   payment_id: localStorage.getItem('payment_id'),
                   order_id: localStorage.getItem('order_id'),
-                  user_id: user.user_id
+                  user_id: user.user_id ? user.user_id : sessionStorage.getItem('user_id')
                 })
               }).then((response) => {
                 if (response && response.status === 200) {
