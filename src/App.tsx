@@ -23,7 +23,7 @@ export interface User {
   phone?: string; 
   birth_date?: string; 
   location?: string; 
-  subscribed?: string;
+  subscribed?: boolean;
   score?: number;
   score_month? : number;
   score_week? : number;

@@ -45,6 +45,7 @@ export default function Podpiska({setPopOpen, user}:Props) {
         }
     }
 
+    console.log(user.subscribed)
 
     return(
         <>
@@ -54,7 +55,7 @@ export default function Podpiska({setPopOpen, user}:Props) {
                 <div className="sub-ramka">
                     <div className="sub-upper-text">
                         <div className="sub-title">ПОДПИСКА</div>
-                        <div className="sub-status">Неактивировано</div>
+                        <div className="sub-status">{user.subscribed ? user.subscribed === true && "АКТИВИРОВАНО" : "Неактивированно"}</div>
                         <div className="sub-descr">Безлимитный доступ ко всем урокам</div>
                     </div>
                     <div className="sub-lenta">
