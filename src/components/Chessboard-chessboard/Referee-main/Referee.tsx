@@ -94,6 +94,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         )();
       }, [fen]);
 
+      console.log(board.castlingMoves)
 
       useEffect(() => {
         (
@@ -111,10 +112,10 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         }
                     }
                     if(board.currentTeam === 'b' && board.castlingMoves[0].length > 0){
-                        if(board.castlingMoves[0].some((pos) => pos.x === 6 && pos.y === 7)){
+                        if(board.castlingMoves[0].some((pos) => pos.x === 6 && pos.y === 7) && board.pieces.some((pi) => pi.type === PieceType.KING && pi.position.x === 4)){
                             possible += 'k'
                         }
-                        if(board.castlingMoves[0].some((pos) => pos.x === 2 && pos.y === 7)){
+                        if(board.castlingMoves[0].some((pos) => pos.x === 2 && pos.y === 7) && board.pieces.some((pi) => pi.type === PieceType.KING && pi.position.x === 4)){
                             possible += 'q'
                         }
                     }

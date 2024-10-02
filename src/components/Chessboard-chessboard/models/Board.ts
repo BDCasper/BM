@@ -145,7 +145,7 @@ export class Board {
 
         // If the move is a castling move do this
         if (playedPiece.isKing && destinationPiece?.isRook
-            && destinationPiece.team === playedPiece.team) {
+            && destinationPiece.team === playedPiece.team && playedPiece.position.x === 4 && (playedPiece.position.y === 0 || playedPiece.position.y === 7)) {
             const newKingXPosition = playedPiece.position.x + direction * 2;
             this.pieces = this.pieces.map(p => {
                 if (p.samePiecePosition(playedPiece)) {

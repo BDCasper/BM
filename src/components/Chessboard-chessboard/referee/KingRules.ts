@@ -191,6 +191,7 @@ export const getPossibleKingMoves = (king: Piece, boardstate: Piece[]): Position
 
 // In this method the enemy moves have already been calculated
 export const getCastlingMoves = (king: Piece, boardstate: Piece[]): Position[] => {
+  if(king.position.x !== 4) return [];
   const possibleMoves: Position[] = [];
 
   if (king.hasMoved) return possibleMoves;
@@ -220,9 +221,9 @@ export const getCastlingMoves = (king: Piece, boardstate: Piece[]): Position[] =
 
     let valid = true;
     for(const enemy of enemyPieces) {
-      if(enemy.possibleMoves === undefined) continue;
+      if(enemy.possibleMoves === undefined || king.position.x !== 4) continue;
       for(const move of enemy.possibleMoves) {
-        if(conceringTiles.some(t => t.samePosition(move)) || king.position.samePosition(move)) {
+        if(conceringTiles.some(t => t.samePosition(move)) || king.position.samePosition(move) || (king.position.x !== 4) || (king.position.y !== 0 && king.position.y !== 7)) {
           valid = false;
         }
 
@@ -237,9 +238,10 @@ export const getCastlingMoves = (king: Piece, boardstate: Piece[]): Position[] =
     if(!valid) continue;
 
     // We now want to add it as a possible move!
-    possibleMoves.push(new Position(direction === 1 ? rook.position.x - 1 : rook.position.x + 2, rook.position.y) );
+    if(king.position.x === 4){
+      possibleMoves.push(new Position(direction === 1 ? rook.position.x - 1 : rook.position.x + 2, rook.position.y) );
+    }
   }
-
 
   return possibleMoves;
 }
