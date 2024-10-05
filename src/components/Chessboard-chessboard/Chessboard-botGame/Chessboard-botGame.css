@@ -14,15 +14,15 @@
     flex-direction: column;
     align-items: center;
     height: fit-content;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
-.chessboard-gameWithFriend {
+.chessboard-botGame {
     display: flex;
     flex-direction: row;
 }
 
-.chessboard-gameWithFriend-wTimer {
+.chessboard-botGame-wTimer {
     display: flex;
     flex-direction: row;
     margin-right: 100px;

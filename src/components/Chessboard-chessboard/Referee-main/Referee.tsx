@@ -340,6 +340,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     return (
         <div className="referee">
             {gameWithFriend && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setGame}/>}
+            {mode === 'botGame' && initialPopupOpen && <InitialTime onClose={closePopup} onSave={setGame}/>}
             {(gameWithFriend || mode === 'botGame') &&
             <>
                 <div className="modal-checkmate hidden" ref={checkmateModalRef}>
@@ -386,7 +387,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             }
             {
                 mode === 'botGame' ? 
-                <div>
+                <div className={mode === 'botGame' ? initialTime === '' ? 'chessboard-botGame' : 'chessboard-botGame-wTimer' : ''}>
+                    {initialTime !== '' && mode === 'botGame' && <ChessClock initialTime={Number(initialTime)} teamTurn={isFlipped === false ? (board.currentTeam === TeamType.OUR ? 'white' : 'black') : (board.currentTeam === TeamType.OUR ? 'black' : 'white')} checkStart={board.totalTurns > 1} isFlipped={isFlipped} setWinner={setWinner} increment={Number(increment)}/>}
                     <ChessboardBot playMove={playMove}
                         pieces={board?.pieces} 
                         fenComponents={newboard} 
