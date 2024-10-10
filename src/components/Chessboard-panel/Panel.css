@@ -160,11 +160,11 @@
     padding-bottom: 10px;
 }
 
-.active {
+.zadachi-active {
     background-color: #AB2A3B;
 }
 
-.active > .zadachi-content > .zadachi-text > .title {
+.zadachi-active > .zadachi-content > .zadachi-text > .title {
     color: white;
 }
 
@@ -228,7 +228,7 @@
     border-bottom-right-radius: 19px;
 }
 
-.active:last-child {
+.zadachi-active:last-child {
     border-bottom-left-radius: 21px;
     border-bottom-right-radius: 21px;
 }
@@ -501,11 +501,11 @@ input[type="radio"] {
         margin-top: 5px;
     }
     
-    .active {
+    .zadachi-active {
         background-color: #AB2A3B;
     }
     
-    .active > .zadachi-content > .zadachi-text > .title {
+    .zadachi-active > .zadachi-content > .zadachi-text > .title {
         color: white;
     }
     

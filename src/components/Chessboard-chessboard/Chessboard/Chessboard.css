@@ -139,23 +139,27 @@
 .modal > .modal-body > .checkmate-body {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 48px;
 }
 
-.modal > .modal-body > .checkmate-body > span {
-    font-size: 30px;font-weight: normal;color: #ffffff;
+.checkmate-body-checkmate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .checkmate-body-checkmate button {
     border: none;
     border-radius: 8px;
-    padding: 20px 40px;
+    width: 250px;
+    height: 60px;
     font-size: 20px;
     background-color: #AB2A3B;
     color: #ffffff;
 }
 
-.checkmate-body-checkmate button:last-child {
+.checkmate-body-checkmate-continue {
     margin-left: 50px;
 }
 

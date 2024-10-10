@@ -54,6 +54,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
     const [winner, setWinner] = useState<string>('');
     const [botMove, setBotMove] = useState<Position[]>([new Position(-1,-1)]);
     const [increment, setIncrement] = useState<string>('');
+    const [giveUp, setGiveUp] = useState<string>('');
 
     useEffect(() => {
         (
@@ -324,6 +325,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         }
     }
 
+    function GiveUp() {
+        setGiveUp(board.currentTeam === TeamType.OUR ? TeamType.OPPONENT : TeamType.OUR);
+        checkmateModalRef.current?.classList.remove("hidden");
+    }
+
     function restartGame(way: string) {
         if(way === 'continue'){
             setWinner('')
@@ -333,6 +339,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         if(way === 'restart'){
             checkmateModalRef.current?.classList.add("hidden");
             setBoard(initialBoard.clone());
+            setGiveUp('');
             window.location.reload();
         }
     }
@@ -354,10 +361,10 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                                 </>
                                 :
                                 <>
-                                    <span>Победа {board.winningTeam ? (board.winningTeam === TeamType.OUR ? "белых" : "чёрных") : winner === 'w' ? "чёрных" : winner === 'b' ? "белых" : ''}!</span>
+                                    <span>Победа {board.winningTeam ? (board.winningTeam === TeamType.OUR ? "белых" : "чёрных") : winner === 'w' ? "чёрных" : winner === 'b' ? "белых" : giveUp === TeamType.OUR ? "белых" : giveUp === TeamType.OPPONENT ? "черных" : ''}!</span>
                                     <div>
                                         <button onClick={() => restartGame('restart')}>Играть снова</button>
-                                        {winner && <button onClick={() => restartGame('continue')}>Продолжить партию</button>}
+                                        {winner && <button className="checkmate-body-checkmate-continue" onClick={() => restartGame('continue')}>Продолжить партию</button>}
                                     </div>
                                 </>
                             }
@@ -398,6 +405,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         movePtr={movePtr}
                         botMover={botMove}
                         />
+                    <button className="chessboard-botGame-giveUpButton" onClick={GiveUp}>Сдаться</button>
                 </div>
                 :
                 <div className={gameWithFriend ? initialTime === '' ? 'chessboard-gameWithFriend' : 'chessboard-gameWithFriend-wTimer' : ''}>

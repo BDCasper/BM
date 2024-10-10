@@ -28,6 +28,24 @@
     margin-right: 100px;
 }
 
+.chessboard-botGame-giveUpButton {
+    margin-left: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #AB2A3B;
+    border: none;
+    font-family: 'Open Sans';font-size: 16px;font-weight: 400;color: #FFFFFF;
+    transition: all 300ms ease;
+    width: 100px;
+    height: 60px;
+}
+
+.chessboard-botGame-giveUpButton:hover {
+    background-color: #ab2a3bd8;
+    transition: all 300ms ease;
+    cursor: pointer;
+}
+
 .arrow-canvas-botGame {
     position: absolute;
     top: 0;
