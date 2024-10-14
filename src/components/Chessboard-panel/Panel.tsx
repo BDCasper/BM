@@ -25,7 +25,7 @@ interface Props {
   difficulty: string;
   variants: string;
   closed: boolean;
-  url?: string;
+  url: string;
 }
 
 interface PanelProps {
@@ -47,10 +47,11 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
   const [answered, setAnswered] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<boolean>();
   const [progressWidthcnt, setProgressWidthcnt] = useState<number>(0);
-  const location = useLocation();
+  const location = useLocation(); 
   const [winSound] = useSound('/win.wav', { volume: 0.2 });
   const [wrongSound] = useSound('/wrong.mp3');
   const [gameWithFriend, setGameWithFriend] = useState<boolean|undefined>(true);
+  const [videoUrl, setVideoUrl] = useState<string>('');
   const [chooseQ, setChooseQ] = useState<number>(-1);
   const [startAnimation, setStartAnimation] = useState(false);
   const [winPopUp, setWinPopUp] = useState<boolean>(false);
@@ -161,6 +162,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
       async () => {
         activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log();
         setChooseQ(-1);
+        if(arrayOfObjects[0] && arrayOfObjects[activeIndex].mode === 'video') setVideoUrl(arrayOfObjects[activeIndex].url);
         if(activeIndex === 0 && arrayOfObjects[0]){
           setCurrentFen(arrayOfObjects[activeIndex].fen)
         }
@@ -181,11 +183,12 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
       }
     )();
   },[popOpen]);
-    
+
   useEffect(() => {
       (
         async () => {
           if (arrayOfObjects[0]){
+          if(arrayOfObjects[0].mode === 'video') setVideoUrl(arrayOfObjects[activeIndex].url);
             setCurrentFen(arrayOfObjects[0].fen);
             await handleProgress();
           }
@@ -193,6 +196,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
       }
     )();
   },[arrayOfObjects, arrayOfSolved])
+
+  console.log(videoUrl)
 
   const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
@@ -259,9 +264,9 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                       <div className="panel" ref={scrollToBoard}>
                         <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>   
                         {
-                          arrayOfObjects[0] && arrayOfObjects[activeIndex].mode === 'video' ?
-                            <video width="700" height="500" className="panel-video" controls> 
-                                <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${arrayOfObjects[0].url}` } type="video/mp4" /> 
+                          arrayOfObjects[0] && arrayOfObjects[activeIndex].mode === 'video' && videoUrl !== '' ?
+                            <video key={videoUrl} width="700" height="500" className="panel-video" controls> 
+                                <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${videoUrl}` } type="video/mp4" /> 
                             </video> 
                           :
                             <div className="referee">

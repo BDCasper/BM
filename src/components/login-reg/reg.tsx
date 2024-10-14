@@ -56,7 +56,8 @@ export default function Reg() {
             credentials: 'include',
             body: JSON.stringify({
                 email: email,
-                password: password
+                password: password,
+                username: userName
             })
         }).then((response) => { 
             if (response && response.status === 201)
@@ -83,13 +84,13 @@ export default function Reg() {
                         <div className={emailEmpty || !emailCorrect || !emailFree ? "reg-input-text incorrect" : "reg-input-text"}>{t('E-mail')}</div>
                         <input type="text" className={emailEmpty || !emailCorrect || !emailFree ? "regBar incorrectBar" : "regBar"} onChange={(e) => setEmail(e.target.value)}/>
                     </div>
+                    <div className="reg-username">
+                        <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>{t('Придумайте имя пользователя')}</div>
+                        <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setUserName(e.target.value)}/>
+                    </div>
                     <div className="password">
                         <div className={ passwordEmpty || !passwordCorrect ? "reg-input-text incorrect" : "reg-input-text"}>{t('Придумайте пароль')}</div>
                         <input type="password" className={ passwordEmpty || !passwordCorrect ? "regBar incorrectBar" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
-                    </div>
-                    <div className="reg-username">
-                        <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>{t('Имя пользователя')}</div>
-                        <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setUserName(e.target.value)}/>
                     </div>
                     <button className="reg-button" onClick={register}>{t('Зарегистрироваться')}</button>
                     {(!emailFree) && <div className="reg-email-incorrect">{t('Данный эл. адресс уже зарегестрирован')}</div>}

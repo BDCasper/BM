@@ -37,7 +37,8 @@
 }
 
 .panel-video {
-    border-radius: 15px;
+    border-radius: 10px;
+    height: fit-content;
 }
 
 .panel-size-button {

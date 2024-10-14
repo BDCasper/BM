@@ -95,7 +95,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         )();
       }, [fen]);
 
-      console.log(board.castlingMoves)
 
       useEffect(() => {
         (
