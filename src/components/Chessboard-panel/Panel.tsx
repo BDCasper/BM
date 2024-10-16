@@ -12,6 +12,8 @@ import ThreeScene from "../winScene";
 import WinPopup from "../Chessboard-chessboard/winPopUp/winPopUp";
 import { useTranslation } from "react-i18next";
 import Data from "../BasicData";
+import { videoFiles } from "../QazaqVideos";
+import { mathFiles } from "../math&logic";
 
 
 interface Props {
@@ -90,7 +92,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
     (
       async () => {
         if(user){
-          if(location.state === null && params.id && !params.id.includes('basic')){
+          if(location.state === null && params.id && !params.id.includes('basic') && params.id !== "math&logic"){
             if(params.id === undefined) navigate('/'); 
             await fetch( `${backend}/api/topic?id=${params.id ? params.id : 1}`, {
               headers: { 'Content-Type': 'apppcation/json' },
@@ -160,13 +162,19 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
   useEffect(() => {
     (
       async () => {
-        activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log();
-        setChooseQ(-1);
-        if(arrayOfObjects[0] && arrayOfObjects[activeIndex].mode === 'video') setVideoUrl(arrayOfObjects[activeIndex].url);
-        if(activeIndex === 0 && arrayOfObjects[0]){
-          setCurrentFen(arrayOfObjects[activeIndex].fen)
+        if(params.id !== "videoKZ" && params.id !== "math&logic"){
+          activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log();
+          setChooseQ(-1);
+          if(arrayOfObjects[0] && arrayOfObjects[activeIndex].mode === 'video') setVideoUrl(arrayOfObjects[activeIndex].url);
+          if(activeIndex === 0 && arrayOfObjects[0]){
+            setCurrentFen(arrayOfObjects[activeIndex].fen)
+          }
+          setAnswered(false);
+        } else if(params.id === "videoKZ") {
+          setVideoUrl(videoFiles[activeIndex]);
+        } else {
+          setVideoUrl(mathFiles[activeIndex]);
         }
-        setAnswered(false);
       }
       )();
     },[activeIndex]);
@@ -196,8 +204,6 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
       }
     )();
   },[arrayOfObjects, arrayOfSolved])
-
-  console.log(videoUrl)
 
   const popup = (
       <div className={popOpen ? "sub-show" : "hidden"}>
@@ -251,6 +257,88 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                       </div>
                     </div>
                   </div>
+                </div>
+                :
+                params.id && params.id === "videoKZ" ?
+                <div className="panel-content">
+                  <div className="panel-spisok">
+                    <div className="panel" ref={scrollToBoard}>
+                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
+                      <video key={videoUrl} width="700" height="500" className="panel-video" controls> 
+                          <source src={`https://drzmjhmnb3llr.cloudfront.net/daryn/${videoUrl}` } type="video/mp4" /> 
+                      </video> 
+                    </div>
+                    <div className="spisok">
+                      <div className="topic"><p>Бейне сабақтар</p></div>
+                        <div className="spisokList">
+                          {videoFiles.map((puzzle, index) => (
+                            <div className={index === activeIndex ? "zadachi zadachi-active" :"zadachi"} key={index} onClick={() => {
+                                setActiveIndex(index)
+                              }}>
+                              <div className="zadachi-content">
+                                <div className="block-checkSign"><img alt="" className="video-player" src='/assets/images/video-lesson.png'/></div>
+                                  <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                  <div className="zadachi-text" >
+                                    <div className="id" >{t('Бейне')} №{index+1}</div>
+                                    <div className="title" >{t(puzzle)}</div>
+                                  </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                    </div>
+                  </div>
+                    <div className="arrows">
+                        <div className="leftArrowWrap" onClick={() => videoFiles[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+                          <img className="arrow" src="/assets/images/leftArrow.svg" />
+                        </div>
+                        <div className="rightArrowWrap" onClick={() => {
+                          if(videoFiles[activeIndex + 1]) setActiveIndex(activeIndex + 1);
+                          }}>
+                          <img className="arrow" src="/assets/images/rightArrow.svg" />
+                        </div>
+                    </div>
+                </div>
+                :
+                params.id && params.id === 'math&logic' ?
+                <div className="panel-content">
+                  <div className="panel-spisok">
+                    <div className="panel" ref={scrollToBoard}>
+                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
+                      <video key={videoUrl} width="700" height="500" className="panel-video" controls> 
+                          <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${videoUrl}` } type="video/mp4" /> 
+                      </video> 
+                    </div>
+                    <div className="spisok">
+                      <div className="topic"><p>{t("Математика и Логика на шахматной доске")}</p></div>
+                        <div className="spisokList">
+                          {mathFiles.map((puzzle, index) => (
+                            <div className={index === activeIndex ? "zadachi zadachi-active" :"zadachi"} key={index} onClick={() => {
+                                setActiveIndex(index)
+                              }}>
+                              <div className="zadachi-content">
+                                <div className="block-checkSign"><img alt="" className="video-player" src='/assets/images/video-lesson.png'/></div>
+                                  <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                  <div className="zadachi-text" >
+                                    <div className="id" >{t('Видео')} №{index+1}</div>
+                                    <div className="title" >{t(puzzle)}</div>
+                                  </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                    </div>
+                  </div>
+                    <div className="arrows">
+                        <div className="leftArrowWrap" onClick={() => videoFiles[activeIndex - 1] ? setActiveIndex(activeIndex - 1) : null}>
+                          <img className="arrow" src="/assets/images/leftArrow.svg" />
+                        </div>
+                        <div className="rightArrowWrap" onClick={() => {
+                          if(videoFiles[activeIndex + 1]) setActiveIndex(activeIndex + 1);
+                          }}>
+                          <img className="arrow" src="/assets/images/rightArrow.svg" />
+                        </div>
+                    </div>
                 </div>
                 :
                 <>

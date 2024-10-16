@@ -46,7 +46,8 @@ interface Props {
 }
 
 let totalTurns = 0;
-let promoteLetter: string;
+let promoteLetter: string = '';
+let requestLetter: string;
 const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
@@ -215,25 +216,32 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     if (promotionPawn === undefined) {
         return;
     }
-    setBoard((previousBoard: { clone: () => any; }) => {
-        const clonedBoard = previousBoard.clone();
-        clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
-            if (piece.samePiecePosition(promotionPawn)) {
-                results.push(new Piece(piece.position.clone(), pieceType,
-                    piece.team, true, piece.skin));
-            } else {
-                results.push(piece);
-            }
-            return results;
-        }, [] as Piece[]);
-
-        clonedBoard.calculateAllMoves();
-        return clonedBoard;
-    })
     if(pieceType === 'rook') promoteLetter = 'R';
-    if(pieceType === 'knight') promoteLetter = 'K';
+    if(pieceType === 'knight') promoteLetter = 'N';
     if(pieceType === 'bishop') promoteLetter = 'B';
     if(pieceType === 'queen') promoteLetter = 'Q';
+    setBoard((previousBoard: { clone: () => any; }) => { 
+      const clonedBoard = previousBoard.clone();
+      clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
+          if (piece.samePiecePosition(promotionPawn)) {
+              results.push(new Piece(piece.position.clone(), pieceType,
+                  piece.team, true, piece.skin));
+          } else {
+              results.push(piece);
+          }
+          return results;
+      }, [] as Piece[]);
+
+      clonedBoard.calculateAllMoves();
+      return clonedBoard;
+    })
+    if (promoteLetter !== requestLetter){
+      modalRef.current?.classList.add("hidden");
+      promoteLetter = '';
+      requestLetter = '';
+      return;
+    }
+    
     modalRef.current?.classList.add("hidden");
   }
 
@@ -242,6 +250,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   }
 
   const playMoveFunction = async (pos1: Position, pos2: Position, currentPiece: Piece) => {
+    const clonedBoard = board;
     await fetch( `${backend}/api/checkbefore`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
@@ -258,14 +267,15 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
+            requestLetter = data.prom;
             playMove(currentPiece.clone(), pos2);
           }
         })
       }
     })
-
-    await promoteNow(currentPiece.clone(), pos2)
-
+    
+    await promoteNow(currentPiece.clone(), pos2);
+    
     await fetch( `${backend}/api/checkmove`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
@@ -277,12 +287,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 move: [pos1,pos2],
                 lives: lives,
                 user_id: user.user_id,
-                //promote: (sendPromote ? promoteLetter : undefined)
+                prom: promoteLetter === '' ? undefined : promoteLetter
             })
     }).then((response) => {
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
+            promoteLetter = '';
             if(mode !== 'labirint') fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
             nullRightMoves();
             setLives(3);
@@ -306,6 +317,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               }
             }
           } else {
+            if(promoteLetter === '') setBoard(clonedBoard);
             wrongSound();
             if(activePiece)
             {

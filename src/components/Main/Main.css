@@ -100,7 +100,7 @@
 .game-type {
     display: flex;
     width: 302px;
-    height: 67px;
+    height: 66.3px;
     background-color: #ffffff ;
     border-bottom:1px solid #AB2A3B;
     align-items: center;
@@ -110,6 +110,12 @@
 .game-type:first-child {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+}
+
+.game-type:last-child {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom: none;
 }
 
 .game-type:hover {

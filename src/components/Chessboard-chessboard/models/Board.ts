@@ -145,7 +145,7 @@ export class Board {
         let arr: Position[] = [];
         if(playedPiece.team === TeamType.OUR) arr = this.castlingMoves[1];
         if(playedPiece.team === TeamType.OPPONENT) arr = this.castlingMoves[0];
-        if(arr.some((pos) => pos.x === destination.x && pos.y === destination.y)){
+        if(arr && arr.some((pos) => pos.x === destination.x && pos.y === destination.y)){
             // If the move is a castling move do this
             if (playedPiece.isKing && destinationPiece?.isRook
                 && destinationPiece.team === playedPiece.team) {

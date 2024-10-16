@@ -162,6 +162,10 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
                 <div className="podpiska-text">{t('Редактор доски')}</div>
                 <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
             </div>
+            <div className="game-type" onClick={() => navigate("/topic/math&logic")}>
+                <div className="podpiska-text">{t('Математика и логика на шахматной доске')}</div>
+                <img className="podpiskaImg" src="/assets/images/podpiskaArrow.svg"/>
+            </div>
           </div>
         </div>
         <div className="main-panel">
@@ -172,6 +176,22 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
               <div className="pro-level">
                 {inp !== '' ? 
                   <>
+                  {
+                    localStorage.getItem('i18nextLng') && localStorage.getItem('i18nextLng') === 'kk' && dif === 'easy' && "БЕЙНЕ САБАҚТАР".trim().includes(inp.trim().toUpperCase()) && 
+                    <div className="theme-block" onClick={() => user.user_id ? navigate(`/topic/videoKZ`, {state:{id:-12}}) : navigate("/login")}>
+                      <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_197.jpg`} className="themeImgSize"/></div>
+                      <div className="theme-content">
+                          <div className="theme-text">
+                              <div className="theme-name">{t("Бейне сабақтар")}</div>
+                              <div className="theme-info">
+                                <ul>
+                                  <li className="theme-lessons"><span>50 бейне</span></li> 
+                                </ul>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  }
                   {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <>
                       {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
@@ -220,6 +240,22 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
                   </> 
                 :
                   <>
+                  {
+                    localStorage.getItem('i18nextLng') && localStorage.getItem('i18nextLng') === 'kk' && dif === 'easy' && 
+                    <div className="theme-block" onClick={() => user.user_id ? navigate(`/topic/videoKZ`, {state:{id:-12}}) : navigate("/login")}>
+                      <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_197.jpg`} className="themeImgSize"/></div>
+                      <div className="theme-content">
+                          <div className="theme-text">
+                              <div className="theme-name">{t("Бейне сабақтар")}</div>
+                              <div className="theme-info">
+                                <ul>
+                                  <li className="theme-lessons"><span>50 бейне</span></li> 
+                                </ul>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  }
                   {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
                     <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
                       <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
