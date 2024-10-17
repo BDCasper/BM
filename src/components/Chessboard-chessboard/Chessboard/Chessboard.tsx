@@ -73,6 +73,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [playSide, setPlaySide] = useState<string>('');
   const promoteLetterRef = useRef<string>('');
   const requestLetterRef = useRef<string>('');
+  const [firstTurn, setFirstTurn] = useState<string>(fenComponents.turn);
 
   
   useEffect(() => {
@@ -675,7 +676,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </div>
       </>
       }
-      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${fenComponents.turn}_move.svg`}/>{t('Ход')} {fenComponents.turn ? (fenComponents.turn === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
+      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${firstTurn}_move.svg`}/>{t('Ход')} {firstTurn ? (firstTurn === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
       {mode !== 'test' && gameWithFriend === undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
     </div>
