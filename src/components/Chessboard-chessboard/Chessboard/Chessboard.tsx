@@ -226,6 +226,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                                pieceType === 'knight' ? 'N' :
                                pieceType === 'bishop' ? 'B' :
                                'Q'; // Default to Queen if none of the other cases
+    if(promoteLetterRef.current !== requestLetterRef.current){
+      promoteLetterRef.current = '';
+    }
     setBoard((previousBoard: { clone: () => any; }) => { 
       const clonedBoard = previousBoard.clone();
       clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
@@ -243,11 +246,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     })
 
     modalRef.current?.classList.add("hidden");
-
-    if(promoteLetterRef.current !== requestLetterRef.current){
-      promoteLetterRef.current = '';
-      return ;
-    }
   }
 
   function promotionTeamType() {
