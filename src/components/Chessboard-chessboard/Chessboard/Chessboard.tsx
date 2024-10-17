@@ -274,7 +274,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         response.json().then((data) => {
           if (data.correct === "yes") {
             requestLetterRef.current = data.prom;
-            console.log(data.prom);
+            console.log(data.prom, 'backend');
             playMove(currentPiece.clone(), pos2);
           }
         })
