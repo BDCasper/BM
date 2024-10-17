@@ -46,8 +46,6 @@ interface Props {
 }
 
 let totalTurns = 0;
-let promoteLetter: string = '';
-let requestLetter: string;
 const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
@@ -64,7 +62,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [winSound] = useSound('/win.wav', { volume: 0.2 });
   const modalRef = useRef<HTMLDivElement>(null);
   const [promotionPawn, setPromotionPawn] = useState<Piece>();
-  const [sendPromote, setSendPromote] = useState<boolean>(false);
   const [GRID_SIZE, setGridSize] = useState<number>(0);
   const [boardSize, setBoardSize] = useState<number>(0);
   const [review, setReview] = useState<boolean>(false);
@@ -74,6 +71,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
   const [arrowStart, setArrowStart] = useState<Position | null>(null);
   const [initialMousePosition, setInitialMousePosition] = useState<Position | null>(null);
   const [playSide, setPlaySide] = useState<string>('');
+  const promoteLetterRef = useRef<string>('');
+  const requestLetterRef = useRef<string>('');
+
   
   useEffect(() => {
     (
@@ -193,33 +193,39 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     )();
   }, [activeIndex]);
 
-  const promoteNow = async(playedPiece: Piece, destination: Position) => {
+  const promoteNow = async (playedPiece: Piece, destination: Position) => {
     let promotionRow = (playedPiece.team === TeamType.OUR) ? 7 : 0;
+
+    // Check if the move is a promotion
     if (destination.y === promotionRow && playedPiece.isPawn) {
-        setSendPromote(true);
         modalRef.current?.classList.remove("hidden");
-        setPromotionPawn((previousPromotionPawn) => {
+
+        // Clone the played pawn and prepare it for promotion
+        setPromotionPawn(() => {
             const clonedPlayedPiece = playedPiece.clone();
             clonedPlayedPiece.position = destination.clone();
             return clonedPlayedPiece;
         });
-        const promise = new Promise((resolved:(arg0:PieceType)=>void) => {_promote = resolved})
-        let type;
-        await promise.then((res) => {type = res});
-        return true;
+
+        // Wait for user input to resolve the promotion type
+        const pieceType = await new Promise<PieceType>((resolve) => {
+            _promote = resolve; // The resolution function is called from the promotePawn method
+        });
+
+        return true; // Promotion happened
     }
-    return false;
-  }
+    return false; // No promotion needed
+  };
 
   function promotePawn(pieceType: PieceType) {
+    if (!promotionPawn) return;
+
     _promote(pieceType);
-    if (promotionPawn === undefined) {
-        return;
-    }
-    if(pieceType === 'rook') promoteLetter = 'R';
-    if(pieceType === 'knight') promoteLetter = 'N';
-    if(pieceType === 'bishop') promoteLetter = 'B';
-    if(pieceType === 'queen') promoteLetter = 'Q';
+
+    promoteLetterRef.current = pieceType === 'rook' ? 'R' :
+                               pieceType === 'knight' ? 'N' :
+                               pieceType === 'bishop' ? 'B' :
+                               'Q'; // Default to Queen if none of the other cases
     setBoard((previousBoard: { clone: () => any; }) => { 
       const clonedBoard = previousBoard.clone();
       clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
@@ -235,14 +241,13 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       clonedBoard.calculateAllMoves();
       return clonedBoard;
     })
-    if (promoteLetter !== requestLetter){
-      modalRef.current?.classList.add("hidden");
-      promoteLetter = '';
-      requestLetter = '';
-      return;
-    }
-    
+
     modalRef.current?.classList.add("hidden");
+
+    if(promoteLetterRef.current !== requestLetterRef.current){
+      promoteLetterRef.current = '';
+      return ;
+    }
   }
 
   function promotionTeamType() {
@@ -267,14 +272,14 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
-            requestLetter = data.prom;
+            requestLetterRef.current = data.prom;
             playMove(currentPiece.clone(), pos2);
           }
         })
       }
     })
     
-    await promoteNow(currentPiece.clone(), pos2);
+    const promotionHappened = await promoteNow(currentPiece.clone(), pos2);
     
     await fetch( `${backend}/api/checkmove`, {
       method: "POST",
@@ -287,13 +292,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                 move: [pos1,pos2],
                 lives: lives,
                 user_id: user.user_id,
-                prom: promoteLetter === '' ? undefined : promoteLetter
+                prom: promoteLetterRef.current === '' ? undefined : promoteLetterRef.current
             })
     }).then((response) => {
       if (response && response.status === 200) {
         response.json().then((data) => {
           if (data.correct === "yes") {
-            promoteLetter = '';
             if(mode !== 'labirint') fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
             nullRightMoves();
             setLives(3);
@@ -317,7 +321,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               }
             }
           } else {
-            if(promoteLetter === '') setBoard(clonedBoard);
+            if(promoteLetterRef.current === '') setBoard(clonedBoard);
             wrongSound();
             if(activePiece)
             {
