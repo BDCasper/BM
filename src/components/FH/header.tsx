@@ -56,7 +56,7 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
             {popOpen && popup}
             <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
             <MediaQuery minWidth={1200}>
-                <div className="header-allCourse"><a href="/">{t('Главная')}</a></div>
+                <div className="header-allCourse" onClick={() => sessionStorage.removeItem("scrollPosition")}><a href="/">{t('Главная')}</a></div>
                 <div className="header-web-site"><a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a></div>
                 <div className="header-subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
                 {allowSearch === true ? 
