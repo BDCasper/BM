@@ -227,6 +227,8 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                                pieceType === 'knight' ? 'N' :
                                pieceType === 'bishop' ? 'B' :
                                'Q'; // Default to Queen if none of the other cases
+    console.log(promoteLetterRef.current);
+    console.log(requestLetterRef.current);
     if(promoteLetterRef.current !== requestLetterRef.current){
       promoteLetterRef.current = '';
     }
