@@ -16,6 +16,8 @@ export default function Reg() {
     const [usernameEmpty, setUsernameEmpty] = useState<boolean>(false);
     const [emailCorrect, setEmailCorrect] = useState<boolean>(true);
     const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
+    const [checkSign, setCheckSign] = useState<boolean>(false);
+    const [checkWrong, setCheckWrong] = useState<boolean>(false);
     const eRegex : RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const pRegex : RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/;
     const navigate = useNavigate();
@@ -41,11 +43,12 @@ export default function Reg() {
         setEmailEmpty(false);
         setPasswordEmpty(false);
         setUsernameEmpty(false);
-        if(email.length === 0 || password.length === 0 || userName.length === 0 || !eRegex.test(email) ) {
+        if(email.length === 0 || password.length === 0 || userName.length === 0 || !eRegex.test(email) || checkSign === false) {
             if(email.length === 0) setEmailEmpty(true);
             if(userName.length === 0) setUsernameEmpty(true);
             if(password.length === 0) setPasswordEmpty(true);
             if(!eRegex.test(email)) setEmailCorrect(false);
+            if(checkSign === false) setCheckWrong(true);
             //if(!pRegex.test(password)) setPasswordCorrect(false);
             return;
         }
@@ -86,16 +89,20 @@ export default function Reg() {
                     </div>
                     <div className="reg-username">
                         <div className={ usernameEmpty ? "reg-input-text incorrect" : "reg-input-text"}>{t('Придумайте имя пользователя')}</div>
-                        <input type="text" className={ usernameEmpty ? "regBar incorrect" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setUserName(e.target.value)}/>
+                        <input type="text" className={ usernameEmpty ? "regBar incorrectBar" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setUserName(e.target.value)}/>
                     </div>
                     <div className="password">
                         <div className={ passwordEmpty || !passwordCorrect ? "reg-input-text incorrect" : "reg-input-text"}>{t('Придумайте пароль')}</div>
                         <input type="password" className={ passwordEmpty || !passwordCorrect ? "regBar incorrectBar" : "regBar"} onKeyUp={handleKeywordKeyPress} onChange={(e) => setPassword(e.target.value)}/>
                     </div>
+                    <div className="reg-checkbox">
+                        <input type="checkbox" checked={checkSign} onChange={() => setCheckSign(!checkSign)}/>
+                        <p>Я принимаю условия <a href="">Пользовательского соглашения</a> и даю своё согласие на обработку моей персональной информации на условиях, определённых <a href="">Политикой конфиденциальности</a></p>
+                    </div>
                     <button className="reg-button" onClick={register}>{t('Зарегистрироваться')}</button>
                     {(!emailFree) && <div className="reg-email-incorrect">{t('Данный эл. адресс уже зарегестрирован')}</div>}
                     <div className="reg-to-log">{t('Уже есть аккаунт?')} <a href="/login">{t('Войти')}</a></div>
-                    <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo" alt=""/><p>{t('Войти через Google')}</p></div>
+                    {/* <div className="reg-google"><img src="/assets/images/google-logo.svg" className="reg-google-logo" alt=""/><p>{t('Войти через Google')}</p></div> */}
                 </div>
             </div>
         </div>
