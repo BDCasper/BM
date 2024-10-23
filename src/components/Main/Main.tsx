@@ -102,7 +102,7 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
               observer.current?.observe(block); // Observe each theme-block
             });
       })()
-    },[inp, filterTopic])
+    },[inp, filterTopic, localStorage.getItem('i18nextLng')])
 
     useEffect(() => {
         (

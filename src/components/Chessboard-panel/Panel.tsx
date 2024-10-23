@@ -171,7 +171,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
           }
           setAnswered(false);
         } else if(params.id === "videoKZ") {
-          setVideoUrl(videoFiles[activeIndex]);
+          setVideoUrl(videoFiles[activeIndex].url);
         } else if(params.id.includes('basic')){
           if(Data[idNum-1][activeIndex].mode === 'video') setVideoUrl(location.state.data[activeIndex].url);
         } else {
@@ -326,7 +326,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                                   <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                   <div className="zadachi-text" >
                                     <div className="id" >{t('Бейне')} №{index+1}</div>
-                                    <div className="title" >{t(puzzle)}</div>
+                                    <div className="title" >{t(puzzle.topic)}</div>
                                   </div>
                               </div>
                             </div>

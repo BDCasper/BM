@@ -53,7 +53,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className="rights">
-                <div className="rights-text">{t('© Все права защищены. ИП "CHESSLEADER"')}</div>
+                <div className="rights-text">{t('© Все права защищены')}. ИП "CHESSLEADER"</div>
                 <div className="rights-text">{t('Республика Казахстан, город Астана, улица Куйши Дина, дом 28, квартира 91')}</div>
             </div>
         </div>

@@ -226,8 +226,6 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
                                pieceType === 'knight' ? 'N' :
                                pieceType === 'bishop' ? 'B' :
                                'Q'; // Default to Queen if none of the other cases
-    console.log(promoteLetterRef.current);
-    console.log(requestLetterRef.current);
     if(promoteLetterRef.current !== requestLetterRef.current){
       promoteLetterRef.current = '';
     }
@@ -670,11 +668,11 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       {mode === 'labirint' && 
       <>
         <div className="task-title-rules">
-          <div>Правила:</div>
-          <div>1. Ходить только одной фигурой</div>
-          <div>2. Нельзя вставать под бой</div>
-          <div>3. Можно есть фигуры противника</div>
-          <div>4. Противник не ходит</div>
+          <div>{('Правила:')}</div>
+          <div>{('1. Ходить только одной фигурой')}</div>
+          <div>{('2. Нельзя вставать под бой')}</div>
+          <div>{('3. Можно есть фигуры противника')}</div>
+          <div>{('4. Противник не ходит')}</div>
         </div>
       </>
       }
