@@ -145,17 +145,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                             }
                         })
                     }
-                    if(!everyMove.some((bord) => (bord === board)) && everyMove[everyMove.length - 1] !== board && movePtr < everyMove.length - 1) {
-                        for(let i = everyMove.length - 1; i >= 0; i--) {
-                            if(everyMove[i] !== everyMove[movePtr-1]) everyMove.pop();
-                            else break;
-                        }
-                    }
-                    if(!everyMove.some((bord) => (bord === board)) && board.pieces && board.pieces[0] && board.pieces[0].image !== '' && board.pieces.length > 0) everyMove.push(board);
                 }
             }
         )();
       }, [board]);
+
 
     const playMove = async(playedPiece: Piece, destination: Position): Promise<boolean> => {
 
@@ -181,9 +175,12 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             playedMoveIsValid = clonedBoard.playMove(enPassantMove,
                 validMove, playedPiece,
                 destination);
-            
+
+            everyMove.push(clonedBoard);
+
             if(clonedBoard.winningTeam !== undefined) {
                 checkmateModalRef.current?.classList.remove("hidden");
+                setMovePtr(everyMove.length-1)
                 if(gameWithFriend) winSound();
             }
             return clonedBoard;
