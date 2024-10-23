@@ -38,21 +38,23 @@ export default function Footer() {
         <div className="footer">
             {popOpen && popup}
             <div className="footer-content">
-                <img src="/assets/images/footer-logo.svg" className="footerImg"/>
                 <div className="footer-text">
                     <div className="footer-text-top">
                         <div className="footer-text-font"><span><a href="/">{t('Главная')}</a></span></div>
+                        <div className="footer-text-font"><span>|</span></div>
                         <div className="footer-text-font"><span onClick={() => setPopOpen(true)}>{t('Служба поддержки')}</span></div>
-                    </div>
-                    <div className="footer-text-top">
+                        <div className="footer-text-font"><span>|</span></div>
                         <div className="footer-text-font"><span onClick={() => handleDownload('Пользовательское соглашение.docx')}>{t('Пользовательское соглашение')}</span></div>
+                        <div className="footer-text-font"><span>|</span></div>
                         <div className="footer-text-font"><span onClick={() => handleDownload('Публичная оферта.docx')}>{t('Публичная оферта')}</span></div>
+                        <div className="footer-text-font"><span>|</span></div>
                         <div className="footer-text-font"><span onClick={() => handleDownload('Политика конфиденциальности.docx')}>{t('Политика конфиденциальности')}</span></div>
                     </div>
                 </div>
             </div>
             <div className="rights">
-                <div className="rights-text">{t('Все права защищены')}</div>
+                <div className="rights-text">{t('© Все права защищены. ИП "CHESSLEADER"')}</div>
+                <div className="rights-text">{t('Республика Казахстан, город Астана, улица Куйши Дина, дом 28, квартира 91')}</div>
             </div>
         </div>
     );
