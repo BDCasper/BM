@@ -52,7 +52,7 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
             }
           });
         },
-        { threshold: 0.05 } // Trigger when 10% of the block is visible
+        { threshold: 0.01 } // Trigger when 10% of the block is visible
       );
 
       themeBlocks.forEach((block) => {
@@ -78,6 +78,7 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
 
     const handleScroll = async() => {
       sessionStorage.setItem("scrollPosition", JSON.stringify(window.scrollY));
+      sessionStorage.setItem("dif", filterTopic);
     }
 
     useEffect(() => {
@@ -92,6 +93,16 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
         }
       )()
     },[])
+
+    useEffect(() => {
+      (
+        async() => {
+            const themeBlocks = document.querySelectorAll('.theme-block');
+            themeBlocks.forEach((block) => {
+              observer.current?.observe(block); // Observe each theme-block
+            });
+      })()
+    },[inp, filterTopic])
 
     useEffect(() => {
         (
@@ -135,9 +146,14 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
         async () => {
           if(topicList.length > 10){
             const scrollPosition = sessionStorage.getItem("scrollPosition");
+            const oldFilter = sessionStorage.getItem("dif");
             if (scrollPosition) {
               window.scrollTo(0, parseInt(scrollPosition));
               sessionStorage.removeItem("scrollPosition");
+            }
+            if(oldFilter){
+              setFilter(oldFilter)
+              sessionStorage.removeItem("dif");
             }
           }
           if(topicList.length > 0) {
