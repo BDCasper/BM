@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./header.css";
 import Main from "../Main/Main";
 import MediaQuery from "react-responsive";
@@ -25,6 +25,28 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
     const [open, setOpen] = useState<boolean>(false);
 
     const {t} = useTranslation();
+    const observer = useRef<IntersectionObserver | null>(null); // Store observer
+
+    // Helper function to add the "visible" class when the block comes into view
+    const observeBlocks = () => {
+      const themeBlocks = document.querySelectorAll('.header');
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible'); // Add the class when it enters the viewport
+              observer.current?.unobserve(entry.target); // Stop observing once it's visible
+            }
+          });
+        },
+        { threshold: 0.1 } // Trigger when 10% of the block is visible
+      );
+
+      themeBlocks.forEach((block) => {
+        observer.current?.observe(block); // Observe each theme-block
+      });
+    };
+
 
     const changeLanguage = (lng: string) => {
       i18n.changeLanguage(lng);
@@ -37,6 +59,20 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
     const handleKeywordKeyPress = (e: React.KeyboardEvent) => {
         if( e.key === 'Enter' ) setInp(inputText);
     };
+
+    useEffect(() => {
+        (
+            async() => {
+                if(user.user_id){
+                    observeBlocks();
+                    return () => {
+                        // Clean up the observer when component unmounts
+                        observer.current?.disconnect();
+                    };
+                }
+            }
+        )()
+    },[user.user_id])
 
     useEffect(() => {
         (

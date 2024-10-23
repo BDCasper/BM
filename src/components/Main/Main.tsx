@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { backend } from "../../App";
 import "./Main.css"
 import { useNavigate, useParams } from "react-router-dom";
@@ -38,6 +38,27 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
     const [settingsPopupOpen, setSettingsPopupOpen] = useState<boolean>(false);
 
     const {t} = useTranslation();
+    const observer = useRef<IntersectionObserver | null>(null); // Store observer
+
+    // Helper function to add the "visible" class when the block comes into view
+    const observeBlocks = (classname:string) => {
+      const themeBlocks = document.querySelectorAll(classname);
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible'); // Add the class when it enters the viewport
+              observer.current?.unobserve(entry.target); // Stop observing once it's visible
+            }
+          });
+        },
+        { threshold: 0.05 } // Trigger when 10% of the block is visible
+      );
+
+      themeBlocks.forEach((block) => {
+        observer.current?.observe(block); // Observe each theme-block
+      });
+    };
 
     function getNoun(num: number, one: string, two: string, five: string) {
       let n = Math.abs(num);
@@ -59,6 +80,18 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
       sessionStorage.setItem("scrollPosition", JSON.stringify(window.scrollY));
     }
 
+    useEffect(() => {
+      (
+        async() => {
+          observeBlocks(".main-panel");
+          observeBlocks(".lists-wrapper");
+          return () => {
+            // Clean up the observer when component unmounts
+            observer.current?.disconnect();
+          };
+        }
+      )()
+    },[])
 
     useEffect(() => {
         (
@@ -107,6 +140,13 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
               sessionStorage.removeItem("scrollPosition");
             }
           }
+          if(topicList.length > 0) {
+            observeBlocks(".theme-block");
+          }
+          return () => {
+            // Clean up the observer when component unmounts
+            observer.current?.disconnect();
+          };
         }
       )();
     }, [topicList]);
@@ -124,6 +164,7 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
         }
       )()
     },[level, playerSide])
+
 
     return(
       <div className="main-page" onClick={handleScroll}>
@@ -192,14 +233,14 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
                       </div>
                     </div>
                   }
-                  {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
+                  {dif === 'easy' && Data.map((topic, ind) => (
                     <>
-                      {topic.topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
-                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                      {topic[0].topic.trim().toUpperCase().includes(inp.trim().toUpperCase()) &&
+                        <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic[0].topic, data: topic}}) : navigate("/login")}>
                             <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
                             <div className="theme-content">
                               <div className="theme-text">
-                                <div className="theme-name">{t(topic.topic)}</div>
+                                <div className="theme-name">{t(topic[0].topic)}</div>
                                 <div className="theme-info">
                                   <ul>
                                     <li className="theme-lessons"><span>1 урок</span></li> 
@@ -256,12 +297,12 @@ export default function Main({inp, user, isSubscribed}:MainProps) {
                       </div>
                     </div>
                   }
-                  {Data.filter((topic) => topic.difficulty.includes(dif)).map((topic, ind) => (
-                    <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic.topic, data: topic}}) : navigate("/login")}>
+                  {dif === 'easy' && Data.map((topic, ind) => (
+                    <div key={ind} className="theme-block" onClick={() => user.user_id ? navigate(`/topic/basic${ind+1}`, {state:{id:-1, topic:topic[0].topic, data: topic}}) : navigate("/login")}>
                       <div className="themeImg"><img src={`https://drzmjhmnb3llr.cloudfront.net/photos/topic_${ind+1}.jpg`} className="themeImgSize"/></div>
                       <div className="theme-content">
                           <div className="theme-text">
-                              <div className="theme-name">{t(topic.topic)}</div>
+                              <div className="theme-name">{t(topic[0].topic)}</div>
                               <div className="theme-info">
                                 <ul>
                                   <li className="theme-lessons"><span>1 урок</span></li> 

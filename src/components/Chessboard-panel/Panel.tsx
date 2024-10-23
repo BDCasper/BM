@@ -162,7 +162,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
   useEffect(() => {
     (
       async () => {
-        if(params.id !== "videoKZ" && params.id !== "math&logic"){
+        if(params.id !== "videoKZ" && params.id !== "math&logic" && !params.id?.includes('basic')){
           activeIndex ? setCurrentFen(arrayOfObjects[activeIndex].fen) : console.log();
           setChooseQ(-1);
           if(arrayOfObjects[0] && arrayOfObjects[activeIndex].mode === 'video') setVideoUrl(arrayOfObjects[activeIndex].url);
@@ -172,8 +172,10 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
           setAnswered(false);
         } else if(params.id === "videoKZ") {
           setVideoUrl(videoFiles[activeIndex]);
+        } else if(params.id.includes('basic')){
+          if(Data[idNum-1][activeIndex].mode === 'video') setVideoUrl(location.state.data[activeIndex].url);
         } else {
-          setVideoUrl(mathFiles[activeIndex]);
+          setVideoUrl(mathFiles[activeIndex].url);
         }
       }
       )();
@@ -234,27 +236,71 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                 <div className="panel-content">
                   <div className="panel-spisok">
                     <div className="panel" ref={scrollToBoard}>
-                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
-                      <div className="referee">
-                        <Referee fenCode={Data[idNum-1].fen} 
-                        setSolved={setSolved} 
-                        solved={solved} 
-                        activeIndex={activeIndex} 
-                        setActiveIndex={setActiveIndex} 
-                        lengthOfArray={location.state.data.length} 
-                        arrayOfObjects={[location.state.data]}
-                        mode={location.state.data.mode}
-                        closed={true}
-                        setPopOpen={setPopOpen}
-                        user={user}
-                        arrayOfSolved={arrayOfSolved}
-                        gameWithFriend={undefined}
-                        handleAnimation={setStartAnimation}
-                        setProgress={setProgressWidthcnt}
-                        level={-1}
-                        moveTurn={''}
-                        />
-                      </div>
+                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>
+                      {
+                        Data[idNum-1][activeIndex].mode === 'video' ?
+                          <>
+                            <div className="task-name" >{Data[idNum-1][activeIndex].topic}</div>
+                            <video key={videoUrl} width="700" height="500" className="panel-video" controls> 
+                                <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${videoUrl}` } type="video/mp4" /> 
+                            </video> 
+                          </>
+                        :
+                          <div className="referee">
+                            <Referee fenCode={Data[idNum-1][activeIndex].fen} 
+                            setSolved={setSolved} 
+                            solved={solved} 
+                            activeIndex={activeIndex} 
+                            setActiveIndex={setActiveIndex} 
+                            lengthOfArray={location.state.data.length} 
+                            arrayOfObjects={location.state.data}
+                            mode='basic'
+                            closed={true}
+                            setPopOpen={setPopOpen}
+                            user={user}
+                            arrayOfSolved={arrayOfSolved}
+                            gameWithFriend={undefined}
+                            handleAnimation={setStartAnimation}
+                            setProgress={setProgressWidthcnt}
+                            level={-1}
+                            moveTurn={''}
+                            />
+                          </div>
+                      }    
+                    </div>
+                    <div className="spisok">
+                      <div className="topic"><p>{t("Математика и Логика на шахматной доске")}</p></div>
+                        <div className="spisokList">
+                          {Data[idNum-1].map((puzzle, index) => (
+                            puzzle.mode === 'video' ?
+                            <>
+                              <div className={index === activeIndex ? "zadachi zadachi-active" :"zadachi"} key={index} onClick={() => {
+                                setActiveIndex(index)
+                              }}>
+                              <div className="zadachi-content">
+                                <div className="block-checkSign"><img alt="" className="video-player" src='/assets/images/video-lesson.png'/></div>
+                                  <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                  <div className="zadachi-text" >
+                                    <div className="id" >{t('Видео')} №{index+1}</div>
+                                    <div className="title" >{t(puzzle.topic)}</div>
+                                  </div>
+                              </div>
+                            </div>
+                            </>
+                            :
+                            <div className={index === activeIndex ? "zadachi zadachi-active" :"zadachi"} key={index} onClick={() => {
+                                setActiveIndex(index)
+                              }}>
+                              <div className="zadachi-content">
+                                  <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
+                                  <div className="zadachi-text" >
+                                    <div className="id" >{t('Задание')} №{index+1}</div>
+                                    <div className="title" >{t(puzzle.topic)}</div>
+                                  </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -304,7 +350,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                 <div className="panel-content">
                   <div className="panel-spisok">
                     <div className="panel" ref={scrollToBoard}>
-                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>    
+                      <button onClick={executeScroll} className="panel-size-button"><img src="/assets/images/resize.png" alt="" /></button>   
+                      <div className="task-name" >{mathFiles[activeIndex].topic}</div>
                       <video key={videoUrl} width="700" height="500" className="panel-video" controls> 
                           <source src={`https://drzmjhmnb3llr.cloudfront.net/videos/${videoUrl}` } type="video/mp4" /> 
                       </video> 
@@ -321,7 +368,7 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                                   <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                   <div className="zadachi-text" >
                                     <div className="id" >{t('Видео')} №{index+1}</div>
-                                    <div className="title" >{t(puzzle)}</div>
+                                    <div className="title" >{t(puzzle.topic)}</div>
                                   </div>
                               </div>
                             </div>
