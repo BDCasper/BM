@@ -95,91 +95,91 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
     )
 
     return (
-        <div className="header">
+        <>
             {popOpen && popup}
-            <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
-            <MediaQuery minWidth={1200}>
-                <div className="header-allCourse" onClick={() => sessionStorage.removeItem("scrollPosition")}><a href="/">{t('Главная')}</a></div>
-                <div className="header-web-site"><a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a></div>
-                <div className="header-subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
-                {allowSearch === true ? 
-                    <div className="header-search ">
-                        <img src="/assets/images/search.svg" className="header-loop"/>
-                        <input type="text" className="header-searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
-                        <button className="header-poisk" onClick={() => setInp(inputText)}>{t('Поиск')}</button>
-                    </div> 
-                :
-                    <div className="header-search sHidden">
-                        <img src="/assets/images/search.svg" className="header-loop"/>
-                        <input type="text" className="header-searchBar"/>
-                        <button name="button" className="header-poisk">{t('Поиск')}</button>
-                    </div>
-                }
-                {!user.user_id ? (
-                    <>
-                        <div className="header-reg"><a href="/registration">{t('Регистрация')}</a></div>
-                        <div className="header-login"><a href="/login">{t('Вход')}</a></div>
-                    </>
-                ) : (
+            <div className="header">
+                <a className="headerImg" href="/"><img src="/assets/images/footer-logo.svg"/></a>
+                <MediaQuery minWidth={1200}>
+                    <div className="header-allCourse" onClick={() => sessionStorage.removeItem("scrollPosition")}><a href="/">{t('Главная')}</a></div>
+                    <div className="header-web-site"><a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a></div>
+                    <div className="header-subscribe" onClick={() => setPopOpen(true)}>{t('Подписка')}</div>
+                    {allowSearch === true ? 
+                        <div className="header-search ">
+                            <img src="/assets/images/search.svg" className="header-loop"/>
+                            <input type="text" className="header-searchBar" onKeyUp={handleKeywordKeyPress} onChange={(e) => setInputText(e.target.value)}/>
+                            <button className="header-poisk" onClick={() => setInp(inputText)}>{t('Поиск')}</button>
+                        </div> 
+                    :
+                        <div className="header-search sHidden">
+                            <img src="/assets/images/search.svg" className="header-loop"/>
+                            <input type="text" className="header-searchBar"/>
+                            <button name="button" className="header-poisk">{t('Поиск')}</button>
+                        </div>
+                    }
+                    {!user.user_id ? (
                         <>
-                            <div className="header-rating"><a href="/rating">{t('Рейтинг')}</a></div>
-                            <div className="header-username">{user.username ? user.username : user.email}</div>
-                            <a href="/profile" className="header-profile"><img className="header-profile-image" src={user && user.pfp ? user.pfp : "/assets/images/header-profile.svg"}/></a>
+                            <div className="header-reg"><a href="/registration">{t('Регистрация')}</a></div>
+                            <div className="header-login"><a href="/login">{t('Вход')}</a></div>
                         </>
-                )}
-                <div className="header-lang"> 
-                    <select onChange={handleLanguageChange} defaultValue={i18n.language}>
-                        <option value="ru">Русский</option>
-                        <option value="kk">Қазақ</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-            </MediaQuery>
-            <MediaQuery maxWidth={1200}>
-                <div className="header-lang">
-                    <select onChange={handleLanguageChange} defaultValue={i18n.language}>
-                        <option value="ru">Русский</option>
-                        <option value="kk">Қазақ</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-                {user.user_id && <div className="header-username">{user.email}</div>}
-                <div className='menu-container'>
-                    <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
-                        <img src={`/assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
+                    ) : (
+                            <>
+                                <div className="header-rating"><a href="/rating">{t('Рейтинг')}</a></div>
+                                <div className="header-username">{user.username ? user.username : user.email}</div>
+                                <a href="/profile" className="header-profile"><img className="header-profile-image" src={user && user.pfp ? user.pfp : "/assets/images/header-profile.svg"}/></a>
+                            </>
+                    )}
+                    <div className="header-lang"> 
+                        <select onChange={handleLanguageChange} defaultValue={i18n.language}>
+                            <option value="ru">Русский</option>
+                            <option value="kk">Қазақ</option>
+                            <option value="en">English</option>
+                        </select>
                     </div>
-                    <div className={`header-dropdown-menu ${open ? 'active' : 'inactive'}`} >
-                        <ul>
-                            <li className = 'header-dropdownItem'>
-                                <a href="/">{t('Главная')}</a>
-                            </li>
-                            <li className = 'header-dropdownItem'>
-                                <a href="/subscription">{t('Подписка')}</a>
-                            </li>
-                            <li className = 'header-dropdownItem'>
-                                <a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a>
-                            </li>
-
-                            {!user.user_id ? (
-                                <>
-                                <li className = 'header-dropdownItem'>
-                                    <a href="/login">{t('Вход')}</a>
-                                </li>
-                                <li className = 'header-dropdownItem'>
-                                    <a href="/registration">{t('Регистрация')}</a>
-                                </li>
-                                </>
-                            ) : (
-                                <li className = 'header-dropdownItem'>
-                                    <a href="/profile">{t('Профиль')}</a>
-                                </li>
-                            )}
-                        </ul>
+                </MediaQuery>
+                <MediaQuery maxWidth={1200}>
+                    <div className="header-lang">
+                        <select onChange={handleLanguageChange} defaultValue={i18n.language}>
+                            <option value="ru">Русский</option>
+                            <option value="kk">Қазақ</option>
+                            <option value="en">English</option>
+                        </select>
                     </div>
-                </div>
-            </MediaQuery>
-            
+                    {user.user_id && <div className="header-username">{user.email}</div>}
+                    <div className='menu-container'>
+                        <div className='menu-trigger' onClick={()=>{setOpen(!open)}}>
+                            <img src={`/assets/images/burger-${open ? 'grey' : 'red'}.svg`} alt=""/>
+                        </div>
+                        <div className={`header-dropdown-menu ${open ? 'active' : 'inactive'}`} >
+                            <ul>
+                                <li className = 'header-dropdownItem'>
+                                    <a href="/">{t('Главная')}</a>
+                                </li>
+                                <li className = 'header-dropdownItem'>
+                                    <a href="/subscription">{t('Подписка')}</a>
+                                </li>
+                                <li className = 'header-dropdownItem'>
+                                    <a href="https://school.bm-chess.com/" target="_blank">{t('Сайт школы')}</a>
+                                </li>
 
-        </div>
+                                {!user.user_id ? (
+                                    <>
+                                    <li className = 'header-dropdownItem'>
+                                        <a href="/login">{t('Вход')}</a>
+                                    </li>
+                                    <li className = 'header-dropdownItem'>
+                                        <a href="/registration">{t('Регистрация')}</a>
+                                    </li>
+                                    </>
+                                ) : (
+                                    <li className = 'header-dropdownItem'>
+                                        <a href="/profile">{t('Профиль')}</a>
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                </MediaQuery>
+            </div>
+        </>
     );
 }
