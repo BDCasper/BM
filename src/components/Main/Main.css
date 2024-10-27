@@ -215,7 +215,7 @@
     box-shadow: 1px 1px 3px 3px rgba(71, 71, 71, 0.212);
     border-radius: 4%;
     width: 250px;   
-    min-height: 156px;
+    min-height: 170px;
     height: fit-content;
     z-index: 2;
 }
@@ -256,7 +256,7 @@
 
 .theme-name {
     margin-top: 20px;
-    height: 55px;
+    min-height: 55px;
     padding-left: 5px;
     padding-right: 5px;
     font-size: 20px;font-weight: normal;color: #282323;

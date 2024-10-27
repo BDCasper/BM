@@ -43,6 +43,7 @@ interface Props {
   setReviewMode: (check: boolean) => any;
   setProgress: (num: number) => any;
   gameWithBot: boolean|undefined;
+  setEveryMove: (b: any) => any;
 }
 
 let totalTurns = 0;
@@ -50,7 +51,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, mode, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithFriend, everyMove,movePtr, handleAnimation, setReviewMode, setProgress, gameWithBot} : Props) {
+export default function Chessboard({playMove, pieces, fenComponents, setSolved, solved, activeIndex, setActiveIndex, lengthOfArray, arrayOfObjects, mode, closed, setPopOpen, setBoard, board, user, arrayOfSolved, gameWithFriend, everyMove,movePtr, handleAnimation, setReviewMode, setProgress, gameWithBot, setEveryMove} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const [lives, setLives] = useState<number>(3);
@@ -301,6 +302,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             setLives(3);
             if (data.botMove === "WIN") {
               setTimeout(() => {
+                if(totalTurns < 3) setEveryMove([board, ...everyMove]);
                 win();
               }, 1000);
             } else {
@@ -314,6 +316,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               }
               if(data.win === "WIN") {
                 setTimeout(() => {
+                  if(totalTurns < 3) setEveryMove([board, ...everyMove]);
                   win();
                 }, 1000);
               }

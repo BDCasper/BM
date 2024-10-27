@@ -44,11 +44,11 @@ export default function Footer() {
                         <div className="footer-text-font"><span>|</span></div>
                         <div className="footer-text-font"><span onClick={() => setPopOpen(true)}>{t('Служба поддержки')}</span></div>
                         <div className="footer-text-font"><span>|</span></div>
-                        <div className="footer-text-font"><span onClick={() => handleDownload('Пользовательское соглашение.docx')}>{t('Пользовательское соглашение')}</span></div>
+                        <div className="footer-text-font"><span><a href="https://docs.google.com/document/d/1U-DGqlcf67K90ine2QH5_jwX1n1NUevC/edit?usp=sharing&ouid=109692704920288354799&rtpof=true&sd=true" target="_blank">{t('Пользовательское соглашение')}</a></span></div>
                         <div className="footer-text-font"><span>|</span></div>
-                        <div className="footer-text-font"><span onClick={() => handleDownload('Публичная оферта.docx')}>{t('Публичная оферта')}</span></div>
+                        <div className="footer-text-font"><span><a href="https://docs.google.com/document/d/1XMvWw5hMLYBI7BrKl-EFUM6Dwjgm0cOv/edit?usp=sharing&ouid=109692704920288354799&rtpof=true&sd=true" target="_blank">{t('Публичная оферта')}</a></span></div>
                         <div className="footer-text-font"><span>|</span></div>
-                        <div className="footer-text-font"><span onClick={() => handleDownload('Политика конфиденциальности.docx')}>{t('Политика конфиденциальности')}</span></div>
+                        <div className="footer-text-font"><span><a href="https://docs.google.com/document/d/1Wegzp2Fd5HJia0nuAdqkqXjvhfTH2YGG/edit?usp=sharing&ouid=109692704920288354799&rtpof=true&sd=true" target="_blank">{t('Политика конфиденциальности')}</a></span></div>
                     </div>
                 </div>
             </div>

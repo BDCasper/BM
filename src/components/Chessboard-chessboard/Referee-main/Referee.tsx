@@ -66,6 +66,16 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
           )();
     }, [fenCode])
 
+    useEffect(() => {
+        // Add the event listener on mount
+        window.addEventListener('keydown', changeMove);
+    
+        // Remove the event listener on unmount
+        return () => {
+          window.removeEventListener('keydown', changeMove);
+        };
+      }, [changeMove, movePtr, everyMove]);
+
     const setGame = async(inTime: string, incr:string) => {
         setInitialTime(inTime);
         setIncrement(incr);
@@ -299,27 +309,25 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         )()
     }, [activeIndex])
 
-    function changeMove(way:number) {
-        if(everyMove && everyMove.length !== 0){
-            newboard.turn === "w" ? newboard.turn = "b" : newboard.turn = "w"
-            if(way === 1 && movePtr + 1 < everyMove.length){
-                if(movePtr === everyMove.length-1) 
-                {
-                    setBoard(everyMove[movePtr])
-                    setMovePtr(movePtr+1)
-                }
-                else 
-                {
-                    setBoard(everyMove[movePtr+1])
-                    setMovePtr(movePtr+1)
-                }
+    function changeMove(event: KeyboardEvent) {
+        if (everyMove && everyMove.length !== 0) {
+          newboard.turn === "w" ? (newboard.turn = "b") : (newboard.turn = "w");
+    
+          if (event.key === "ArrowRight" && movePtr + 1 < everyMove.length) {
+            if (movePtr === everyMove.length - 1) {
+              setBoard(everyMove[movePtr]);
+              setMovePtr(movePtr + 1);
+            } else {
+              setBoard(everyMove[movePtr + 1]);
+              setMovePtr(movePtr + 1);
             }
-            if(way === -1 && movePtr - 1 >= 0){
-                setBoard(everyMove[movePtr-1])
-                if(movePtr !== 0) setMovePtr(movePtr-1)
-            }
+          }
+          if (event.key === "ArrowLeft" && movePtr - 1 >= 0) {
+            setBoard(everyMove[movePtr - 1]);
+            if (movePtr !== 0) setMovePtr(movePtr - 1);
+          }
         }
-    }
+      }
 
     function GiveUp() {
         setGiveUp(board.currentTeam === TeamType.OUR ? TeamType.OPPONENT : TeamType.OUR);
@@ -339,6 +347,8 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
             window.location.reload();
         }
     }
+
+    console.log(everyMove)
 
     return (
         <div className="referee">
@@ -376,18 +386,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 <button className="chessBoard-flipBoard" onClick={handleFlip}>Перевернуть доску</button>
             }
 
-            {gameWithFriend || reviewMode &&
-                <div className="arrowsWrapper">
-                    <div className="arrows">
-                    <div className="leftArrowWrap" onClick={() => {changeMove(-1)}}>
-                        <p className="arrow">назад</p>
-                    </div>
-                    <div className="rightArrowWrap" onClick={() => {changeMove(1)}}>
-                        <p className="arrow">вперёд</p>
-                    </div>
-                    </div>
-                </div>
-            }
             {
                 mode === 'botGame' ? 
                 <div className={mode === 'botGame' ? initialTime === '' ? 'chessboard-botGame' : 'chessboard-botGame-wTimer' : ''}>
@@ -429,6 +427,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         setReviewMode={setReviewMode}
                         setProgress={setProgress}
                         gameWithBot={gameWithFriend}
+                        setEveryMove={setEveryMove}
                         />
                 </div>
             }
