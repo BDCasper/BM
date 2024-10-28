@@ -97,7 +97,7 @@ export default function Reg() {
                     </div>
                     <div className="reg-checkbox">
                         <input type="checkbox" checked={checkSign} onChange={() => setCheckSign(!checkSign)}/>
-                        <p>Я принимаю условия <a href="">Пользовательского соглашения</a> и даю своё согласие на обработку моей персональной информации на условиях, определённых <a href="">Политикой конфиденциальности</a></p>
+                        <p>Я принимаю условия <a href="https://docs.google.com/document/d/1U-DGqlcf67K90ine2QH5_jwX1n1NUevC/edit?usp=sharing&ouid=109692704920288354799&rtpof=true&sd=true" target="_blank">Пользовательского соглашения</a> и даю своё согласие на обработку моей персональной информации на условиях, определённых <a href="https://docs.google.com/document/d/1Wegzp2Fd5HJia0nuAdqkqXjvhfTH2YGG/edit?usp=sharing&ouid=109692704920288354799&rtpof=true&sd=true" target="_blank">Политикой конфиденциальности</a></p>
                     </div>
                     <button className="reg-button" onClick={register}>{t('Зарегистрироваться')}</button>
                     {(!emailFree) && <div className="reg-email-incorrect">{t('Данный эл. адресс уже зарегестрирован')}</div>}
