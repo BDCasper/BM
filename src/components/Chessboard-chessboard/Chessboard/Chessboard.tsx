@@ -106,7 +106,22 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     botMove?.possibleMoves?.push(botPosition[1]);
     if(botMove) {
       playMove(botMove.clone(), botPosition[1]);
-      const promotionHappened = await promoteNow(botMove.clone(), botPosition[1]);
+
+      const promotionRow = (botMove.team === TeamType.OUR) ? 7 : 0;
+      if (botMove.isPawn && botPosition[1].y === promotionRow) {
+
+          if (promoteLetterRef.current === requestLetterRef.current) {
+              const pieceType = requestLetterRef.current === 'Q' ? PieceType.QUEEN :
+                                requestLetterRef.current === 'R' ? PieceType.ROOK :
+                                requestLetterRef.current === 'N' ? PieceType.KNIGHT :
+                                PieceType.BISHOP;
+
+              const clonedPlayedPiece = botMove.clone();
+              clonedPlayedPiece.position = botPosition[1].clone();
+              await promoteBotPawn(pieceType, clonedPlayedPiece);
+          }
+      }
+
       rightMove[0].x = botPosition[0].x;
       rightMove[0].y = botPosition[0].y;
       rightMove[1].x = botPosition[1].x;
@@ -199,36 +214,29 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
   const promoteNow = async (playedPiece: Piece, destination: Position) => {
     let promotionRow = (playedPiece.team === TeamType.OUR) ? 7 : 0;
-
     // Check if the move is a promotion
     if (destination.y === promotionRow && playedPiece.isPawn) {
-        if(promoteLetterRef.current !== requestLetterRef.current){
           modalRef.current?.classList.remove("hidden");
-        }
 
-        // Clone the played pawn and prepare it for promotion
         setPromotionPawn(() => {
             const clonedPlayedPiece = playedPiece.clone();
             clonedPlayedPiece.position = destination.clone();
             return clonedPlayedPiece;
         });
-        // Wait for user input to resolve the promotion type
-        if(promoteLetterRef.current !== requestLetterRef.current){
-          const pieceType = await new Promise<PieceType>((resolve) => {
-              _promote = resolve; // The resolution function is called from the promotePawn method
-          });
-        }
 
-        return true; // Promotion happened
+        const pieceType = await new Promise<PieceType>((resolve) => {
+            _promote = resolve;
+        });
+
+        return true;
     }
-    return false; // No promotion needed
+    return false;
   };
 
-  function promotePawn(pieceType: PieceType) {
+  const promotePawn = async(pieceType: PieceType) => {
     if (!promotionPawn) return;
-    
-    if(promoteLetterRef.current !== requestLetterRef.current){
-    _promote(pieceType);
+
+      _promote(pieceType);
 
       promoteLetterRef.current = pieceType === 'rook' ? 'R' :
                                  pieceType === 'knight' ? 'N' :
@@ -256,7 +264,24 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       })
 
       modalRef.current?.classList.add("hidden");
-    }
+  }
+
+  const promoteBotPawn = async(pieceType: PieceType, pawnToPromote: Piece) => {
+    setBoard((previousBoard: { clone: () => any; }) => { 
+      const clonedBoard = previousBoard.clone();
+      clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
+          if (piece.samePiecePosition(pawnToPromote)) {
+              results.push(new Piece(piece.position.clone(), pieceType,
+                  piece.team, true, piece.skin));
+          } else {
+              results.push(piece);
+          }
+          return results;
+      }, [] as Piece[]);
+
+      clonedBoard.calculateAllMoves();
+      return clonedBoard;
+    })
   }
 
   function promotionTeamType() {
