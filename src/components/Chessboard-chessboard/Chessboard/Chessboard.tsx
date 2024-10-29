@@ -226,10 +226,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
   function promotePawn(pieceType: PieceType) {
     if (!promotionPawn) return;
-
+    
+    if(promoteLetterRef.current !== requestLetterRef.current){
     _promote(pieceType);
 
-    if(promoteLetterRef.current !== requestLetterRef.current){
       promoteLetterRef.current = pieceType === 'rook' ? 'R' :
                                  pieceType === 'knight' ? 'N' :
                                  pieceType === 'bishop' ? 'B' :
@@ -238,25 +238,25 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
       if(promoteLetterRef.current !== requestLetterRef.current){
         promoteLetterRef.current = '';
       }
+
+      setBoard((previousBoard: { clone: () => any; }) => { 
+        const clonedBoard = previousBoard.clone();
+        clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
+            if (piece.samePiecePosition(promotionPawn)) {
+                results.push(new Piece(piece.position.clone(), pieceType,
+                    piece.team, true, piece.skin));
+            } else {
+                results.push(piece);
+            }
+            return results;
+        }, [] as Piece[]);
+
+        clonedBoard.calculateAllMoves();
+        return clonedBoard;
+      })
+
+      modalRef.current?.classList.add("hidden");
     }
-
-    setBoard((previousBoard: { clone: () => any; }) => { 
-      const clonedBoard = previousBoard.clone();
-      clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
-          if (piece.samePiecePosition(promotionPawn)) {
-              results.push(new Piece(piece.position.clone(), pieceType,
-                  piece.team, true, piece.skin));
-          } else {
-              results.push(piece);
-          }
-          return results;
-      }, [] as Piece[]);
-
-      clonedBoard.calculateAllMoves();
-      return clonedBoard;
-    })
-
-    modalRef.current?.classList.add("hidden");
   }
 
   function promotionTeamType() {
