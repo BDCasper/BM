@@ -93,23 +93,22 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
           )();
     }, [winner])
 
-    const initialBoard: Board = new Board(fen, 1);
+    const initialBoard: Board = new Board(fen, mode === 'botGame' && moveTurn === 'b' ? 2 : 1);
     initialBoard.calculateAllMoves();
     const [board, setBoard] = useState<Board>(initialBoard.clone());
 
     useEffect(() => {
         (
             async () => {
-                setBoard(new Board(fen, 1).clone())
+                setBoard(new Board(fen, mode === 'botGame' && moveTurn === 'b' ? 2 : 1).clone())
             }
         )();
       }, [fen]);
 
-
       useEffect(() => {
         (
             async () => {
-                if(board?.pieces?.length !== 0)
+                if(board?.pieces?.length !== 0 && initialPopupOpen === false)
                 {
                     board.calculateAllMoves()
                     let possible = '';
@@ -129,7 +128,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                             possible += 'q'
                         }
                     }
-                    if(mode === 'botGame' && board.currentTeam !== (moveTurn === 'w' ? TeamType.OUR : TeamType.OPPONENT)){
+                    if(mode === 'botGame'){
                         const finalBoard: fenComponents = {
                             squares: board.pieces,
                             turn: board.currentTeam,
@@ -144,12 +143,11 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                                 body: JSON.stringify({
                                 fen: encoder,
                                 level: level,
-                                team: moveTurn === 'w' ? 'b' : 'w'
+                                team: 'b'
                             })
                         }).then((response) => {
                         if (response && response.status === 200) {
                             response.json().then((data) => {
-                                console.log(data)
                                 setBotMove([new Position(data.position.fromX, data.position.fromY), new Position(data.position.toX, data.position.toY)]);
                                 })
                             }
@@ -158,7 +156,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                 }
             }
         )();
-      }, [board]);
+      }, [board, initialPopupOpen]);
 
 
     const playMove = async(playedPiece: Piece, destination: Position): Promise<boolean> => {
@@ -397,6 +395,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
                         everyMove={everyMove}
                         movePtr={movePtr}
                         botMover={botMove}
+                        firstMove={moveTurn === 'b' ? 'yes' : 'no'}
                         />
                     <button className="chessboard-botGame-giveUpButton" onClick={GiveUp}>Сдаться</button>
                 </div>

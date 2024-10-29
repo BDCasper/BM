@@ -30,6 +30,7 @@ interface Props {
   everyMove: Board[];
   movePtr: number;
   botMover: Position[];
+  firstMove: string;
 }
 
 let totalTurns = 0;
@@ -38,7 +39,7 @@ const rightMove : Position[] = [new Position(-1,-1), new Position(-1,-1)];
 let _promote: (arg0: PieceType) => void
 
 
-export default function ChessboardBot({playMove, pieces, fenComponents, setPopOpen, setBoard, everyMove, movePtr, botMover} : Props) {
+export default function ChessboardBot({playMove, pieces, fenComponents, setPopOpen, setBoard, everyMove, movePtr, botMover, firstMove} : Props) {
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const [grabPosition, setGrabPosition] = useState<Position>(new Position(-1, -1));
   const chessboardRef = useRef<HTMLDivElement>(null);
@@ -52,7 +53,7 @@ export default function ChessboardBot({playMove, pieces, fenComponents, setPopOp
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [arrowStart, setArrowStart] = useState<Position | null>(null);
   const [initialMousePosition, setInitialMousePosition] = useState<Position | null>(null);
-  const [botAllowToMove, setBotAllowToMove] = useState<boolean>(false);
+  const [botAllowToMove, setBotAllowToMove] = useState<boolean>(firstMove === 'yes' ? true : false);
   
   useEffect(() => {
     (

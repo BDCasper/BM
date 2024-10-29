@@ -54,7 +54,6 @@ const BotSetting: React.FC<PopupProps> = ({ onClose, Level, Side }) => {
                         value="Black"
                         checked={side === 'Black'}
                         onChange={(e) => setSide(e.target.value)}
-                        disabled
                         />
                         Чёрные
                     </label>
