@@ -66,14 +66,12 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
                 if(user.user_id){
                     observeBlocks();
                     return () => {
-                        // Clean up the observer when component unmounts
                         observer.current?.disconnect();
                     };
                 }
                 if(!sessionStorage.getItem('user_id')){
                     observeBlocks();
                     return () => {
-                        // Clean up the observer when component unmounts
                         observer.current?.disconnect();
                     };
                 }

@@ -348,7 +348,6 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
         }
     }
 
-    console.log(everyMove)
 
     return (
         <div className="referee">

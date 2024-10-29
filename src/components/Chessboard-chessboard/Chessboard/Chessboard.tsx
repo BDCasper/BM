@@ -106,10 +106,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     botMove?.possibleMoves?.push(botPosition[1]);
     if(botMove) {
       playMove(botMove.clone(), botPosition[1]);
+      const promotionHappened = await promoteNow(botMove.clone(), botPosition[1]);
       rightMove[0].x = botPosition[0].x;
       rightMove[0].y = botPosition[0].y;
       rightMove[1].x = botPosition[1].x;
       rightMove[1].y = botPosition[1].y;
+      promoteLetterRef.current = '';
     }
     return true;
   }
@@ -190,6 +192,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         setReview(false);
         setReviewMode(false);
         nullRightMoves();
+        promoteLetterRef.current = '';
       }
     )();
   }, [activeIndex]);
@@ -199,7 +202,9 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
     // Check if the move is a promotion
     if (destination.y === promotionRow && playedPiece.isPawn) {
-        modalRef.current?.classList.remove("hidden");
+        if(promoteLetterRef.current !== requestLetterRef.current){
+          modalRef.current?.classList.remove("hidden");
+        }
 
         // Clone the played pawn and prepare it for promotion
         setPromotionPawn(() => {
@@ -207,11 +212,12 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
             clonedPlayedPiece.position = destination.clone();
             return clonedPlayedPiece;
         });
-
         // Wait for user input to resolve the promotion type
-        const pieceType = await new Promise<PieceType>((resolve) => {
-            _promote = resolve; // The resolution function is called from the promotePawn method
-        });
+        if(promoteLetterRef.current !== requestLetterRef.current){
+          const pieceType = await new Promise<PieceType>((resolve) => {
+              _promote = resolve; // The resolution function is called from the promotePawn method
+          });
+        }
 
         return true; // Promotion happened
     }
@@ -223,13 +229,17 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
 
     _promote(pieceType);
 
-    promoteLetterRef.current = pieceType === 'rook' ? 'R' :
-                               pieceType === 'knight' ? 'N' :
-                               pieceType === 'bishop' ? 'B' :
-                               'Q'; // Default to Queen if none of the other cases
     if(promoteLetterRef.current !== requestLetterRef.current){
-      promoteLetterRef.current = '';
+      promoteLetterRef.current = pieceType === 'rook' ? 'R' :
+                                 pieceType === 'knight' ? 'N' :
+                                 pieceType === 'bishop' ? 'B' :
+                                 pieceType === 'queen' ? 'Q' :
+                                 '';
+      if(promoteLetterRef.current !== requestLetterRef.current){
+        promoteLetterRef.current = '';
+      }
     }
+
     setBoard((previousBoard: { clone: () => any; }) => { 
       const clonedBoard = previousBoard.clone();
       clonedBoard.pieces = clonedBoard.pieces.reduce((results: any, piece: { samePiecePosition: (arg0: any) => any; position: { clone: () => Position; }; team: TeamType; skin: TeamType; }) => {
@@ -296,6 +306,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
     }).then((response) => {
       if (response && response.status === 200) {
         response.json().then((data) => {
+          promoteLetterRef.current = '';
           if (data.correct === "yes") {
             if(mode !== 'labirint') fenComponents.turn === "w" ? fenComponents.turn = "b" : fenComponents.turn = "w"
             nullRightMoves();
@@ -307,6 +318,10 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
               }, 1000);
             } else {
               if(mode !== 'labirint') {
+                if(data.botMove[2].promote !== 'no'){
+                  requestLetterRef.current = data.botMove[2].promote;
+                  promoteLetterRef.current = data.botMove[2].promote;
+                }
                 const botPosition = [new Position(data.botMove[0].x, data.botMove[0].y), new Position(data.botMove[1].x, data.botMove[1].y)];
                 setTimeout(() => {
                   botMove(botPosition);
