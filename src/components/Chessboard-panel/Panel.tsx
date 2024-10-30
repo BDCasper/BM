@@ -443,10 +443,10 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                           <div className="spisokList">
                             {arrayOfObjects.map((puzzle, index) => (
                                   <div className={ isSubscribed === true ? (index === activeIndex ? "zadachi zadachi-active" :"zadachi") : puzzle.closed === false ? (index === activeIndex ? "zadachi zadachi-active" :"zadachi") : "zadachi zadachi-closed"} key={puzzle.puzzle_id} onClick={() => {
-                                    if(puzzle.closed === false)
+                                    if(isSubscribed === true || puzzle.closed === false)
                                     {
-                                      setActiveIndex(index)
-                                      setCurrentFen(arrayOfObjects[index].fen)
+                                      setActiveIndex(index);
+                                      setCurrentFen(arrayOfObjects[index].fen);
                                     }
                                     else setPopOpen(true);
                                     }}>
@@ -456,14 +456,14 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                                           <div>
                                           <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "solved black") : ''} src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/asyk-win.svg" : "/assets/images/asyk-wait.svg") : '' }/></div>
                                           </div>
-                                          {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
+                                          {isSubscribed === false && puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                           <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                           <div className="zadachi-text" >
                                             <div className="id" >{t('Задание')} №{index+1}</div>
                                             <div className="title" >{t(puzzle.title)}</div>
                                           </div>
                                         </div>
-                                        {!puzzle.closed && index === activeIndex && 
+                                        {(isSubscribed === true || !puzzle.closed) && index === activeIndex && 
                                           <div className="zadachi-test">
                                             {JSON.parse(puzzle.variants).map((variant: string, ind: number) => (
                                                 <tr key={ind} className= {chooseQ === ind ? "zadachi-test-q activeQ" : "zadachi-test-q"} onClick={() => {
@@ -493,8 +493,8 @@ export default function Panel({popOpen, setPopOpen, user, arrayOfSolved, isSubsc
                                       :
                                         <>
                                           <div className="zadachi-content">
-                                          {puzzle.closed === false && <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "solved black") : ''} src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/asyk-win.svg" : "/assets/images/asyk-wait.svg") : '' }/></div>}
-                                            {puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
+                                          {(isSubscribed === true || puzzle.closed === false) && <div className="block-checkSign"><img alt="" className={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "solved" : "solved black") : ''} src={arrayOfSolved ? (arrayOfSolved.has(puzzle.puzzle_id) ? "/assets/images/asyk-win.svg" : "/assets/images/asyk-wait.svg") : '' }/></div>}
+                                            {isSubscribed === false && puzzle.closed === true && <div className="spisok-lock"><img src="/assets/images/spisok-lock.png" className="spisok-lock-img" alt="" /></div>}
                                             <div className="block-spisokImg"><img alt="" className={index === activeIndex ? "spisokImg-active" :"spisokImg"} src={index === activeIndex ? "/assets/images/active-piece.svg" :"/assets/images/spisokImg.svg"} /></div>
                                             <div className="zadachi-text" >
                                               <div className="id" >{t('Задание')} №{index+1}</div>
