@@ -24,7 +24,7 @@ export default function Podpiska({setPopOpen, user, isSubscribed}:Props) {
                     user_id: user.user_id,
                     email: user.email,
                     phone: user.phone,
-                    amount: /*choose === 1 ? 8990 : choose === 2 ? 18990 : 26990*/ 100
+                    amount: choose === 1 ? 8990 : choose === 2 ? 18990 : 26990
                 }
                 )
             }).then((response) => { 
@@ -92,7 +92,7 @@ export default function Podpiska({setPopOpen, user, isSubscribed}:Props) {
                             <li>Для продолжающих</li>
                         </ul>
                     </div>
-                    <button className="sub-button" /*onClick={makePayment}*/>Оформить подписку</button>
+                    <button className="sub-button" onClick={makePayment}>Оформить подписку</button>
                 </div>
                 </div>
             </div>

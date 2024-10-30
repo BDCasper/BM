@@ -63,18 +63,10 @@ export default function Header({checkUserLog, setInp, user, popOpen, setPopOpen,
     useEffect(() => {
         (
             async() => {
-                if(user.user_id){
-                    observeBlocks();
-                    return () => {
-                        observer.current?.disconnect();
-                    };
-                }
-                if(!sessionStorage.getItem('user_id')){
-                    observeBlocks();
-                    return () => {
-                        observer.current?.disconnect();
-                    };
-                }
+                observeBlocks();
+                return () => {
+                    observer.current?.disconnect();
+                };
             }
         )()
     },[user.user_id])
