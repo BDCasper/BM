@@ -92,7 +92,7 @@ export default function Podpiska({setPopOpen, user, isSubscribed}:Props) {
                             <li>Для продолжающих</li>
                         </ul>
                     </div>
-                    <button className="sub-button" /*onClick={makePayment}*/>Оформить подписку</button>
+                    <button className="sub-button" onClick={makePayment}>Оформить подписку</button>
                 </div>
                 </div>
             </div>
