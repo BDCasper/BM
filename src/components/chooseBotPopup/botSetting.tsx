@@ -49,7 +49,7 @@ const BotSetting: React.FC<PopupProps> = ({ onClose, Level, Side }) => {
           <div className='chooseSide-title'>Я буду играть за:</div>
           <div className="chooseSide-container">
             <div className={`chooseSide-item ${side === 'White' ? 'selected' : ''}`} onClick={() => setSide('White')}>
-              <img src="/assets/images/WhiteKingChoose.png" alt="" />
+              <img src="/assets/images/whiteKingChoose.png" alt="" />
             </div>
             <div className={`chooseSide-item ${side === 'Black' ? 'selected' : ''}`} onClick={() => setSide('Black')}>
               <img src="/assets/images/blackKingChoose.png" alt=""/>
