@@ -328,7 +328,7 @@ const Referee: React.FC<RefereeProps> = ({setSolved, fenCode, solved, activeInde
       }
 
     function GiveUp() {
-        setGiveUp(board.currentTeam === TeamType.OUR ? TeamType.OPPONENT : TeamType.OUR);
+        setGiveUp(moveTurn === 'w' ? TeamType.OPPONENT : TeamType.OUR);
         checkmateModalRef.current?.classList.remove("hidden");
     }
 
