@@ -46,8 +46,8 @@ export default function Podpiska({setPopOpen, user, isSubscribed}:Props) {
                     body: JSON.stringify({
                         user_id: user.user_id,
                         email: user.email,
-                        phone: user.phone,
-                        amount: choose === 1 ? 101 : choose === 2 ? 18990 : 26990
+                        phone: phone,
+                        amount: choose === 1 ? 8990 : choose === 2 ? 18990 : 26990
                     }
                     )
                 }).then((response) => { 
