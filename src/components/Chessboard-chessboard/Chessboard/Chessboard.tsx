@@ -207,6 +207,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         setReview(false);
         setReviewMode(false);
         nullRightMoves();
+        if(fenComponents) setPlaySide(fenComponents.turn);
         promoteLetterRef.current = '';
       }
     )();
