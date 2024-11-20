@@ -719,7 +719,7 @@ export default function Chessboard({playMove, pieces, fenComponents, setSolved, 
         </div>
       </>
       }
-      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn"><img className="move_symbol" src={`/assets/images/${playSide}_move.svg`}/>{t('Ход')} {playSide ? (playSide === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
+      {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id !== -1 && <div className="turn" key={playSide}><img className="move_symbol" src={`/assets/images/${playSide}_move.svg`}/>{t('Ход')} {playSide ? (playSide === "w" ? t('Белых') : t('Черных')) : "..."}</div>}
       {arrayOfObjects[activeIndex] && arrayOfObjects[activeIndex].puzzle_id === -1 && <div className="task-title">{t(arrayOfObjects[activeIndex]?.title)}</div>}
       {mode !== 'test' && gameWithFriend === undefined && <div className="lives">{t('Осталось жизней')}: <span>{lives}</span></div>}
     </div>
