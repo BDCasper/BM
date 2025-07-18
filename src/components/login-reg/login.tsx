@@ -69,7 +69,7 @@ export default function Login() {
         //     //credentials: 'include'
         // }).then((res) => {
         //     if (res && res.status === 200) {
-        //         alert('darova')
+        //         alert('OK')
         //     } 
         // })
     }

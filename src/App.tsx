@@ -92,6 +92,5 @@ function App() {
 }
 
 export default App; 
-// export const backend = "http://195.49.215.186:10000";
 export const backend = "https://api.bm-chess.com";
 
